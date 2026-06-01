@@ -50,7 +50,7 @@ Deep Builder
 
 ### AI Personality Profile
 
-![Profile](day1-profile.png)
+![Profile](day1-profile.jpg)
 
 ### AI Portrait
 
