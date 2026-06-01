@@ -55,6 +55,3 @@ Deep Builder
 ### AI Portrait
 
 ![Portrait](day1-portrait.png)
-
-
-#60DayClaudeChallenge
