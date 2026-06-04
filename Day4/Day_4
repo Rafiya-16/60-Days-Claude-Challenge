@@ -1,0 +1,155 @@
+Day 4 – Chain-of-Thought Prompting
+
+Objective
+
+Learn and apply Chain-of-Thought Prompting to generate a personalized career roadmap.
+
+Prompt Used
+
+You are an Elite AI Career Strategist.
+
+Your goal is to build a personalized roadmap for me.
+
+Before creating the roadmap, ask me ONLY these 4 questions:
+
+Question 1
+What is your current situation?
+Examples:
+• Student
+• Working Professional
+• Freelancer
+• Founder
+• Career Switcher
+
+Question 2
+What skills do you currently have?
+Examples:
+• Python
+• Marketing
+• Sales
+• Design
+• Web Development
+• Data Analysis
+
+Question 3
+What is your target goal?
+Examples:
+• Get a job
+• Land an internship
+• Become a Data Scientist
+• Become an AI Engineer
+• Start a business
+• Grow on LinkedIn
+
+Question 4
+What is your target timeline?
+Examples:
+• 3 months
+• 6 months
+• 1 year
+• 2 years
+
+After collecting all answers:
+
+Think step by step.
+
+1. Analyze my current position.
+2. Identify strengths.
+3. Identify skill gaps.
+4. Identify the fastest path to the goal.
+5. Recommend learning priorities.
+6. Recommend projects.
+7. Recommend networking strategy.
+8. Create milestones.
+
+Finally generate a visually structured ONE-PAGE roadmap.
+
+The roadmap must contain:
+
+🚀 Current Position
+🎯 Target Goal
+📈 Skill Gap Analysis
+🛠 Recommended Learning Plan
+💼 Suggested Projects
+🌐 Networking Strategy
+📅 Monthly Milestones
+⚡ Immediate Next Actions
+
+PDF DESIGN REQUIREMENTS:
+
+• A4 Portrait Layout
+• Professional consulting-report style
+• Clean sections with visual hierarchy
+• Tables wherever appropriate
+• No overlapping text
+• Use concise content
+• Use visual dividers
+• Maximum one page
+• Export-ready PDF format
+• Easy to screenshot and share on LinkedIn
+
+End with:
+
+Generated using Chain-of-Thought Reasoning
+
+My Answers
+
+Question 1
+
+Student
+
+Question 2
+
+No specific skill yet
+
+Question 3
+
+To get a job/internship
+
+Question 4
+
+1 Year
+
+Career Roadmap
+
+Here's a quick summary of what's inside:
+🚀 Where you are — Student, no formal skills yet (but that's totally fine — everyone starts here).
+🎯 Where you're going — Your first job or internship in tech/data/business within 12 months.
+The 4-Phase Plan:
+
+Months 1–3 → Python + Excel basics, GitHub setup
+Months 3–6 → Web/Data/AI fundamentals
+Months 6–9 → Build 3 real projects + portfolio
+Months 9–12 → Apply aggressively + interview prep → Offer 🎉
+
+Start THIS WEEK with:
+
+Create GitHub + LinkedIn accounts
+Begin Python on CS50 or freeCodeCamp (both free)
+Block 1 dedicated hour/day for learning
+
+Biggest Insight
+
+I realized that having a structured roadmap makes career goals much more achievable. Breaking a long-term goal into smaller milestones helps me focus on what to learn and when.
+
+Learnings
+
+- Learned how Chain-of-Thought prompting improves output quality.
+- Learned how structured questioning leads to better AI responses.
+- Learned how to create a career roadmap using AI.
+
+Observations
+
+- The roadmap was personalized.
+- The output was more detailed than a normal prompt.
+- Breaking problems into steps improved the response quality.
+
+Screenshots
+
+Add screenshots of:
+
+[roadmap](roadmap.jpg)
+
+Conclusion
+
+Chain-of-Thought prompting helped generate a detailed and structured career roadmap tailored to my goals.
