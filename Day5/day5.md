@@ -55,7 +55,7 @@ Make it practical and beginner-friendly.
 
 ![Prompt B Output](withcontext.png)
 ![Prompt B Output](with-context.png)
-![Prompt B Output](project.png)
+![Prompt B Output](projects.png)
 ![Prompt B Output](finaloutcome.png)
 
 ---
