@@ -21,10 +21,6 @@ Include:
 
 Make it practical and beginner-friendly.
 
-### Output
-
-[Paste Claude's output here]
-
 ### Screenshot
 
 ![Prompt A Output](without-context.png)
@@ -54,10 +50,6 @@ Include:
 - Final outcome
 
 Make it practical and beginner-friendly.
-
-### Output
-
-[Paste Claude's output here]
 
 ### Screenshot
 
