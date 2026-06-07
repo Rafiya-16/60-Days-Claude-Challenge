@@ -117,15 +117,15 @@ Screenshots
 
 Workflow Screenshot
 
-"Workflow" (workflow.png)
+[Workflow](workflow.png)
 
 Strategy Screenshot 1
 
-"Strategy1" (strategy1.png)
+[Strategy1](strategy1.png)
 
 Strategy Screenshot 2
 
-"Strategy2" (strategy2.png)
+[Strategy2](strategy2.jpg)
 
 Reflection
 
