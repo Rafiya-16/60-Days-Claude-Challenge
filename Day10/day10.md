@@ -32,7 +32,7 @@ Claude generated a complete single-page portfolio website that included:
 
 The following file was generated and tested:
 
-* `portfolio.html` – Complete portfolio website containing HTML, Tailwind CSS, and JavaScript in a single file.
+* `rafiya_khan_portfolio.html` – Complete portfolio website containing HTML, Tailwind CSS, and JavaScript in a single file.
 
 ### Screenshots Added
 
@@ -64,9 +64,10 @@ The following screenshots were captured and uploaded to demonstrate the function
 
 5. **Key Milestones Screenshot**
 
-     ![Milestones Screenshot](Milestones.png)
+     ![Milestones Screenshot](milestones.png)
+     ![Milestones Screenshot](milestones1.png)
 
-6. **Achievements & Certifications Screenshot**
+7. **Achievements & Certifications Screenshot**
 
      ![Certifications Screenshot](certificates.png)
    
@@ -74,7 +75,7 @@ The following screenshots were captured and uploaded to demonstrate the function
 
 9. **Contact Section Screenshot**
 
-     ![Contact Screenshot](Contact.png)
+     ![Contact Screenshot](contact.png)
    
    * Shows contact information and communication options.
 
