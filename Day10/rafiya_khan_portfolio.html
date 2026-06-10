@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rafiya Shamshad Khan — CSE Student & Frontend Developer</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Rafiya Shamshad Khan — B.Tech CSE student at Integral University, Lucknow. Frontend Developer, AI/ML enthusiast. Building responsive web apps and exploring machine learning." />
+  <meta name="keywords" content="Rafiya Khan, Rafiya Shamshad Khan, frontend developer, CSE student, Integral University, HTML, CSS, JavaScript, Machine Learning, Python, portfolio" />
+  <meta name="author" content="Rafiya Shamshad Khan" />
+  <meta property="og:title" content="Rafiya Shamshad Khan — CSE Student & Frontend Developer" />
+  <meta property="og:description" content="Portfolio of Rafiya Shamshad Khan — Lucknow-based CSE student passionate about frontend development, AI, and building meaningful web experiences." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rafiya Shamshad Khan" />
+  <meta name="twitter:description" content="Frontend Developer · AI/ML Learner · 8.3 CGPA @ Integral University" />
+
+  <!-- Google Fonts: Space Grotesk + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            violet: {
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+            },
+            teal: {
+              400: '#2dd4bf',
+              500: '#14b8a6',
+            },
+          },
+          animation: {
+            'gradient-x': 'gradient-x 4s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+          },
+          keyframes: {
+            'gradient-x': {
+              '0%, 100%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            'pulse-glow': {
+              '0%, 100%': { boxShadow: '0 0 20px rgba(124,58,237,0.4)' },
+              '50%': { boxShadow: '0 0 40px rgba(124,58,237,0.8)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg: #0d0d18;
+      --surface: #13131f;
+      --surface2: #1a1a2e;
+      --border: rgba(124,58,237,0.2);
+      --text: #e8e8f0;
+      --text-muted: #8888a8;
+      --violet: #7c3aed;
+      --violet-light: #a78bfa;
+      --teal: #14b8a6;
+    }
+    html.light {
+      --bg: #f5f4ff;
+      --surface: #ffffff;
+      --surface2: #ede9fe;
+      --border: rgba(124,58,237,0.15);
+      --text: #1e1b4b;
+      --text-muted: #6b7280;
+      --violet: #7c3aed;
+      --violet-light: #6d28d9;
+      --teal: #0d9488;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    h1, h2, h3, h4, h5 { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--violet-light) 0%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Glowing hero name */
+    .hero-name {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed, #2dd4bf, #a78bfa);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-x 4s ease infinite;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      border-radius: 1rem;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--violet);
+      box-shadow: 0 8px 30px rgba(124,58,237,0.2);
+    }
+
+    /* Nav */
+    nav {
+      background: rgba(13,13,24,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    html.light nav {
+      background: rgba(245,244,255,0.9);
+    }
+    .nav-link {
+      position: relative;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+      transition: color 0.2s;
+      padding-bottom: 2px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--violet);
+      transition: width 0.3s;
+      border-radius: 2px;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--violet-light);
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Skill bars */
+    .skill-bar-fill {
+      height: 6px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--violet), var(--teal));
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* Section reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Cursor blink */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.1em;
+      background: var(--violet-light);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.85s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Timeline */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -33px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--violet);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.3);
+    }
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--violet), var(--teal));
+      border-radius: 2px;
+    }
+
+    /* Tech tags */
+    .tech-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: rgba(124,58,237,0.12);
+      color: var(--violet-light);
+      border: 1px solid rgba(124,58,237,0.25);
+      letter-spacing: 0.03em;
+    }
+    html.light .tech-tag {
+      background: rgba(124,58,237,0.08);
+    }
+
+    /* Floating orbs background */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Metric counter */
+    .metric-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--violet-light);
+    }
+
+    /* Contact input */
+    .contact-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .contact-input:focus {
+      outline: none;
+      border-color: var(--violet);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+    }
+    .contact-input::placeholder { color: var(--text-muted); }
+
+    /* Button */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--violet), #6d28d9);
+      color: white;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      border-radius: 0.75rem;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--violet-light);
+    }
+
+    /* Mobile menu */
+    #mobile-menu {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Visitor badge */
+    #visitor-badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    /* Scroll bar custom */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 99px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+
+<body class="dark">
+
+  <!-- ───── NAV ───── -->
+  <nav class="fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#hero" class="font-display font-700 text-lg" style="font-weight:700;">
+        <span class="gradient-text">RK</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-7">
+        <a href="#about"    class="nav-link">About</a>
+        <a href="#skills"   class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#timeline" class="nav-link">Journey</a>
+        <a href="#certs"    class="nav-link">Certs</a>
+        <a href="#contact"  class="nav-link">Contact</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Visitor count badge -->
+        <div id="visitor-badge" class="hidden md:flex items-center gap-1.5 rounded-full px-3 py-1 text-xs" style="font-family:'Space Grotesk',sans-serif; color: var(--text-muted);">
+          <span style="color:var(--teal);">●</span>
+          <span id="visitor-count">—</span> visitors
+        </div>
+
+        <!-- Theme toggle -->
+        <button id="theme-toggle" aria-label="Toggle theme"
+          class="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
+          style="background: var(--surface); border: 1px solid var(--border);">
+          <span id="theme-icon" class="text-lg">🌙</span>
+        </button>
+
+        <!-- Mobile hamburger -->
+        <button id="mobile-toggle" class="md:hidden w-9 h-9 flex items-center justify-center rounded-full"
+          style="background: var(--surface); border: 1px solid var(--border);">
+          <svg id="menu-open" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="menu-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 py-4 flex flex-col gap-4">
+      <a href="#about"    class="nav-link" onclick="closeMobileMenu()">About</a>
+      <a href="#skills"   class="nav-link" onclick="closeMobileMenu()">Skills</a>
+      <a href="#projects" class="nav-link" onclick="closeMobileMenu()">Projects</a>
+      <a href="#timeline" class="nav-link" onclick="closeMobileMenu()">Journey</a>
+      <a href="#certs"    class="nav-link" onclick="closeMobileMenu()">Certs</a>
+      <a href="#contact"  class="nav-link" onclick="closeMobileMenu()">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ───── HERO ───── -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <!-- Background orbs -->
+    <div class="orb w-96 h-96 top-10 -left-20" style="background: rgba(124,58,237,0.15);"></div>
+    <div class="orb w-80 h-80 bottom-20 right-0" style="background: rgba(20,184,166,0.1);"></div>
+    <div class="orb w-64 h-64 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="background: rgba(124,58,237,0.06);"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <!-- Avatar initials -->
+      <div class="mx-auto mb-8 w-28 h-28 rounded-full flex items-center justify-center text-3xl font-bold"
+        style="background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(20,184,166,0.3)); border: 2px solid rgba(124,58,237,0.4); animation: float 6s ease-in-out infinite; font-family:'Space Grotesk',sans-serif; animation-name: float;">
+        <span class="gradient-text">RSK</span>
+      </div>
+
+      <div class="section-label mb-4">Available for Internships &amp; Collaborations</div>
+
+      <h1 class="hero-name text-5xl sm:text-6xl md:text-7xl font-bold leading-tight mb-4">
+        Rafiya Shamshad Khan
+      </h1>
+
+      <p class="text-xl md:text-2xl font-medium mb-6" style="color: var(--text-muted);">
+        <span id="typing-text">Frontend Developer</span><span class="cursor"></span>
+      </p>
+
+      <p class="text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style="color: var(--text-muted);">
+        B.Tech CSE student at Integral University, Lucknow — building responsive web experiences, 
+        exploring machine learning with Python, and passionate about creating products that actually matter.
+      </p>
+
+      <!-- CTA buttons -->
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
+        <a href="#projects" class="btn-primary">View My Work</a>
+        <a href="mailto:khanrafiya83@gmail.com"
+          class="font-display font-600 px-6 py-3 rounded-xl text-sm transition-all"
+          style="background: var(--surface); border: 1px solid var(--border); color: var(--text); font-weight:600; font-size:0.9rem; letter-spacing:0.02em; text-decoration:none;"
+          onmouseover="this.style.borderColor='var(--violet)'" onmouseout="this.style.borderColor='var(--border)'">
+          Say Hello ✉️
+        </a>
+      </div>
+
+      <!-- Social links -->
+      <div class="flex justify-center gap-6">
+        <a href="https://linkedin.com/in/rafiya-16-khan" target="_blank" rel="noopener"
+          class="flex items-center gap-2 text-sm transition-colors hover:text-violet-400"
+          style="color: var(--text-muted); font-family:'Space Grotesk',sans-serif; font-weight:500;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/Rafiya-16" target="_blank" rel="noopener"
+          class="flex items-center gap-2 text-sm transition-colors hover:text-violet-400"
+          style="color: var(--text-muted); font-family:'Space Grotesk',sans-serif; font-weight:500;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="mailto:khanrafiya83@gmail.com"
+          class="flex items-center gap-2 text-sm transition-colors hover:text-violet-400"
+          style="color: var(--text-muted); font-family:'Space Grotesk',sans-serif; font-weight:500;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+          Email
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="mt-16 flex flex-col items-center gap-2" style="color: var(--text-muted);">
+        <span class="text-xs" style="font-family:'Space Grotesk',sans-serif; letter-spacing:0.1em;">SCROLL</span>
+        <div style="width:1px; height:40px; background: linear-gradient(to bottom, var(--violet), transparent);"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── ABOUT ───── -->
+  <section id="about" class="py-24 px-6 reveal">
+    <div class="max-w-5xl mx-auto">
+      <div class="section-label mb-3 text-center">Who I Am</div>
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">About Me</h2>
+
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="text-lg leading-relaxed mb-5" style="color: var(--text-muted);">
+            I'm a <strong style="color:var(--text);">Computer Science & Engineering student</strong> at Integral University, 
+            Lucknow (B.Tech, 2027) maintaining an <strong style="color:var(--violet-light);">8.3 CGPA</strong>. 
+            I love transforming ideas into clean, responsive web interfaces.
+          </p>
+          <p class="text-lg leading-relaxed mb-5" style="color: var(--text-muted);">
+            In mid-2024, I completed a <strong style="color:var(--text);">30-day IBM Machine Learning with Python internship</strong>, 
+            which opened my eyes to the potential of AI-driven product development. I now pursue both frontend craft and ML curiosity in parallel.
+          </p>
+          <p class="text-lg leading-relaxed" style="color: var(--text-muted);">
+            Outside code, I volunteer at university events, collaborate on cross-functional teams, 
+            and actively take part in skill development programs focused on software and AI.
+          </p>
+        </div>
+
+        <!-- Stats grid -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card p-6 text-center">
+            <div class="metric-value">8.3</div>
+            <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">CGPA / 10</div>
+          </div>
+          <div class="card p-6 text-center">
+            <div class="metric-value">3+</div>
+            <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Projects Built</div>
+          </div>
+          <div class="card p-6 text-center">
+            <div class="metric-value">3</div>
+            <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Certifications</div>
+          </div>
+          <div class="card p-6 text-center">
+            <div class="metric-value">2027</div>
+            <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Graduation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── SKILLS ───── -->
+  <section id="skills" class="py-24 px-6 reveal" style="background: var(--surface2);">
+    <div class="max-w-5xl mx-auto">
+      <div class="section-label mb-3 text-center">What I Work With</div>
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Skills & Tools</h2>
+
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Skill bars -->
+        <div>
+          <h3 class="text-lg font-semibold mb-6" style="font-family:'Space Grotesk',sans-serif;">Technical Proficiency</h3>
+          <div class="space-y-5" id="skill-bars">
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium" style="font-family:'Space Grotesk',sans-serif;">HTML5 / CSS3</span>
+                <span class="text-sm" style="color:var(--text-muted);">90%</span>
+              </div>
+              <div style="background:var(--border); border-radius:99px; height:6px;">
+                <div class="skill-bar-fill" data-width="90"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium" style="font-family:'Space Grotesk',sans-serif;">JavaScript</span>
+                <span class="text-sm" style="color:var(--text-muted);">65%</span>
+              </div>
+              <div style="background:var(--border); border-radius:99px; height:6px;">
+                <div class="skill-bar-fill" data-width="65"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium" style="font-family:'Space Grotesk',sans-serif;">C / C++</span>
+                <span class="text-sm" style="color:var(--text-muted);">80%</span>
+              </div>
+              <div style="background:var(--border); border-radius:99px; height:6px;">
+                <div class="skill-bar-fill" data-width="80"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium" style="font-family:'Space Grotesk',sans-serif;">Java</span>
+                <span class="text-sm" style="color:var(--text-muted);">72%</span>
+              </div>
+              <div style="background:var(--border); border-radius:99px; height:6px;">
+                <div class="skill-bar-fill" data-width="72"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium" style="font-family:'Space Grotesk',sans-serif;">Python / ML</span>
+                <span class="text-sm" style="color:var(--text-muted);">68%</span>
+              </div>
+              <div style="background:var(--border); border-radius:99px; height:6px;">
+                <div class="skill-bar-fill" data-width="68"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-sm font-medium" style="font-family:'Space Grotesk',sans-serif;">SQL</span>
+                <span class="text-sm" style="color:var(--text-muted);">70%</span>
+              </div>
+              <div style="background:var(--border); border-radius:99px; height:6px;">
+                <div class="skill-bar-fill" data-width="70"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech tags -->
+        <div>
+          <h3 class="text-lg font-semibold mb-6" style="font-family:'Space Grotesk',sans-serif;">Technologies & Tools</h3>
+
+          <div class="mb-5">
+            <p class="text-xs mb-3" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.08em; text-transform:uppercase;">Languages</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-tag">C</span>
+              <span class="tech-tag">C++</span>
+              <span class="tech-tag">Java</span>
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">Python</span>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <p class="text-xs mb-3" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.08em; text-transform:uppercase;">Web & Design</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-tag">HTML5</span>
+              <span class="tech-tag">CSS3</span>
+              <span class="tech-tag">Responsive Design</span>
+              <span class="tech-tag">UI/UX Principles</span>
+              <span class="tech-tag">Graphic Design</span>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <p class="text-xs mb-3" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.08em; text-transform:uppercase;">Tools & Platforms</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-tag">Git</span>
+              <span class="tech-tag">GitHub</span>
+              <span class="tech-tag">VS Code</span>
+              <span class="tech-tag">SQL</span>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-xs mb-3" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.08em; text-transform:uppercase;">Soft Skills</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-tag">Problem Solving</span>
+              <span class="tech-tag">Team Collaboration</span>
+              <span class="tech-tag">Event Leadership</span>
+              <span class="tech-tag">Communication</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── PROJECTS ───── -->
+  <section id="projects" class="py-24 px-6 reveal">
+    <div class="max-w-5xl mx-auto">
+      <div class="section-label mb-3 text-center">What I've Built</div>
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Projects</h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Project 1 -->
+        <div class="card p-6">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-4"
+            style="background: rgba(124,58,237,0.15);">🌐</div>
+          <h3 class="font-bold text-lg mb-2" style="font-family:'Space Grotesk',sans-serif;">Personal Portfolio Website</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted);">
+            A fully responsive personal portfolio site to showcase projects, skills, and achievements — built with mobile-first layouts and modern UI design principles. Integrated a contact section and structured project showcase to improve visitor engagement.
+          </p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="tech-tag">HTML5</span>
+            <span class="tech-tag">CSS3</span>
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">Responsive</span>
+          </div>
+          <a href="https://github.com/Rafiya-16" target="_blank" rel="noopener"
+            class="text-xs font-semibold flex items-center gap-1.5 transition-colors hover:text-violet-400"
+            style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; text-decoration:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub →
+          </a>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="card p-6">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-4"
+            style="background: rgba(20,184,166,0.12);">🖥️</div>
+          <h3 class="font-bold text-lg mb-2" style="font-family:'Space Grotesk',sans-serif;">Front-End Web Dev Projects</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted);">
+            A collection of responsive web pages and user interfaces applying accessibility standards, responsive design best practices, and clean UX principles. Source code managed and documented via Git/GitHub with collaborative workflow conventions.
+          </p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="tech-tag">HTML5</span>
+            <span class="tech-tag">CSS3</span>
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">Accessibility</span>
+            <span class="tech-tag">Git</span>
+          </div>
+          <a href="https://github.com/Rafiya-16" target="_blank" rel="noopener"
+            class="text-xs font-semibold flex items-center gap-1.5 transition-colors hover:text-violet-400"
+            style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; text-decoration:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub →
+          </a>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="card p-6">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-4"
+            style="background: rgba(124,58,237,0.12);">🤖</div>
+          <h3 class="font-bold text-lg mb-2" style="font-family:'Space Grotesk',sans-serif;">ML with Python — IBM Coursework</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted);">
+            Hands-on machine learning projects completed during the IBM ML with Python certification via etrainIndia. Covers supervised & unsupervised learning, model evaluation, and Python-based ML workflows using scikit-learn.
+          </p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">scikit-learn</span>
+            <span class="tech-tag">ML</span>
+            <span class="tech-tag">IBM</span>
+          </div>
+          <a href="https://github.com/Rafiya-16" target="_blank" rel="noopener"
+            class="text-xs font-semibold flex items-center gap-1.5 transition-colors hover:text-violet-400"
+            style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; text-decoration:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub →
+          </a>
+        </div>
+
+        <!-- Project 4 — GitHub Repo -->
+        <div class="card p-6 md:col-span-2 lg:col-span-1">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-4"
+            style="background: rgba(20,184,166,0.12);">📁</div>
+          <h3 class="font-bold text-lg mb-2" style="font-family:'Space Grotesk',sans-serif;">GitHub Project Repository</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:var(--text-muted);">
+            A structured GitHub repository demonstrating proficiency in version control and project documentation. Follows collaborative workflow conventions — clear commit history, README documentation, and clean branching strategy.
+          </p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="tech-tag">Git</span>
+            <span class="tech-tag">GitHub</span>
+            <span class="tech-tag">Version Control</span>
+            <span class="tech-tag">Documentation</span>
+          </div>
+          <a href="https://github.com/Rafiya-16" target="_blank" rel="noopener"
+            class="text-xs font-semibold flex items-center gap-1.5 transition-colors hover:text-violet-400"
+            style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; text-decoration:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── TIMELINE ───── -->
+  <section id="timeline" class="py-24 px-6 reveal" style="background: var(--surface2);">
+    <div class="max-w-3xl mx-auto">
+      <div class="section-label mb-3 text-center">My Journey</div>
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Key Milestones</h2>
+
+      <div class="relative pl-8">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item relative mb-10">
+          <div class="card p-5">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <div class="section-label mb-1">2023</div>
+                <h3 class="font-bold text-base" style="font-family:'Space Grotesk',sans-serif;">Started B.Tech CSE at Integral University</h3>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">Enrolled in Computer Science & Engineering. Immediately gravitated towards programming and front-end development.</p>
+              </div>
+              <span class="tech-tag shrink-0">🎓 Education</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item relative mb-10">
+          <div class="card p-5">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <div class="section-label mb-1">Early 2024</div>
+                <h3 class="font-bold text-base" style="font-family:'Space Grotesk',sans-serif;">Launched Personal Portfolio Website</h3>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">Built and deployed a fully responsive portfolio site from scratch using HTML, CSS, and JavaScript — first major independent project.</p>
+              </div>
+              <span class="tech-tag shrink-0">🌐 Project</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item relative mb-10">
+          <div class="card p-5">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <div class="section-label mb-1">Aug–Sep 2024</div>
+                <h3 class="font-bold text-base" style="font-family:'Space Grotesk',sans-serif;">IBM Machine Learning with Python — Internship</h3>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">Completed a 30-day internship + global certification program with etrainIndia × Integral University. Earned IBM certificate with passing grade.</p>
+              </div>
+              <span class="tech-tag shrink-0">🤖 Internship</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item relative mb-10">
+          <div class="card p-5">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <div class="section-label mb-1">Sep–Oct 2024</div>
+                <h3 class="font-bold text-base" style="font-family:'Space Grotesk',sans-serif;">AI Tools for Virtual Classrooms — Integral University</h3>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">Completed Value Added Course EDV-24-01 on AI tools for Gen-Z learning environments, organized by the Faculty of Education.</p>
+              </div>
+              <span class="tech-tag shrink-0">🏫 Course</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item relative mb-10">
+          <div class="card p-5">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <div class="section-label mb-1">2024–Present</div>
+                <h3 class="font-bold text-base" style="font-family:'Space Grotesk',sans-serif;">Volunteer — University & Community Events</h3>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">Coordinating logistics and team communication for university events, collaborating with cross-functional teams to support on-ground activities.</p>
+              </div>
+              <span class="tech-tag shrink-0">🤝 Leadership</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item relative">
+          <div class="card p-5" style="border-color: var(--violet); box-shadow: 0 0 0 1px rgba(124,58,237,0.3);">
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <div class="section-label mb-1">2027</div>
+                <h3 class="font-bold text-base" style="font-family:'Space Grotesk',sans-serif; color: var(--violet-light);">B.Tech Graduation — Next Goal 🚀</h3>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">Targeting full-stack / AI roles at product companies. Open to internships and pre-placement opportunities now.</p>
+              </div>
+              <span class="tech-tag shrink-0">🎯 Goal</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── CERTIFICATIONS ───── -->
+  <section id="certs" class="py-24 px-6 reveal">
+    <div class="max-w-5xl mx-auto">
+      <div class="section-label mb-3 text-center">Credentials</div>
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Certifications & Achievements</h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+              style="background: rgba(124,58,237,0.15);">🏅</div>
+            <div>
+              <div class="text-xs" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif;">IBM × etrainIndia</div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">Machine Learning with Python</div>
+            </div>
+          </div>
+          <p class="text-sm leading-relaxed mb-3" style="color:var(--text-muted);">
+            Passed with distinction on course ML0101EN via IBM Developer Skills Network. Powered by etrainIndia.
+          </p>
+          <div class="text-xs" style="color:var(--text-muted);">September 28, 2024</div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+              style="background: rgba(20,184,166,0.12);">🎓</div>
+            <div>
+              <div class="text-xs" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif;">etrainIndia × Integral University</div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">IBM ML with Python — Internship</div>
+            </div>
+          </div>
+          <p class="text-sm leading-relaxed mb-3" style="color:var(--text-muted);">
+            30-day Internship + Global Certification on IBM Machine Learning with Python. Aug 22 – Sep 22, 2024.
+          </p>
+          <div class="text-xs" style="color:var(--text-muted);">September 2024</div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+              style="background: rgba(124,58,237,0.12);">🤖</div>
+            <div>
+              <div class="text-xs" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif;">Integral University</div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">AI Tools — Virtual Classrooms</div>
+            </div>
+          </div>
+          <p class="text-sm leading-relaxed mb-3" style="color:var(--text-muted);">
+            Value Added Course EDV-24-01: The Future of Learning — AI Tools Powered Virtual Classrooms for Gen-Z.
+          </p>
+          <div class="text-xs" style="color:var(--text-muted);">Oct 19, 2024 | ID: 2300100890</div>
+        </div>
+
+      </div>
+
+      <!-- Achievements -->
+      <h3 class="text-xl font-bold mb-6 text-center" style="font-family:'Space Grotesk',sans-serif;">Achievements</h3>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="card p-5 flex items-start gap-4">
+          <span class="text-2xl mt-0.5">⭐</span>
+          <div>
+            <h4 class="font-semibold text-sm mb-1" style="font-family:'Space Grotesk',sans-serif;">8.3 CGPA</h4>
+            <p class="text-xs" style="color:var(--text-muted);">Maintaining a strong 8.3 CGPA in B.Tech CSE at Integral University, Lucknow.</p>
+          </div>
+        </div>
+        <div class="card p-5 flex items-start gap-4">
+          <span class="text-2xl mt-0.5">💻</span>
+          <div>
+            <h4 class="font-semibold text-sm mb-1" style="font-family:'Space Grotesk',sans-serif;">GitHub Portfolio</h4>
+            <p class="text-xs" style="color:var(--text-muted);">Multiple front-end projects published on GitHub showcasing real-world coding skills.</p>
+          </div>
+        </div>
+        <div class="card p-5 flex items-start gap-4">
+          <span class="text-2xl mt-0.5">🌱</span>
+          <div>
+            <h4 class="font-semibold text-sm mb-1" style="font-family:'Space Grotesk',sans-serif;">Active Learner</h4>
+            <p class="text-xs" style="color:var(--text-muted);">Actively pursuing skill development in software, AI, and pursuing further technical certifications.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───── VISITOR METRICS ───── -->
+  <section class="py-16 px-6 reveal" style="background: var(--surface2);">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="section-label mb-3">Live Stats</div>
+      <h2 class="text-2xl font-bold mb-10" style="font-family:'Space Grotesk',sans-serif;">Portfolio Analytics</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="card p-5">
+          <div class="metric-value" id="m-visits">—</div>
+          <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Total Visits</div>
+        </div>
+        <div class="card p-5">
+          <div class="metric-value" id="m-today">—</div>
+          <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Today</div>
+        </div>
+        <div class="card p-5">
+          <div class="metric-value" id="m-time">—</div>
+          <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Avg. Time (sec)</div>
+        </div>
+        <div class="card p-5">
+          <div class="metric-value" id="m-section">—</div>
+          <div class="text-xs mt-1" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; letter-spacing:0.05em;">Top Section</div>
+        </div>
+      </div>
+      <p class="text-xs mt-4" style="color:var(--text-muted);">Metrics tracked locally in your browser via localStorage.</p>
+    </div>
+  </section>
+
+  <!-- ───── CONTACT ───── -->
+  <section id="contact" class="py-24 px-6 reveal">
+    <div class="max-w-4xl mx-auto">
+      <div class="section-label mb-3 text-center">Get In Touch</div>
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Let's Work Together</h2>
+      <p class="text-center max-w-xl mx-auto mb-14" style="color:var(--text-muted);">
+        Open to internships, front-end roles, and collaboration on AI / web projects. 
+        Even if you just want to say hi — my inbox is open!
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-10">
+        <!-- Contact form -->
+        <div class="card p-8">
+          <h3 class="font-bold text-lg mb-6" style="font-family:'Space Grotesk',sans-serif;">Send a Message</h3>
+          <div id="contact-form" class="space-y-4">
+            <div>
+              <label class="block text-sm mb-1.5" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; font-size:0.8rem; letter-spacing:0.05em;">YOUR NAME</label>
+              <input type="text" id="cf-name" placeholder="Jane Smith" class="contact-input" />
+            </div>
+            <div>
+              <label class="block text-sm mb-1.5" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; font-size:0.8rem; letter-spacing:0.05em;">EMAIL ADDRESS</label>
+              <input type="email" id="cf-email" placeholder="jane@company.com" class="contact-input" />
+            </div>
+            <div>
+              <label class="block text-sm mb-1.5" style="color:var(--text-muted); font-family:'Space Grotesk',sans-serif; font-size:0.8rem; letter-spacing:0.05em;">MESSAGE</label>
+              <textarea id="cf-msg" rows="4" placeholder="Hi Rafiya, I'd love to discuss…" class="contact-input resize-none"></textarea>
+            </div>
+            <button onclick="handleContact()" class="btn-primary w-full">Send Message ✉️</button>
+            <div id="cf-success" class="hidden text-center py-2 rounded-lg text-sm font-medium"
+              style="background: rgba(20,184,166,0.12); color: var(--teal); font-family:'Space Grotesk',sans-serif;">
+              ✅ Message sent! (Opens your mail client)
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct links -->
+        <div class="flex flex-col gap-4 justify-center">
+          <a href="mailto:khanrafiya83@gmail.com"
+            class="card p-5 flex items-center gap-4 no-underline"
+            style="text-decoration:none; color:var(--text);">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl"
+              style="background: rgba(124,58,237,0.15);">📧</div>
+            <div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">Email</div>
+              <div class="text-sm" style="color:var(--text-muted);">khanrafiya83@gmail.com</div>
+            </div>
+          </a>
+
+          <a href="https://linkedin.com/in/rafiya-16-khan" target="_blank" rel="noopener"
+            class="card p-5 flex items-center gap-4 no-underline"
+            style="text-decoration:none; color:var(--text);">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center"
+              style="background: rgba(10,102,194,0.15);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">LinkedIn</div>
+              <div class="text-sm" style="color:var(--text-muted);">linkedin.com/in/rafiya-16-khan</div>
+            </div>
+          </a>
+
+          <a href="https://github.com/Rafiya-16" target="_blank" rel="noopener"
+            class="card p-5 flex items-center gap-4 no-underline"
+            style="text-decoration:none; color:var(--text);">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center"
+              style="background: rgba(255,255,255,0.08);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">GitHub</div>
+              <div class="text-sm" style="color:var(--text-muted);">github.com/Rafiya-16</div>
+            </div>
+          </a>
+
+          <div class="card p-5 flex items-center gap-4">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl"
+              style="background: rgba(20,184,166,0.12);">📍</div>
+            <div>
+              <div class="font-semibold text-sm" style="font-family:'Space Grotesk',sans-serif;">Location</div>
+              <div class="text-sm" style="color:var(--text-muted);">Lucknow, Uttar Pradesh, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── FOOTER ───── -->
+  <footer class="py-10 px-6 text-center">
+    <div class="max-w-4xl mx-auto">
+      <div class="font-display font-bold text-lg gradient-text mb-3" style="font-family:'Space Grotesk',sans-serif;">Rafiya Shamshad Khan</div>
+      <p class="text-sm mb-6" style="color:var(--text-muted);">B.Tech CSE · Integral University, Lucknow · Expected 2027</p>
+      <div class="flex justify-center gap-6 mb-6">
+        <a href="#about" class="text-xs nav-link" style="color:var(--text-muted);">About</a>
+        <a href="#skills" class="text-xs nav-link" style="color:var(--text-muted);">Skills</a>
+        <a href="#projects" class="text-xs nav-link" style="color:var(--text-muted);">Projects</a>
+        <a href="#contact" class="text-xs nav-link" style="color:var(--text-muted);">Contact</a>
+      </div>
+      <p class="text-xs" style="color:var(--text-muted);">© 2024 Rafiya Shamshad Khan · Built with ❤️ &amp; vanilla HTML/CSS/JS</p>
+    </div>
+  </footer>
+
+  <!-- ───── JAVASCRIPT ───── -->
+  <script>
+    // ─── THEME TOGGLE ───
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    let isDark = true;
+
+    themeToggle.addEventListener('click', () => {
+      isDark = !isDark;
+      if (isDark) {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        themeIcon.textContent = '🌙';
+      } else {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        themeIcon.textContent = '☀️';
+      }
+    });
+
+    // ─── MOBILE MENU ───
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpen = document.getElementById('menu-open');
+    const menuClose = document.getElementById('menu-close');
+    document.getElementById('mobile-toggle').addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuOpen.classList.toggle('hidden', !isOpen);
+      menuClose.classList.toggle('hidden', isOpen);
+    });
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      menuOpen.classList.remove('hidden');
+      menuClose.classList.add('hidden');
+    }
+
+    // ─── TYPING ANIMATION ───
+    const roles = [
+      'Frontend Developer',
+      'CSE Student @ Integral University',
+      'ML with Python Certified',
+      'Responsive Design Enthusiast',
+      'Open to Internships 🚀',
+    ];
+    let rIdx = 0, cIdx = 0, deleting = false;
+    const typingEl = document.getElementById('typing-text');
+
+    function type() {
+      const current = roles[rIdx];
+      if (!deleting) {
+        typingEl.textContent = current.slice(0, ++cIdx);
+        if (cIdx === current.length) {
+          deleting = true;
+          setTimeout(type, 2000);
+          return;
+        }
+      } else {
+        typingEl.textContent = current.slice(0, --cIdx);
+        if (cIdx === 0) {
+          deleting = false;
+          rIdx = (rIdx + 1) % roles.length;
+        }
+      }
+      setTimeout(type, deleting ? 40 : 80);
+    }
+    type();
+
+    // ─── SCROLL REVEAL ───
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => revealObserver.observe(r));
+
+    // ─── SKILL BARS ───
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    const skillSection = document.getElementById('skills');
+    if (skillSection) barObserver.observe(skillSection);
+
+    // ─── ACTIVE NAV ───
+    const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+    const sectionIds = ['about','skills','projects','timeline','certs','contact'];
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY + 120;
+      let active = '';
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) active = id;
+      });
+      navLinks.forEach(l => {
+        const href = l.getAttribute('href').replace('#','');
+        l.classList.toggle('active', href === active);
+      });
+    });
+
+    // ─── CONTACT FORM ───
+    function handleContact() {
+      const name = document.getElementById('cf-name').value.trim();
+      const email = document.getElementById('cf-email').value.trim();
+      const msg = document.getElementById('cf-msg').value.trim();
+      if (!name || !email || !msg) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${msg}`);
+      window.location.href = `mailto:khanrafiya83@gmail.com?subject=${subject}&body=${body}`;
+      document.getElementById('cf-success').classList.remove('hidden');
+      setTimeout(() => document.getElementById('cf-success').classList.add('hidden'), 4000);
+    }
+
+    // ─── VISITOR METRICS (localStorage) ───
+    function loadMetrics() {
+      const today = new Date().toDateString();
+      let data = JSON.parse(localStorage.getItem('rk_metrics') || '{"total":0,"days":{},"sections":{},"times":[]}');
+
+      // Increment total
+      data.total = (data.total || 0) + 1;
+
+      // Today count
+      data.days = data.days || {};
+      data.days[today] = (data.days[today] || 0) + 1;
+
+      // Session start time
+      const sessionStart = Date.now();
+
+      // Section views
+      data.sections = data.sections || {};
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const id = e.target.id;
+            data.sections[id] = (data.sections[id] || 0) + 1;
+            localStorage.setItem('rk_metrics', JSON.stringify(data));
+            updateMetricsUI(data);
+          }
+        });
+      }, { threshold: 0.5 });
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) sectionObserver.observe(el);
+      });
+
+      // Track time on page
+      window.addEventListener('beforeunload', () => {
+        const duration = Math.round((Date.now() - sessionStart) / 1000);
+        data.times = data.times || [];
+        data.times.push(duration);
+        if (data.times.length > 100) data.times.shift();
+        localStorage.setItem('rk_metrics', JSON.stringify(data));
+      });
+
+      localStorage.setItem('rk_metrics', JSON.stringify(data));
+      updateMetricsUI(data);
+
+      // Update visitor badge
+      const badge = document.getElementById('visitor-count');
+      if (badge) badge.textContent = data.total;
+    }
+
+    function updateMetricsUI(data) {
+      const today = new Date().toDateString();
+      document.getElementById('m-visits').textContent = data.total;
+      document.getElementById('m-today').textContent = (data.days && data.days[today]) || 1;
+
+      const times = data.times || [];
+      const avg = times.length ? Math.round(times.reduce((a,b)=>a+b,0)/times.length) : '—';
+      document.getElementById('m-time').textContent = avg;
+
+      const sections = data.sections || {};
+      const top = Object.entries(sections).sort((a,b)=>b[1]-a[1])[0];
+      document.getElementById('m-section').textContent = top ? '#' + top[0] : '—';
+    }
+
+    loadMetrics();
+
+    // Show visitor badge
+    document.getElementById('visitor-badge').classList.remove('hidden');
+    document.getElementById('visitor-badge').classList.add('flex');
+  </script>
+
+</body>
+</html>
