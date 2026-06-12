@@ -1,0 +1,465 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary)}
+.wrap{padding:1.5rem 0 3rem}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem}
+.nav-btn{font-size:12px;padding:6px 14px;border:0.5px solid var(--color-border-secondary);border-radius:20px;background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.nav-btn:hover,.nav-btn.active{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary)}
+.section{display:none}
+.section.active{display:block}
+.section-header{margin-bottom:1.5rem}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;background:var(--color-background-secondary);color:var(--color-text-secondary);margin-bottom:.5rem;letter-spacing:.04em;text-transform:uppercase}
+.section-title{font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:.25rem}
+.section-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.card-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.copy-block{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:1rem 1.25rem;font-size:14px;line-height:1.75;color:var(--color-text-primary);white-space:pre-wrap;word-break:break-word;position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;font-size:12px;padding:4px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer}
+.copy-btn:hover{background:var(--color-background-secondary)}
+.tag{display:inline-block;font-size:12px;padding:4px 12px;border-radius:20px;margin:3px;background:#E6F1FB;color:#0C447C}
+.strength-row{display:flex;align-items:flex-start;gap:12px;padding:.75rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.strength-row:last-child{border-bottom:none}
+.strength-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;background:#E1F5EE}
+.strength-text{flex:1}
+.strength-title{font-size:14px;font-weight:500;margin-bottom:2px}
+.strength-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.skill-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.skill-card.strong{border-color:#1D9E75;border-width:1.5px}
+.skill-card.gap{border-color:#D85A30;border-width:1.5px}
+.skill-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.skill-card.strong .skill-label{color:#0F6E56}
+.skill-card.gap .skill-label{color:#993C1D}
+.skill-item{font-size:13px;color:var(--color-text-secondary);padding:3px 0;border-bottom:0.5px solid var(--color-border-tertiary);line-height:1.4}
+.skill-item:last-child{border-bottom:none}
+.roadmap-step{display:flex;gap:16px;margin-bottom:1rem}
+.step-num{width:28px;height:28px;border-radius:50%;background:#E6F1FB;color:#185FA5;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-content{flex:1}
+.step-title{font-size:14px;font-weight:500;margin-bottom:3px}
+.step-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.job-chip{display:flex;align-items:center;gap:10px;padding:.6rem 1rem;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:8px;background:var(--color-background-primary)}
+.job-num{font-size:12px;color:var(--color-text-tertiary);width:20px;flex-shrink:0}
+.job-name{font-size:14px;font-weight:500}
+.job-fit{font-size:11px;color:#1D9E75;margin-left:auto;font-weight:500}
+.brand-block{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1rem}
+@media(max-width:640px){.brand-block{grid-template-columns:1fr}}
+.brand-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem}
+.brand-card-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary);margin-bottom:.5rem}
+.brand-card-value{font-size:13px;color:var(--color-text-primary);line-height:1.6}
+.talking-item{padding:.75rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.talking-item:last-child{border-bottom:none}
+.talking-q{font-size:13px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.4rem}
+.talking-a{font-size:13px;color:var(--color-text-primary);line-height:1.65}
+</style>
+<div class="wrap">
+<div class="nav" id="nav">
+<button class="nav-btn active" onclick="show('cover','this')">Cover Letter</button>
+<button class="nav-btn" onclick="show('recruiter','this')">Recruiter Email</button>
+<button class="nav-btn" onclick="show('hiring','this')">Hiring Manager</button>
+<button class="nav-btn" onclick="show('linkedin','this')">LinkedIn DM</button>
+<button class="nav-btn" onclick="show('referral','this')">Referral Request</button>
+<button class="nav-btn" onclick="show('followup','this')">Follow-Up</button>
+<button class="nav-btn" onclick="show('intro','this')">30-Sec Intro</button>
+<button class="nav-btn" onclick="show('titles','this')">Job Titles</button>
+<button class="nav-btn" onclick="show('strengths','this')">Strengths</button>
+<button class="nav-btn" onclick="show('gaps','this')">Skill Gaps</button>
+<button class="nav-btn" onclick="show('brand','this')">Personal Brand</button>
+<button class="nav-btn" onclick="show('talking','this')">Interview Points</button>
+</div>
+
+<div id="cover" class="section active">
+<div class="section-header">
+<div class="badge">Section 1</div>
+<div class="section-title">ATS-Friendly Cover Letter</div>
+<div class="section-desc">350–450 words · Targeted at front-end / full-stack developer roles</div>
+</div>
+<div class="card">
+<div class="card-label">Ready to send · Customize [Company Name] and [Role]</div>
+<div class="copy-block" id="cover-text">[Your Name]
+khanrafiya83@gmail.com | LinkedIn: /rafiya-16-khan | GitHub: /Rafiya-16 | Lucknow, Uttar Pradesh
+
+[Date]
+
+Hiring Manager
+[Company Name]
+
+Dear Hiring Manager,
+
+I am a Computer Science and Engineering student at Integral University, Lucknow (graduating 2027, CGPA: 8.3/10), applying for the [Front-End / Full-Stack Developer Intern] role at [Company Name]. With hands-on experience building production-ready MERN stack applications, a demonstrated ability to translate user needs into responsive UI, and a track record of shipping real projects, I am confident I can contribute from day one.
+
+My strongest asset is the ability to build, deploy, and iterate on complete web applications independently. Projects such as Nutriscope — a nutrition tracker — and the Environmental Health Analyser involved architecting component-based front ends using HTML, CSS, JavaScript, and React, integrating REST APIs, and deploying on platforms including Vercel and Render. These were not academic exercises; they are live, portfolio-grade applications. I also maintain a public MERN Stack Projects Repository on GitHub that showcases my proficiency across MongoDB, Express, React, and Node.js — the stack most in demand at Indian product startups and mid-size tech companies.
+
+Beyond coding, I bring a systems-level perspective on how software serves users. I produce an active educational content series on LinkedIn, "ABTalks 60 Days Claude Challenge," where I translate complex AI and prompt-engineering concepts into digestible posts for a professional audience. This initiative demonstrates communication skill, consistency, and the ability to learn publicly — qualities that matter in collaborative engineering teams.
+
+I am fluent in the full front-end stack: semantic HTML5, CSS3, vanilla JavaScript, DOM manipulation, responsive design, Git version control, and REST API integration. I am actively building a React-based project with a real-time API integration to round out my portfolio ahead of my placement cycle.
+
+I am particularly drawn to [Company Name] because [specific reason: e.g., your product touches X, your engineering culture values Y]. I am a fast learner who prioritises shipping over theorising, and I would welcome the opportunity to bring that energy to your team.
+
+Thank you for your time. I would be glad to discuss how my projects and skills align with your current needs.
+
+Sincerely,
+Rafiya Khan
+khanrafiya83@gmail.com | github.com/Rafiya-16</div>
+<button class="copy-btn" onclick="copyText('cover-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="recruiter" class="section">
+<div class="section-header">
+<div class="badge">Section 2</div>
+<div class="section-title">Recruiter Outreach Email</div>
+<div class="section-desc">Cold outreach to a technical recruiter at a target company</div>
+</div>
+<div class="card">
+<div class="card-label">Subject line included · Works for InMail or email</div>
+<div class="copy-block" id="recruiter-text">Subject: Front-End Developer Intern – MERN Stack, 8.3 CGPA, 2027 Grad
+
+Hi [Recruiter Name],
+
+I came across your profile while researching [Company Name]'s engineering team. I am a CSE student at Integral University, Lucknow (8.3 CGPA, 2027) with practical experience in MERN stack development and a portfolio of deployed projects including Nutriscope and an Environmental Health Analyser.
+
+I am actively looking for a front-end or full-stack developer internship and believe my skills align with the roles your team typically hires for. I have hands-on experience with React, JavaScript, Node.js, MongoDB, REST APIs, and Vercel/Render deployment — the core stack I see listed in your open roles.
+
+I would love to be considered if there are any current or upcoming opportunities. I have attached my resume and my GitHub (github.com/Rafiya-16) has live project demos. Would a quick call or a portfolio review work for you this week?
+
+Thank you,
+Rafiya Khan
+khanrafiya83@gmail.com | linkedin.com/in/rafiya-16-khan</div>
+<button class="copy-btn" onclick="copyText('recruiter-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="hiring" class="section">
+<div class="section-header">
+<div class="badge">Section 3</div>
+<div class="section-title">Hiring Manager Email</div>
+<div class="section-desc">Direct outreach to a CTO, VP Engineering, or Team Lead</div>
+</div>
+<div class="card">
+<div class="card-label">More specific and technical than the recruiter email</div>
+<div class="copy-block" id="hiring-text">Subject: CSE Intern – MERN Stack Developer with Shipped Projects
+
+Hi [Manager Name],
+
+I saw your post / found your profile while researching [Company Name]'s product. I am Rafiya Khan, a third-year CSE student at Integral University, Lucknow, and I build MERN stack web applications.
+
+A few things about my background that might be relevant:
+• Nutriscope: full-stack nutrition tracker — React front end, REST API integration, deployed on Vercel
+• Environmental Health Analyser: data-visualisation web app built with HTML/CSS/JS and Chart.js
+• MERN Stack Projects Repository: actively maintained GitHub collection showcasing MongoDB, Express, React, Node.js
+
+I have 8.3 CGPA and am graduating in 2027. I am not reaching out with a generic application — I specifically want to work on [product/feature area you admire at their company], and I think my front-end and full-stack work demonstrates I can contribute quickly.
+
+Would you be open to a 15-minute call, or should I send my resume and GitHub link for a quick look?
+
+Thank you for your time,
+Rafiya Khan
+github.com/Rafiya-16 | khanrafiya83@gmail.com</div>
+<button class="copy-btn" onclick="copyText('hiring-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="linkedin" class="section">
+<div class="section-header">
+<div class="badge">Section 4</div>
+<div class="section-title">LinkedIn Connection Request</div>
+<div class="section-desc">Max 300 characters · Works as both connection note and InMail opener</div>
+</div>
+<div class="card">
+<div class="card-label">Variant A – For Recruiters</div>
+<div class="copy-block" id="linkedin-a">Hi [Name], I'm Rafiya – a CSE student (2027, 8.3 CGPA) at Integral University with MERN stack experience and deployed projects. Exploring front-end/full-stack internships. Would love to connect!</div>
+<button class="copy-btn" onclick="copyText('linkedin-a',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+<div class="card">
+<div class="card-label">Variant B – For Engineers / Mentors</div>
+<div class="copy-block" id="linkedin-b">Hi [Name], I'm a CSE student building MERN stack projects and learning in public through ABTalks. Your work on [topic] caught my attention — I'd love to connect and learn from your journey.</div>
+<button class="copy-btn" onclick="copyText('linkedin-b',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="referral" class="section">
+<div class="section-header">
+<div class="badge">Section 5</div>
+<div class="section-title">Referral Request Message</div>
+<div class="section-desc">For a senior you know at a target company</div>
+</div>
+<div class="card">
+<div class="copy-block" id="referral-text">Hi [Name],
+
+Hope you're doing well! I wanted to reach out because [Company Name] is at the top of my internship list this cycle, and I know you work there.
+
+I have been building MERN stack applications — projects like Nutriscope (a full-stack nutrition tracker) and an Environmental Health Analyser are live on GitHub — and I think the [team/role] would be a strong fit. I have an 8.3 CGPA at Integral University and I'm graduating in 2027.
+
+I was wondering if you would be comfortable referring me or putting my resume in front of the right person. I know that's a big ask, so no pressure at all if it doesn't feel right. If it helps, I am happy to send my resume, GitHub profile, and a short note about why I want to join [Company Name] specifically.
+
+Either way, I appreciate you taking the time to read this.
+
+Thanks so much,
+Rafiya
+khanrafiya83@gmail.com | github.com/Rafiya-16</div>
+<button class="copy-btn" onclick="copyText('referral-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="followup" class="section">
+<div class="section-header">
+<div class="badge">Section 6</div>
+<div class="section-title">Follow-Up Email</div>
+<div class="section-desc">Send 5 days after initial outreach with no response</div>
+</div>
+<div class="card">
+<div class="copy-block" id="followup-text">Subject: Re: [Original Subject Line]
+
+Hi [Name],
+
+I wanted to follow up on my note from [date]. I completely understand inboxes fill up quickly.
+
+To keep it brief: I am Rafiya Khan, a CSE student at Integral University with hands-on MERN stack experience and deployed projects. I am actively looking for a front-end or full-stack developer internship starting [timeline].
+
+I built two projects I'm proud of — Nutriscope and the Environmental Health Analyser — both live on GitHub: github.com/Rafiya-16. If there is an open role or a referral path, I would love five minutes of your time.
+
+If the timing isn't right, I completely understand — I'd be grateful to stay in touch.
+
+Thank you,
+Rafiya Khan
+khanrafiya83@gmail.com</div>
+<button class="copy-btn" onclick="copyText('followup-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="intro" class="section">
+<div class="section-header">
+<div class="badge">Section 7</div>
+<div class="section-title">30-Second Professional Introduction</div>
+<div class="section-desc">For interviews, networking events, hackathons, and career fairs</div>
+</div>
+<div class="card">
+<div class="card-label">Script – memorise and adapt naturally</div>
+<div class="copy-block" id="intro-text">Hi, I'm Rafiya Khan — a third-year Computer Science student at Integral University, Lucknow, graduating in 2027 with an 8.3 CGPA.
+
+I build full-stack web applications using the MERN stack. My two main projects are Nutriscope, a nutrition tracking app, and an Environmental Health Analyser — both are live and on GitHub. I also run ABTalks, a LinkedIn series where I create educational content about AI and prompt engineering.
+
+I'm looking for a front-end or full-stack developer internship where I can contribute to real products from day one. I'm particularly interested in [company's product area / mission].
+
+I'd love to learn more about what your team is working on.</div>
+<button class="copy-btn" onclick="copyText('intro-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+<div class="card" style="background:var(--color-background-secondary);border:none">
+<div class="card-label">Delivery tips</div>
+<div class="talking-a" style="font-size:13px;line-height:1.7">
+— Lead with name + institution + year. It grounds you immediately.<br>
+— Say project names with confidence — they are your proof points.<br>
+— End with a question about them. It turns an intro into a conversation.<br>
+— Practice out loud. 30 seconds is shorter than it feels.
+</div>
+</div>
+</div>
+
+<div id="titles" class="section">
+<div class="section-header">
+<div class="badge">Section 8</div>
+<div class="section-title">Top 10 Job Titles Best Suited for Your Profile</div>
+<div class="section-desc">Ranked by match strength with your current skills and projects</div>
+</div>
+<div class="card">
+<div class="job-chip"><span class="job-num">1</span><span class="job-name">Front-End Developer Intern</span><span class="job-fit">Best match</span></div>
+<div class="job-chip"><span class="job-num">2</span><span class="job-name">Full-Stack Developer Intern (MERN)</span><span class="job-fit">Strong match</span></div>
+<div class="job-chip"><span class="job-num">3</span><span class="job-name">React Developer Intern</span><span class="job-fit">Strong match</span></div>
+<div class="job-chip"><span class="job-num">4</span><span class="job-name">JavaScript Developer Intern</span><span class="job-fit">Strong match</span></div>
+<div class="job-chip"><span class="job-num">5</span><span class="job-name">Web Developer Intern</span><span class="job-fit">Good match</span></div>
+<div class="job-chip"><span class="job-num">6</span><span class="job-name">UI Developer Intern</span><span class="job-fit">Good match</span></div>
+<div class="job-chip"><span class="job-num">7</span><span class="job-name">Software Developer Intern</span><span class="job-fit">Good match</span></div>
+<div class="job-chip"><span class="job-num">8</span><span class="job-name">Node.js Developer Intern</span><span class="job-fit">Developing</span></div>
+<div class="job-chip"><span class="job-num">9</span><span class="job-name">AI/ML Intern (Content + Research)</span><span class="job-fit">Developing</span></div>
+<div class="job-chip"><span class="job-num">10</span><span class="job-name">Technical Content + Developer Advocate Intern</span><span class="job-fit">Unique angle</span></div>
+</div>
+</div>
+
+<div id="strengths" class="section">
+<div class="section-header">
+<div class="badge">Section 9</div>
+<div class="section-title">Key Strengths Recruiters Will Notice</div>
+<div class="section-desc">What immediately stands out in your profile to a technical hiring manager</div>
+</div>
+<div class="card">
+<div class="strength-row">
+<div class="strength-icon"><i class="ti ti-code" aria-hidden="true" style="color:#1D9E75;font-size:16px"></i></div>
+<div class="strength-text"><div class="strength-title">Shipped real projects, not just assignments</div><div class="strength-desc">Nutriscope and Environmental Health Analyser are deployed, live products — this is the single biggest differentiator against most CS students who only submit coursework.</div></div>
+</div>
+<div class="strength-row">
+<div class="strength-icon"><i class="ti ti-brand-react" aria-hidden="true" style="color:#185FA5;font-size:16px"></i></div>
+<div class="strength-text"><div class="strength-title">MERN stack fluency — the startup-dominant stack in India</div><div class="strength-desc">MongoDB + Express + React + Node.js covers what 70–80% of Indian product startups actually hire for. You are positioned directly in that demand.</div></div>
+</div>
+<div class="strength-row">
+<div class="strength-icon"><i class="ti ti-pencil" aria-hidden="true" style="color:#7F77DD;font-size:16px"></i></div>
+<div class="strength-text"><div class="strength-title">Public learning and technical communication</div><div class="strength-desc">The ABTalks LinkedIn series shows you can explain technical concepts clearly — a rare skill that matters in collaborative product teams and engineering-led companies.</div></div>
+</div>
+<div class="strength-row">
+<div class="strength-icon"><i class="ti ti-school" aria-hidden="true" style="color:#BA7517;font-size:16px"></i></div>
+<div class="strength-text"><div class="strength-title">Strong academic standing (8.3 CGPA)</div><div class="strength-desc">Clears the ATS threshold for most large-company filters (8.0+) while your project portfolio proves you apply what you learn, not just memorise it.</div></div>
+</div>
+<div class="strength-row">
+<div class="strength-icon"><i class="ti ti-versions" aria-hidden="true" style="color:#D85A30;font-size:16px"></i></div>
+<div class="strength-text"><div class="strength-title">Full deployment pipeline experience</div><div class="strength-desc">Vercel, Render, and Railway experience signals you understand how software reaches users — not just how to write it. This separates you from most interns.</div></div>
+</div>
+<div class="strength-row">
+<div class="strength-icon"><i class="ti ti-brain" aria-hidden="true" style="color:#533AB7;font-size:16px"></i></div>
+<div class="strength-text"><div class="strength-title">AI-adjacent awareness and prompt engineering</div><div class="strength-desc">Practical Claude and AI tooling experience is increasingly valued even at non-AI companies. Framing this correctly makes you a more future-ready candidate than peers.</div></div>
+</div>
+</div>
+</div>
+
+<div id="gaps" class="section">
+<div class="section-header">
+<div class="badge">Section 10</div>
+<div class="section-title">Skill Gap Analysis</div>
+<div class="section-desc">Honest assessment + a concrete roadmap to close the gaps</div>
+</div>
+<div class="skill-grid">
+<div class="skill-card strong">
+<div class="skill-label">Current strengths</div>
+<div class="skill-item">HTML5 / CSS3 / JavaScript</div>
+<div class="skill-item">React.js (components, state)</div>
+<div class="skill-item">Node.js + Express (basic)</div>
+<div class="skill-item">MongoDB (basic)</div>
+<div class="skill-item">REST API consumption</div>
+<div class="skill-item">Git / GitHub</div>
+<div class="skill-item">Vercel / Render deploy</div>
+<div class="skill-item">Chart.js / Tailwind CSS</div>
+<div class="skill-item">Technical content writing</div>
+</div>
+<div class="skill-card gap">
+<div class="skill-label">Skill gaps to close</div>
+<div class="skill-item">React + REST API end-to-end project</div>
+<div class="skill-item">TypeScript basics</div>
+<div class="skill-item">SQL (for data/backend roles)</div>
+<div class="skill-item">Testing (Jest / React Testing Library)</div>
+<div class="skill-item">System design basics</div>
+<div class="skill-item">DSA — arrays, trees, DP</div>
+<div class="skill-item">CI/CD basics (GitHub Actions)</div>
+<div class="skill-item">Next.js (SSR / SEO edge)</div>
+</div>
+</div>
+<div class="card" style="margin-top:1rem">
+<div class="card-label">Learning roadmap – priority order</div>
+<div class="roadmap-step">
+<div class="step-num">1</div>
+<div class="step-content"><div class="step-title">Ship a React + API project (Now – 3 weeks)</div><div class="step-desc">Build a weather, movie, or finance dashboard using a public REST API. Deploy it. This single project closes the most-cited gap in your profile immediately.</div></div>
+</div>
+<div class="roadmap-step">
+<div class="step-num">2</div>
+<div class="step-content"><div class="step-title">DSA on LeetCode – Easy/Medium (Ongoing, 45 min/day)</div><div class="step-desc">Arrays, strings, hashmaps, and basic trees cover ~80% of front-end intern interview questions. Target 50 problems before campus placement season.</div></div>
+</div>
+<div class="roadmap-step">
+<div class="step-num">3</div>
+<div class="step-content"><div class="step-title">TypeScript fundamentals (Month 2)</div><div class="step-desc">Most production React codebases use TypeScript. A short FreeCodeCamp or official docs sprint will make you interview-credible on this topic.</div></div>
+</div>
+<div class="roadmap-step">
+<div class="step-num">4</div>
+<div class="step-content"><div class="step-title">SQL basics (Month 2–3, if targeting data/backend roles)</div><div class="step-desc">SQLZoo or Mode Analytics SQL tutorial. Focus on SELECT, JOIN, GROUP BY, subqueries. Adds a second track of roles to your funnel.</div></div>
+</div>
+<div class="roadmap-step">
+<div class="step-num">5</div>
+<div class="step-content"><div class="step-title">Next.js + deployment (Month 3)</div><div class="step-desc">Many SaaS startups use Next.js. Building one project with SSR and deploying it positions you for a wider set of front-end roles.</div></div>
+</div>
+</div>
+</div>
+
+<div id="brand" class="section">
+<div class="section-header">
+<div class="badge">Section 11</div>
+<div class="section-title">Personal Brand Summary</div>
+<div class="section-desc">Your professional identity, distilled for recruiters and your LinkedIn profile</div>
+</div>
+<div class="brand-block">
+<div class="brand-card">
+<div class="brand-card-label">Unique value proposition</div>
+<div class="brand-card-value">A MERN-stack developer who ships real products, explains technical concepts to real audiences, and treats every project as a learning artefact — not just a grade.</div>
+</div>
+<div class="brand-card">
+<div class="brand-card-label">Positioning statement</div>
+<div class="brand-card-value">Front-end developer and CS student who turns ideas into deployed web applications — from a Vercel URL to a GitHub README to a LinkedIn post that 500 people read.</div>
+</div>
+<div class="brand-card">
+<div class="brand-card-label">Recruiter headline</div>
+<div class="brand-card-value">Front-End Developer · MERN Stack · React · Building in public via ABTalks · B.Tech CSE 2027 · 8.3 CGPA</div>
+</div>
+</div>
+<div class="card">
+<div class="card-label">LinkedIn "About" section – ready to paste</div>
+<div class="copy-block" id="brand-text">I build web applications that are meant to be used, not just submitted.
+
+As a Computer Science student at Integral University, Lucknow (graduating 2027, CGPA: 8.3), I work across the full MERN stack — from designing component-based React UIs to deploying Node/Express backends on Vercel and Render. My flagship projects, Nutriscope (a nutrition tracker) and the Environmental Health Analyser, are live, open-source, and actively maintained.
+
+Outside of project work, I run ABTalks — a 60-day LinkedIn series on AI literacy and practical prompt engineering. Writing about what I learn forces me to actually understand it, and it has shaped how I communicate technical ideas clearly.
+
+I am actively seeking front-end or full-stack developer internships starting [timeline]. If you are building something interesting and need someone who ships fast and learns faster, I'd love to connect.
+
+📌 Stack: React · Node.js · MongoDB · Express · JavaScript · HTML/CSS · REST APIs · Git
+🔗 GitHub: github.com/Rafiya-16 | 📧 khanrafiya83@gmail.com</div>
+<button class="copy-btn" onclick="copyText('brand-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+</div>
+
+<div id="talking" class="section">
+<div class="section-header">
+<div class="badge">Section 12</div>
+<div class="section-title">Interview Talking Points</div>
+<div class="section-desc">Prepared stories, likely questions, and what to emphasise</div>
+</div>
+<div class="card">
+<div class="card-label">Most impressive achievement to lead with</div>
+<div class="copy-block" id="talking-text">"I built and deployed Nutriscope — a full-stack nutrition tracker — independently. I designed the front end in React, connected it to a REST API, and deployed it on Vercel. It's live. The project taught me how to handle API errors gracefully, manage React state across components, and write code that someone other than me can read. I am most proud of the fact that it's a real URL, not a screenshot."</div>
+<button class="copy-btn" onclick="copyText('talking-text',this)"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+</div>
+<div class="card">
+<div class="card-label">Likely interview questions + how to answer them</div>
+<div class="talking-item">
+<div class="talking-q">Tell me about yourself.</div>
+<div class="talking-a">Use your 30-second intro (Section 7). End with why this specific company or role interests you. Do not summarise your resume — they have it.</div>
+</div>
+<div class="talking-item">
+<div class="talking-q">What's a project you're most proud of and why?</div>
+<div class="talking-a">Nutriscope. Lead with what problem it solves, how you built it, what was technically hard, and what you'd do differently. A STAR structure (Situation → Task → Action → Result) works well here.</div>
+</div>
+<div class="talking-item">
+<div class="talking-q">How do you learn new technologies?</div>
+<div class="talking-a">Point to ABTalks: "I learn best by teaching — I run a LinkedIn series where I explain what I'm learning publicly. Writing a post about prompt engineering, for example, forced me to understand it deeply enough to simplify it."</div>
+</div>
+<div class="talking-item">
+<div class="talking-q">What is your biggest weakness?</div>
+<div class="talking-a">Be honest and specific: "I tend to spend more time learning before building than is ideal. I've noticed that I move faster when I commit to shipping something imperfect first, so I've been practicing that deliberately."</div>
+</div>
+<div class="talking-item">
+<div class="talking-q">Why front-end / full-stack development?</div>
+<div class="talking-a">"I like the feedback loop. Front-end work gives me immediate visual proof that something works — or doesn't. And full-stack means I understand why the data arrives the way it does, which makes me a better UI developer."</div>
+</div>
+<div class="talking-item">
+<div class="talking-q">What's a technical challenge you solved?</div>
+<div class="talking-a">Describe a specific bug or architecture decision from Nutriscope or Environmental Health Analyser. The goal is to show you can think through a problem, not just copy a solution from Stack Overflow.</div>
+</div>
+<div class="talking-item">
+<div class="talking-q">Where do you see yourself in 3 years?</div>
+<div class="talking-a">"I want to be a strong full-stack engineer at a product company — someone who can own a feature end to end. I'm also interested in the intersection of development and AI tools, given my current work on AI literacy content."</div>
+</div>
+</div>
+</div>
+
+</div>
+<script>
+function show(id,btn){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+event.target.classList.add('active');
+}
+function copyText(id,btn){
+const el=document.getElementById(id);
+const text=el.innerText.replace(btn.innerText,'').trim();
+navigator.clipboard.writeText(text).then(()=>{
+btn.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Copied';
+setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy" aria-hidden="true"></i> Copy'},2000);
+});
+}
+</script>
