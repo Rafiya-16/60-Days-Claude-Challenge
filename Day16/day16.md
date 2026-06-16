@@ -155,7 +155,7 @@ Claude Custom Skills can significantly improve research productivity while maint
 
 ### TCS Research Report
 
-![TCS_Report](dat16.png)
+![TCS_Report](day16.png)
 
 ### TCS vs Infosys Comparison
 
