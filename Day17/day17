@@ -1,0 +1,126 @@
+# Day 17 – Automotive Fuel Analytics Dashboard
+
+## Overview
+
+Today I built an Automotive Fuel Analytics Dashboard that analyzes vehicle fuel efficiency, operating costs, maintenance expenses, emissions, and E85 fuel viability using CSV-based data analytics.
+
+The project transforms raw vehicle fuel data into an interactive dashboard built with pure HTML, CSS, JavaScript, and SVG visualizations.
+
+---
+
+## Objective
+
+Create a data-driven dashboard capable of:
+
+- Comparing Petrol, Diesel, CNG, EV, and E85 fuels
+- Calculating fuel cost efficiency
+- Measuring CO₂ emissions impact
+- Evaluating maintenance expenses
+- Performing vehicle age analysis
+- Assessing E85 fuel feasibility through a custom scoring model
+
+---
+
+## Key Metrics Calculated
+
+### Cost Analysis
+- Average Cost per Kilometer
+- Monthly Fuel Expense
+- Fuel Price Comparison
+
+### Environmental Analysis
+- CO₂ Emissions per Kilometer
+- Fuel Sustainability Comparison
+
+### Maintenance Analysis
+- Maintenance Cost per Kilometer
+- Vehicle Age Impact Assessment
+
+### E85 Paradox Analysis
+- Pump Saving %
+- Running Cost Penalty %
+- Break-even Fuel Price
+- E85 Viability Score
+
+---
+
+## Dashboard Features
+
+### KPI Cards
+- Petrol Cost/km
+- E85 Cost/km
+- E85 Premium vs Petrol
+- Break-even Price
+- Monthly Fuel Cost
+
+### Data Visualizations
+- Cost/km Bar Chart
+- CO₂ Doughnut Chart
+- Cost vs Vehicle Age Line Chart
+- E85 Score Gauge
+
+### Fuel Comparison Engine
+Comparison of:
+
+- Petrol
+- Diesel
+- CNG
+- EV
+- E85
+
+Including:
+- Advantages
+- Disadvantages
+- Recommended Use Cases
+
+---
+
+## Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript
+- SVG Charts
+- CSV Data Processing
+
+---
+
+## Key Insights
+
+### Cost Efficiency
+CNG and EV demonstrated the lowest operational costs while Petrol and E85 remained competitive.
+
+### Environmental Impact
+EV and E85 showed lower emissions compared to conventional fuels.
+
+### Vehicle Age Analysis
+Operating costs generally increased as vehicle age increased, highlighting the importance of maintenance planning.
+
+### E85 Evaluation
+E85 provided noticeable pump-price savings but experienced reduced mileage efficiency, creating a trade-off between fuel price and real-world running cost.
+
+---
+
+## Learning Outcomes
+
+- Data Cleaning and Processing
+- CSV-Based Analytics
+- KPI Calculation Techniques
+- SVG Data Visualization
+- Dashboard Design Principles
+- Automotive Data Analysis
+- Business Intelligence Reporting
+
+---
+
+## Project Outcome
+
+Successfully developed a responsive automotive analytics dashboard capable of converting raw fuel data into actionable insights through modern visualizations and business-oriented metrics.
+
+---
+
+## Screenshots
+
+![Dashboard](day17.jpg) 
+
+---
