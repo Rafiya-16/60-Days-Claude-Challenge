@@ -144,15 +144,15 @@ Identifies:
 
 ## Screenshots
 
-### Project Meeting Dashboard
+### Action Items & Risk Analysis
 
 ![Skill Creation](day18.png)
 
-### AI Career Assistant Dashboard
+### Project Meeting Dashboard
 
 ![Skill Creation](day_18.png)
 
-### Action Items & Risk Analysis
+### AI Career Assistant Dashboard
 
 ![Skill Creation](day-18.png)
 
