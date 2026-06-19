@@ -1,17 +1,20 @@
-#Day 2 - Prompt Engineering
+# Day 2 - Prompt Engineering
 
-##Objective
+## Objective
 
 Learn the difference between a weak prompt and an engineered prompt.
 
-###Weak Prompt
+---
+
+### Weak Prompt
 
 Explain Prompt Engineering.
 
-###Engineered Prompt
+---
+
+### Engineered Prompt
 
 You are an AI educator teaching complete beginners.
-
 Explain Prompt Engineering in simple language.
 
 Include:
@@ -22,7 +25,6 @@ Include:
 * Three practical benefits of writing better prompts
 
 Also create a LinkedIn-ready image concept.
-
 Image Requirements:
 * Square LinkedIn post (1080×1080)
 * Claude-inspired brown, beige and cream colors
@@ -39,7 +41,9 @@ Section 1: Explanation
 Section 2: Weak vs Improved Prompt Example
 Section 3: Detailed Image Generation Prompt
 
-##Observations
+---
+
+## Observations
 
 1. The engineered prompt produced a more detailed response.
 2. The output was structured into sections.
@@ -47,14 +51,18 @@ Section 3: Detailed Image Generation Prompt
 4. The AI understood the goal more clearly.
 5. The image concept was much more professional.
 
-##Key Learnings
+---
+
+## Key Learnings
 
 - Prompt Engineering means giving AI clear instructions.
 - Better prompts produce better outputs.
 - Structure, context, and requirements improve AI responses.
 - AI tools like Claude perform better with specific prompts.
 
-##Work Completed
+---
+
+## Work Completed
 
 - Tested a weak prompt.
 - Tested an engineered prompt.
@@ -62,10 +70,14 @@ Section 3: Detailed Image Generation Prompt
 - Generated a LinkedIn-ready image concept.
 - Documented learnings.
 
-#Screenshots
+---
 
- ###Weak prompt
- [Weak prompt](day2-weak.jpg)
+## Screenshots
 
- ###Engineered prompt
-[Engineeeed prompt](day2-engineered-prompt.jpg) 
+### Weak prompt
+![Weak prompt](day2-weak.jpg)
+
+### Engineered prompt
+![Engineeeed prompt](day2-engineered-prompt.jpg) 
+
+---
