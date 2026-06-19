@@ -115,7 +115,9 @@ Key Traits:
 
 ## 📸 Screenshots
 
-Add generated screenshots here.
+![Football Intelligence Profile](day-19.png)
+
+---
 
 ![Football Intelligence Profile](day19.png)
 
