@@ -1,6 +1,6 @@
-Day 24 – Business Strategy Report & Startup Validation
+# Day 24 – Business Strategy Report & Startup Validation
 
-Overview
+## Overview
 
 Today I moved beyond idea validation and customer research to develop a complete business strategy for Blossom & Ease, a D2C fashion brand focused on menopausal women in India.
 
@@ -8,11 +8,11 @@ The objective was to evaluate whether the startup is not only solving a meaningf
 
 ---
 
-What I Worked On
+## What I Worked On
 
-1. Business Reality Check
+## 1. Business Reality Check
 
-Analyzed:
+### Analyzed:
 
 - Who will pay for the product
 - Why customers would buy
@@ -21,30 +21,30 @@ Analyzed:
 - Growth constraints
 - Market assumptions requiring validation
 
-Key insight:
+### Key insight:
 
 «A great idea is not enough. Paying customers are the only true validation.»
 
 ---
 
-2. Business Model Canvas
+## 2. Business Model Canvas
 
 Designed the complete business model:
 
-Customer Segments
+### Customer Segments
 
 - Women aged 44–60
 - Urban Tier 1 & Tier 2 cities
 - SEC A & Upper SEC B
 
-Value Proposition
+### Value Proposition
 
 - Symptom-aware fashion
 - Breathable fabrics
 - Adaptive silhouettes
 - Age-positive branding
 
-Channels
+### Channels
 
 - WhatsApp Business
 - Instagram
@@ -52,7 +52,7 @@ Channels
 - Daughter referrals
 - Gynecologist partnerships
 
-Revenue Streams
+### Revenue Streams
 
 - Direct product sales
 - Gifting bundles
@@ -61,9 +61,9 @@ Revenue Streams
 
 ---
 
-3. Revenue & Pricing Strategy
+## 3. Revenue & Pricing Strategy
 
-Evaluated:
+### Evaluated:
 
 - Pricing architecture
 - Unit economics
@@ -71,7 +71,7 @@ Evaluated:
 - COD impact
 - Growth projections
 
-Revenue roadmap:
+### Revenue roadmap:
 
 Phase| Target Revenue
 MVP Launch| ₹1–3L/month
@@ -81,7 +81,7 @@ Scaling| ₹2–8Cr/year
 
 ---
 
-4. Go-To-Market Strategy
+## 4. Go-To-Market Strategy
 
 Developed a three-stage GTM plan:
 
@@ -97,7 +97,7 @@ Phase 3
 
 Paid amplification and scaling
 
-Core channels:
+### Core channels:
 
 - Instagram Reels
 - WhatsApp Communities
@@ -107,7 +107,7 @@ Core channels:
 
 ---
 
-5. Customer Acquisition Strategy
+## 5. Customer Acquisition Strategy
 
 Created a dual-funnel acquisition model:
 
@@ -123,17 +123,17 @@ Daughter-Mediated Journey
 
 Daughter Discovery → Mother Purchase → Referral Loop
 
-Key insight:
+### Key insight:
 
 «Product quality is the biggest customer acquisition lever.»
 
 ---
 
-6. First 100 Users Plan
+## 6. First 100 Users Plan
 
 Built a practical roadmap to acquire the first 100 customers.
 
-Milestones:
+### Milestones:
 
 - 20 customer interviews
 - Price validation
@@ -145,9 +145,9 @@ Milestones:
 
 ---
 
-7. Competitive Analysis & Moat
+## 7. Competitive Analysis & Moat
 
-Analyzed competitors:
+### Analyzed competitors:
 
 - BIBA
 - Jockey
@@ -156,11 +156,11 @@ Analyzed competitors:
 - Meesho
 - Nykaa Fashion
 
-Finding:
+### Finding:
 
 No direct Indian competitor currently focuses exclusively on menopause-specific fashion.
 
-Potential moats:
+### Potential moats:
 
 - Community
 - Trust
@@ -170,9 +170,9 @@ Potential moats:
 
 ---
 
-8. Reverse SWOT Analysis
+## 8. Reverse SWOT Analysis
 
-Converted:
+### Converted:
 
 - Strengths into moats
 - Weaknesses into action items
@@ -183,9 +183,9 @@ This helped identify the highest-priority execution risks.
 
 ---
 
-9. Investor Readiness Evaluation
+## 9. Investor Readiness Evaluation
 
-Scores:
+### Scores:
 
 - Business Viability: 78/100
 - Revenue Potential: 72/100
@@ -193,7 +193,7 @@ Scores:
 - Competitive Strength: 85/100
 - Investor Readiness: 58/100
 
-Overall Score:
+### Overall Score:
 
 75/100
 
@@ -211,7 +211,7 @@ before approaching investors.
 
 ---
 
-Key Learnings
+## Key Learnings
 
 - Validation does not equal traction.
 - Business models matter as much as product ideas.
@@ -222,7 +222,7 @@ Key Learnings
 
 ---
 
-Deliverables
+## Deliverables
 
 - Customer & MVP Blueprint
 - Business Strategy Report
@@ -237,7 +237,7 @@ Deliverables
 
 ---
 
-Day 24 Outcome
+## Day 24 Outcome
 
 Successfully transformed a validated startup concept into a structured business strategy with clear paths for:
 
@@ -250,7 +250,5 @@ Successfully transformed a validated startup concept into a structured business 
 - Growth planning
 
 - Investor readiness
-
-- PDF File: "Day 24 Business Strategy Report" (Blossom_Ease_Business_Strategy_Report.pdf) 
 
 ---
