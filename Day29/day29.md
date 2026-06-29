@@ -76,4 +76,4 @@ This project strengthened my understanding of supply chain resilience, strategic
 ![](d-29.jpg) 
 ![](d_29.jpg) 
 ![](day2-9.jpg) 
-![](d-29.jpg) 
+![](d2-9.jpg) 
