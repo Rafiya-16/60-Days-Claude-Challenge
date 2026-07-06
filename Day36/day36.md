@@ -58,6 +58,5 @@ Today I developed **Cognitive Pattern Explorer**, an interactive web application
 ![](day_36.jpg)
 ![](d36.jpg)
 ![](d-36.jpg)
-![](d_36.jpg) 
 
 ---
