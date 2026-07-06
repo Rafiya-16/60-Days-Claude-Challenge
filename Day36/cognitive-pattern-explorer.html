@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cognitive Pattern Explorer</title>
+<style>
+  :root{
+    --bg1:#0f1720;
+    --bg2:#16232e;
+    --card:#1c2b38;
+    --card-hi:#233b4a;
+    --accent:#6fd3c7;
+    --accent2:#a58cf0;
+    --text:#e8f1f2;
+    --muted:#9fb3bd;
+    --border:#2c4150;
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    --radius:16px;
+    --dur:0.5s;
+  }
+  [data-mode="stress"]{
+    --bg1:#160f1a;
+    --bg2:#1d1424;
+    --card:#241a2c;
+    --card-hi:#2e2038;
+    --accent:#f0a86f;
+    --accent2:#f06f8c;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    background:radial-gradient(circle at 20% 20%, var(--bg2), var(--bg1));
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    transition:background var(--dur) ease;
+  }
+  #ambient{
+    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  }
+  .orb{
+    position:absolute;border-radius:50%;
+    filter:blur(60px);opacity:0.25;
+    background:radial-gradient(circle, var(--accent), transparent 70%);
+    animation:float 18s ease-in-out infinite;
+  }
+  .orb.b{background:radial-gradient(circle, var(--accent2), transparent 70%); animation-duration:24s;}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(40px,-30px) scale(1.15);}
+  }
+  #app{
+    position:relative;z-index:1;
+    max-width:900px;
+    margin:0 auto;
+    padding:24px 18px 80px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  header.top{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:20px;flex-wrap:wrap;gap:10px;
+  }
+  .brand{
+    font-size:1.3rem;font-weight:600;letter-spacing:0.5px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .brand .dot{
+    width:12px;height:12px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 0 12px var(--accent);
+  }
+  .mode-toggle{
+    display:flex;gap:6px;background:var(--card);border:1px solid var(--border);
+    border-radius:999px;padding:4px;
+  }
+  .mode-toggle button{
+    border:none;background:transparent;color:var(--muted);
+    padding:6px 14px;border-radius:999px;cursor:pointer;font-size:0.85rem;
+    transition:all 0.3s ease;
+  }
+  .mode-toggle button.active{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#0b1015;font-weight:600;
+  }
+  .mode-toggle button:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+
+  /* progress bar */
+  #progress-wrap{
+    margin-bottom:24px;
+  }
+  #progress-track{
+    height:8px;border-radius:999px;background:var(--card);
+    overflow:hidden;border:1px solid var(--border);
+  }
+  #progress-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transition:width 0.6s ease;
+  }
+  #progress-label{
+    font-size:0.75rem;color:var(--muted);margin-top:6px;
+    display:flex;justify-content:space-between;
+  }
+
+  main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .screen{
+    animation:fadeIn var(--dur) ease;
+  }
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(12px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .screen.exit{
+    animation:fadeOut 0.35s ease forwards;
+  }
+  @keyframes fadeOut{
+    to{opacity:0;transform:translateY(-12px);}
+  }
+
+  h1{font-size:1.8rem;margin:0 0 6px;font-weight:700;}
+  h2{font-size:1.4rem;margin:0 0 6px;}
+  p.lead{color:var(--muted);line-height:1.6;margin-top:0;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#0b1015;border:none;padding:12px 22px;
+    border-radius:12px;font-weight:600;font-size:0.95rem;cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.3);}
+  .btn.secondary{
+    background:transparent;border:1px solid var(--border);color:var(--text);
+  }
+  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+  .nav-row{
+    display:flex;justify-content:space-between;margin-top:24px;gap:10px;flex-wrap:wrap;
+  }
+
+  /* Scenario / choice cards - chapter 1 */
+  .scenario{
+    margin-bottom:22px;
+  }
+  .choices{
+    display:grid;grid-template-columns:1fr;gap:12px;
+  }
+  @media(min-width:640px){
+    .choices{grid-template-columns:1fr 1fr;}
+  }
+  .choice-btn{
+    text-align:left;
+    background:var(--card-hi);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:16px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:0.95rem;
+    line-height:1.5;
+    transition:transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+  .choice-btn:hover, .choice-btn:focus-visible{
+    transform:translateY(-3px);
+    border-color:var(--accent);
+    background:linear-gradient(160deg, var(--card-hi), var(--card));
+  }
+  .choice-btn.selected{
+    border-color:var(--accent2);
+    box-shadow:0 0 0 2px var(--accent2) inset;
+  }
+
+  /* Chapter 2 - draggable priority cards */
+  #priority-pool, .rank-list{
+    list-style:none;margin:0;padding:0;
+    display:flex;flex-direction:column;gap:10px;
+    min-height:60px;
+  }
+  .rank-list{
+    background:var(--card);
+    border:2px dashed var(--border);
+    border-radius:var(--radius);
+    padding:12px;
+  }
+  .priority-card{
+    background:var(--card-hi);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    cursor:grab;
+    display:flex;align-items:center;gap:10px;
+    touch-action:none;
+    transition:transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    user-select:none;
+  }
+  .priority-card:active{cursor:grabbing;}
+  .priority-card .handle{opacity:0.6;font-size:1rem;}
+  .priority-card.dragging{
+    opacity:0.5;
+  }
+  .priority-card.drag-ghost{
+    position:fixed;z-index:999;pointer-events:none;
+    box-shadow:0 12px 24px rgba(0,0,0,0.5);
+    opacity:0.95;
+  }
+  .drop-zone-hint{
+    font-size:0.8rem;color:var(--muted);margin-bottom:6px;
+  }
+  .two-col{
+    display:grid;grid-template-columns:1fr;gap:20px;
+  }
+  @media(min-width:700px){
+    .two-col{grid-template-columns:1fr 1fr;}
+  }
+  .rank-slot{
+    display:flex;align-items:center;gap:8px;
+    min-height:52px;border-bottom:1px dashed var(--border);
+    padding:6px 2px;
+    color:var(--muted);font-size:0.85rem;
+  }
+  .rank-slot:last-child{border-bottom:none;}
+  .rank-num{
+    width:22px;height:22px;border-radius:50%;
+    background:var(--accent);color:#0b1015;
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.75rem;font-weight:700;flex-shrink:0;
+  }
+
+  /* Chapter 3 - timeline mapping */
+  .timeline-track{
+    position:relative;
+    height:90px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    margin:14px 0 22px;
+    overflow:visible;
+  }
+  .timeline-labels{
+    display:flex;justify-content:space-between;
+    font-size:0.75rem;color:var(--muted);margin-top:-6px;
+  }
+  .timeline-token{
+    position:absolute;
+    top:50%;transform:translate(-50%,-50%);
+    width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#0b1015;font-weight:700;font-size:0.75rem;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:4px;
+    cursor:grab;
+    box-shadow:0 6px 14px rgba(0,0,0,0.35);
+    touch-action:none;
+    border:2px solid rgba(255,255,255,0.15);
+    transition:box-shadow 0.2s ease;
+  }
+  .timeline-token:active{cursor:grabbing;}
+  .timeline-token:focus-visible{outline:3px solid #fff;}
+  .timeline-pool{
+    display:flex;flex-wrap:wrap;gap:14px;margin-bottom:8px;
+  }
+  .timeline-pool .timeline-token{
+    position:static;transform:none;
+  }
+
+  /* Final reflection */
+  .breakdown-row{
+    display:flex;align-items:center;gap:12px;margin-bottom:14px;
+  }
+  .breakdown-label{
+    width:180px;flex-shrink:0;font-size:0.9rem;
+  }
+  .breakdown-bar-track{
+    flex:1;height:14px;background:var(--card-hi);
+    border-radius:999px;overflow:hidden;border:1px solid var(--border);
+  }
+  .breakdown-bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    width:0%;
+    transition:width 1s ease;
+    border-radius:999px;
+  }
+  .breakdown-pct{
+    width:44px;text-align:right;font-size:0.85rem;color:var(--muted);
+  }
+  .insight-box{
+    background:linear-gradient(160deg, var(--card-hi), var(--card));
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-top:10px;
+  }
+  .badge{
+    display:inline-block;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#0b1015;font-weight:700;font-size:0.8rem;
+    padding:5px 12px;border-radius:999px;margin-bottom:10px;
+  }
+  .journal-note{
+    width:100%;min-height:110px;
+    background:var(--card-hi);
+    border:1px solid var(--border);
+    border-radius:12px;
+    color:var(--text);
+    padding:12px;font-family:inherit;font-size:0.9rem;
+    resize:vertical;
+  }
+  .disclaimer{
+    font-size:0.75rem;color:var(--muted);
+    border-top:1px solid var(--border);
+    margin-top:26px;padding-top:14px;line-height:1.6;
+  }
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;
+  }
+
+  ::selection{background:var(--accent2);color:#0b1015;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{
+      animation-duration:0.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+</style>
+</head>
+<body data-mode="calm">
+<div id="ambient" aria-hidden="true">
+  <div class="orb" style="width:320px;height:320px;top:-60px;left:-80px;"></div>
+  <div class="orb b" style="width:260px;height:260px;bottom:-40px;right:-60px;"></div>
+  <div class="orb" style="width:200px;height:200px;top:40%;left:60%;"></div>
+</div>
+
+<div id="app">
+  <header class="top">
+    <div class="brand"><span class="dot" aria-hidden="true"></span> Cognitive Pattern Explorer</div>
+    <div class="mode-toggle" role="group" aria-label="Ambience mode">
+      <button id="mode-calm" class="active" aria-pressed="true">Calm</button>
+      <button id="mode-stress" aria-pressed="false">Stress</button>
+    </div>
+  </header>
+
+  <div id="progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Journey progress">
+    <div id="progress-track"><div id="progress-fill"></div></div>
+    <div id="progress-label"><span id="progress-text">Start</span><span id="progress-pct">0%</span></div>
+  </div>
+
+  <main id="main" aria-live="polite"></main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------------------------------------------------
+     DATA
+  --------------------------------------------------------- */
+
+  // Thinking tendencies + short descriptors used for scoring & insights
+  const TRAITS = {
+    analytical: {
+      name: "Analytical Thinker",
+      blurb: "You tend to break things down logically, weigh evidence, and look for structure before acting."
+    },
+    emotional: {
+      name: "Emotional Intuitive",
+      blurb: "You often lead with feeling and instinct, sensing what's right before you can fully explain why."
+    },
+    overthinking: {
+      name: "Overthinking Loop Style",
+      blurb: "You often circle back to a decision multiple times, weighing the same possibilities from new angles."
+    },
+    action: {
+      name: "Action-First Decision Maker",
+      blurb: "You tend to move quickly from thought to action, preferring momentum over prolonged deliberation."
+    },
+    balanced: {
+      name: "Balanced Reflective Thinker",
+      blurb: "You often blend logic and feeling, pausing briefly to reflect before choosing a steady path forward."
+    }
+  };
+
+  // Chapter 1 scenarios: each choice maps to one or more trait weights
+  const SCENARIOS = [
+    {
+      id: "s1",
+      prompt: "A close friend cancels plans last minute for the third time this month. What's your first instinct?",
+      choices: [
+        { text: "Think through possible reasons and patterns before reacting.", weights: {analytical:2, overthinking:1} },
+        { text: "Feel a pang of hurt and want to talk about how it made you feel.", weights: {emotional:2} },
+        { text: "Text back something light and move on with your day.", weights: {action:2} },
+        { text: "Notice the feeling, sit with it a moment, then decide how to respond.", weights: {balanced:2} }
+      ]
+    },
+    {
+      id: "s2",
+      prompt: "You're offered a new opportunity at work with an unclear timeline and some risk attached.",
+      choices: [
+        { text: "List out pros, cons, and possible outcomes before deciding.", weights: {analytical:2} },
+        { text: "Go with your gut — it either feels right or it doesn't.", weights: {emotional:2, action:1} },
+        { text: "Replay the decision in your head for days, revisiting each angle.", weights: {overthinking:2} },
+        { text: "Say yes quickly, trusting you'll adapt as you go.", weights: {action:2} }
+      ]
+    },
+    {
+      id: "s3",
+      prompt: "During a disagreement, you realize you might have said something hurtful.",
+      choices: [
+        { text: "Analyze exactly what you said and why it landed that way.", weights: {analytical:2} },
+        { text: "Feel a wave of guilt and want to reconnect emotionally right away.", weights: {emotional:2} },
+        { text: "Keep replaying the moment, imagining different ways it could've gone.", weights: {overthinking:2} },
+        { text: "Apologize simply and check in on how the other person is doing.", weights: {balanced:2} }
+      ]
+    },
+    {
+      id: "s4",
+      prompt: "You're handed a task with vague instructions and a tight deadline.",
+      choices: [
+        { text: "Break the task into smaller logical steps before starting.", weights: {analytical:2} },
+        { text: "Start immediately and figure out details as you move.", weights: {action:2} },
+        { text: "Feel a bit anxious and want reassurance before diving in.", weights: {emotional:1, overthinking:1} },
+        { text: "Take a breath, clarify what you can, then start steadily.", weights: {balanced:2} }
+      ]
+    },
+    {
+      id: "s5",
+      prompt: "You made a decision yesterday that turned out fine, but a new detail emerges today.",
+      choices: [
+        { text: "Reassess with the new information, staying open to updating your view.", weights: {analytical:1, balanced:1} },
+        { text: "Wonder anxiously whether you should have chosen differently.", weights: {overthinking:2} },
+        { text: "Trust your original instinct and move forward.", weights: {emotional:1, action:1} },
+        { text: "Adjust your plan quickly and keep going.", weights: {action:2} }
+      ]
+    }
+  ];
+
+  // Chapter 2: Priority cards to be ranked. Each has trait affinities based on rank position.
+  const PRIORITY_CARDS = [
+    { id:"logic", label:"Making logical sense of things", icon:"🧩", trait:"analytical" },
+    { id:"feel", label:"Honoring how something feels", icon:"💛", trait:"emotional" },
+    { id:"certainty", label:"Feeling fully certain before deciding", icon:"🔍", trait:"overthinking" },
+    { id:"momentum", label:"Keeping momentum and moving forward", icon:"⚡", trait:"action" },
+    { id:"balance", label:"Finding a steady middle ground", icon:"🌿", trait:"balanced" }
+  ];
+
+  // Chapter 3: Timeline tokens — represent moments in a decision process
+  const TIMELINE_TOKENS = [
+    { id:"t1", label:"Notice", desc:"Something happens", trait:null },
+    { id:"t2", label:"Analyze", desc:"Break it into parts", trait:"analytical" },
+    { id:"t3", label:"Feel", desc:"React emotionally", trait:"emotional" },
+    { id:"t4", label:"Replay", desc:"Reconsider again & again", trait:"overthinking" },
+    { id:"t5", label:"Act", desc:"Take the next step", trait:"action" },
+    { id:"t6", label:"Reflect", desc:"Pause & integrate", trait:"balanced" }
+  ];
+
+  /* ---------------------------------------------------------
+     STATE
+  --------------------------------------------------------- */
+  const state = {
+    chapter: 0, // 0 = start, 1,2,3, 4 = final
+    mode: "calm",
+    scenarioIndex: 0,
+    scenarioAnswers: [], // {id, trait weights}
+    priorityOrder: PRIORITY_CARDS.map(c => c.id), // pool order (unranked initially)
+    rankedOrder: [], // final ranked ids (index 0 = most important)
+    timelinePositions: {}, // id -> {x} percentage 0-100, only for tokens placed
+    timelinePlacedOrder: [], // order in which user placed tokens (for sequence trait logic)
+    scores: { analytical:0, emotional:0, overthinking:0, action:0, balanced:0 },
+    journalNote: ""
+  };
+
+  const TOTAL_STEPS = 1 /*start*/ + SCENARIOS.length + 1 /*ch2*/ + 1 /*ch3*/ + 1 /*final*/;
+
+  function currentStepIndex(){
+    if(state.chapter === 0) return 0;
+    if(state.chapter === 1) return 1 + state.scenarioIndex;
+    if(state.chapter === 2) return 1 + SCENARIOS.length;
+    if(state.chapter === 3) return 1 + SCENARIOS.length + 1;
+    if(state.chapter === 4) return TOTAL_STEPS - 1;
+    return 0;
+  }
+
+  function updateProgress(label){
+    const idx = currentStepIndex();
+    const pct = Math.round((idx / (TOTAL_STEPS-1)) * 100);
+    const fill = document.getElementById("progress-fill");
+    fill.style.width = pct + "%";
+    document.getElementById("progress-pct").textContent = pct + "%";
+    document.getElementById("progress-text").textContent = label || "Step " + (idx+1) + " of " + TOTAL_STEPS;
+    document.getElementById("progress-wrap").setAttribute("aria-valuenow", pct);
+  }
+
+  function addScore(weights, multiplier){
+    multiplier = multiplier || 1;
+    for(const k in weights){
+      if(state.scores.hasOwnProperty(k)){
+        state.scores[k] += weights[k]*multiplier;
+      }
+    }
+  }
+
+  /* ---------------------------------------------------------
+     RENDER HELPERS
+  --------------------------------------------------------- */
+  const main = document.getElementById("main");
+
+  function transitionTo(renderFn){
+    const existing = main.querySelector(".screen");
+    if(existing){
+      existing.classList.add("exit");
+      setTimeout(()=>{ renderFn(); }, 300);
+    } else {
+      renderFn();
+    }
+  }
+
+  function el(tag, opts){
+    const e = document.createElement(tag);
+    opts = opts || {};
+    if(opts.cls) e.className = opts.cls;
+    if(opts.text) e.textContent = opts.text;
+    if(opts.html) e.innerHTML = opts.html;
+    if(opts.attrs){ for(const k in opts.attrs) e.setAttribute(k, opts.attrs[k]); }
+    return e;
+  }
+
+  /* ---------------------------------------------------------
+     SCREEN: START
+  --------------------------------------------------------- */
+  function renderStart(){
+    main.innerHTML = "";
+    const screen = el("div", {cls:"screen"});
+
+    const card = el("div", {cls:"card"});
+    card.appendChild(el("h1", {text:"Explore how you think"}));
+    card.appendChild(el("p", {cls:"lead", text:
+      "A calm, game-like journey through everyday scenarios, priorities, and decision timelines. " +
+      "There are no right answers — just reflections on tendencies you may recognize in yourself."}));
+
+    const note = el("p", {cls:"lead"});
+    note.style.fontSize = "0.85rem";
+    note.innerHTML = "This experience is for self-reflection and entertainment only. It does not diagnose, assess, or replace professional mental health guidance.";
+    card.appendChild(note);
+
+    const btnRow = el("div", {cls:"nav-row"});
+    const startBtn = el("button", {cls:"btn", text:"Begin the journey"});
+    startBtn.addEventListener("click", ()=>{
+      state.chapter = 1;
+      state.scenarioIndex = 0;
+      transitionTo(renderChapter1);
+    });
+    btnRow.appendChild(startBtn);
+    card.appendChild(btnRow);
+
+    screen.appendChild(card);
+    main.appendChild(screen);
+    updateProgress("Welcome");
+  }
+
+  /* ---------------------------------------------------------
+     SCREEN: CHAPTER 1 — Scenarios
+  --------------------------------------------------------- */
+  function renderChapter1(){
+    main.innerHTML = "";
+    const screen = el("div", {cls:"screen"});
+    const scenario = SCENARIOS[state.scenarioIndex];
+
+    const header = el("div");
+    header.appendChild(el("span", {cls:"badge", text:"Chapter 1 · Discover Your Thinking Style"}));
+    header.appendChild(el("h2", {text:"Scenario " + (state.scenarioIndex+1) + " of " + SCENARIOS.length}));
+    screen.appendChild(header);
+
+    const card = el("div", {cls:"card scenario"});
+    card.appendChild(el("p", {cls:"lead", text: scenario.prompt}));
+
+    const choicesWrap = el("div", {cls:"choices", attrs:{role:"group", "aria-label":"Choose the response closest to you"}});
+    scenario.choices.forEach((choice, i)=>{
+      const btn = el("button", {cls:"choice-btn", text: choice.text, attrs:{"data-idx": i}});
+      btn.addEventListener("click", ()=> selectScenarioChoice(scenario, choice, btn, choicesWrap));
+      choicesWrap.appendChild(btn);
+    });
+    card.appendChild(choicesWrap);
+    screen.appendChild(card);
+
+    const navRow = el("div", {cls:"nav-row"});
+    const backBtn = el("button", {cls:"btn secondary", text:"← Back"});
+    backBtn.disabled = state.scenarioIndex === 0;
+    backBtn.addEventListener("click", ()=>{
+      if(state.scenarioIndex === 0){
+        state.chapter = 0;
+        transitionTo(renderStart);
+      } else {
+        state.scenarioIndex--;
+        state.scenarioAnswers.pop();
+        transitionTo(renderChapter1);
+      }
+    });
+    navRow.appendChild(backBtn);
+    screen.appendChild(navRow);
+
+    main.appendChild(screen);
+    updateProgress("Chapter 1 · " + (state.scenarioIndex+1) + "/" + SCENARIOS.length);
+  }
+
+  function selectScenarioChoice(scenario, choice, btnEl, wrap){
+    // mark selected visually
+    Array.from(wrap.children).forEach(c=>c.classList.remove("selected"));
+    btnEl.classList.add("selected");
+
+    state.scenarioAnswers[state.scenarioIndex] = { id: scenario.id, weights: choice.weights };
+    addScore(choice.weights, 1);
+
+    setTimeout(()=>{
+      if(state.scenarioIndex < SCENARIOS.length - 1){
+        state.scenarioIndex++;
+        transitionTo(renderChapter1);
+      } else {
+        state.chapter = 2;
+        transitionTo(renderChapter2);
+      }
+    }, 350);
+  }
+
+  /* ---------------------------------------------------------
+     SCREEN: CHAPTER 2 — Priority ranking (drag & drop)
+  --------------------------------------------------------- */
+  function renderChapter2(){
+    main.innerHTML = "";
+    const screen = el("div", {cls:"screen"});
+
+    screen.appendChild(el("span", {cls:"badge", text:"Chapter 2 · Choose Your Priorities"}));
+    screen.appendChild(el("h2", {text:"Drag to rank what matters most to you"}));
+    screen.appendChild(el("p", {cls:"lead", text:"Order these from most important (top) to least important (bottom) when you're making a decision. Drag with mouse or touch, or use arrow keys after focusing a card."}));
+
+    const card = el("div", {cls:"card"});
+    const twoCol = el("div", {cls:"two-col"});
+
+    // Pool column
+    const poolWrap = el("div");
+    poolWrap.appendChild(el("div", {cls:"drop-zone-hint", text:"Unranked"}));
+    const pool = el("ul", {cls:"rank-list", attrs:{id:"pool-list", "aria-label":"Unranked priorities"}});
+    poolWrap.appendChild(pool);
+
+    // Ranked column
+    const rankWrap = el("div");
+    rankWrap.appendChild(el("div", {cls:"drop-zone-hint", text:"Your ranked order"}));
+    const rankList = el("ul", {cls:"rank-list", attrs:{id:"rank-list", "aria-label":"Ranked priorities, drop here"}});
+    rankWrap.appendChild(rankList);
+
+    twoCol.appendChild(poolWrap);
+    twoCol.appendChild(rankWrap);
+    card.appendChild(twoCol);
+    screen.appendChild(card);
+
+    // populate pool with remaining, unranked cards
+    const rankedSet = new Set(state.rankedOrder);
+    PRIORITY_CARDS.forEach(pc=>{
+      if(!rankedSet.has(pc.id)){
+        pool.appendChild(makePriorityCardEl(pc));
+      }
+    });
+    state.rankedOrder.forEach(id=>{
+      const pc = PRIORITY_CARDS.find(p=>p.id===id);
+      rankList.appendChild(makePriorityCardEl(pc));
+    });
+
+    setupDragDrop(pool, rankList);
+
+    const navRow = el("div", {cls:"nav-row"});
+    const backBtn = el("button", {cls:"btn secondary", text:"← Back"});
+    backBtn.addEventListener("click", ()=>{
+      state.chapter = 1;
+      state.scenarioIndex = SCENARIOS.length - 1;
+      transitionTo(renderChapter1);
+    });
+    const nextBtn = el("button", {cls:"btn", text:"Continue →"});
+    nextBtn.disabled = state.rankedOrder.length < PRIORITY_CARDS.length;
+    nextBtn.id = "ch2-next";
+    nextBtn.addEventListener("click", ()=>{
+      scorePriorities();
+      state.chapter = 3;
+      transitionTo(renderChapter3);
+    });
+    navRow.appendChild(backBtn);
+    navRow.appendChild(nextBtn);
+    screen.appendChild(navRow);
+
+    main.appendChild(screen);
+    updateProgress("Chapter 2 · Priorities");
+  }
+
+  function makePriorityCardEl(pc){
+    const li = el("li", {cls:"priority-card", attrs:{
+      draggable:"true", tabindex:"0", "data-id": pc.id,
+      "role":"listitem", "aria-label": pc.label + ", press up or down arrow to move between lists"
+    }});
+    li.appendChild(el("span", {cls:"handle", text:"⋮⋮", attrs:{"aria-hidden":"true"}}));
+    li.appendChild(el("span", {text: pc.icon + "  " + pc.label}));
+    return li;
+  }
+
+  function scorePriorities(){
+    // top-ranked cards get more weight
+    const n = state.rankedOrder.length;
+    state.rankedOrder.forEach((id, idx)=>{
+      const pc = PRIORITY_CARDS.find(p=>p.id===id);
+      if(!pc) return;
+      const weight = (n - idx); // top gets highest weight
+      addScore({[pc.trait]: weight}, 1);
+    });
+  }
+
+  /* ---------------------------------------------------------
+     Generic drag & drop for two <ul> lists (pool <-> rank),
+     with mouse, touch, and keyboard support.
+  --------------------------------------------------------- */
+  function setupDragDrop(poolList, rankList){
+    let dragEl = null;
+    let sourceList = null;
+
+    function syncRankedOrder(){
+      state.rankedOrder = Array.from(rankList.children).map(li=>li.dataset.id);
+      const nextBtn = document.getElementById("ch2-next");
+      if(nextBtn) nextBtn.disabled = state.rankedOrder.length < PRIORITY_CARDS.length;
+    }
+
+    [poolList, rankList].forEach(list=>{
+      list.addEventListener("dragover", (e)=>{
+        e.preventDefault();
+        const after = getDragAfterElement(list, e.clientY);
+        if(!dragEl) return;
+        if(after == null){
+          list.appendChild(dragEl);
+        } else {
+          list.insertBefore(dragEl, after);
+        }
+      });
+      list.addEventListener("drop", (e)=>{
+        e.preventDefault();
+        syncRankedOrder();
+      });
+
+      Array.from(list.children).forEach(li=> attachItemEvents(li));
+    });
+
+    function attachItemEvents(li){
+      li.addEventListener("dragstart", ()=>{
+        dragEl = li;
+        sourceList = li.parentElement;
+        li.classList.add("dragging");
+      });
+      li.addEventListener("dragend", ()=>{
+        li.classList.remove("dragging");
+        dragEl = null;
+        syncRankedOrder();
+      });
+
+      // touch fallback
+      let touchClone = null;
+      let touchStartY = 0, touchStartX = 0;
+      li.addEventListener("touchstart", (e)=>{
+        const t = e.touches[0];
+        touchStartY = t.clientY; touchStartX = t.clientX;
+        dragEl = li;
+        sourceList = li.parentElement;
+        li.classList.add("dragging");
+      }, {passive:true});
+
+      li.addEventListener("touchmove", (e)=>{
+        if(!dragEl) return;
+        e.preventDefault();
+        const t = e.touches[0];
+        const targetList = document.elementFromPoint(t.clientX, t.clientY);
+        const list = targetList ? targetList.closest(".rank-list") : null;
+        if(list){
+          const after = getDragAfterElement(list, t.clientY);
+          if(after == null) list.appendChild(dragEl);
+          else list.insertBefore(dragEl, after);
+        }
+      }, {passive:false});
+
+      li.addEventListener("touchend", ()=>{
+        if(dragEl) dragEl.classList.remove("dragging");
+        dragEl = null;
+        syncRankedOrder();
+      });
+
+      // keyboard support: arrow up/down moves within/between lists
+      li.addEventListener("keydown", (e)=>{
+        const parent = li.parentElement;
+        const lists = [poolList, rankList];
+        if(e.key === "ArrowUp"){
+          e.preventDefault();
+          const prev = li.previousElementSibling;
+          if(prev){ parent.insertBefore(li, prev); }
+          li.focus();
+          syncRankedOrder();
+        } else if(e.key === "ArrowDown"){
+          e.preventDefault();
+          const next = li.nextElementSibling;
+          if(next){ parent.insertBefore(next, li); }
+          li.focus();
+          syncRankedOrder();
+        } else if(e.key === "ArrowRight" || e.key === "ArrowLeft"){
+          e.preventDefault();
+          const otherList = parent === poolList ? rankList : poolList;
+          otherList.appendChild(li);
+          li.focus();
+          syncRankedOrder();
+        }
+      });
+    }
+
+    function getDragAfterElement(list, y){
+      const items = Array.from(list.querySelectorAll(".priority-card:not(.dragging)"));
+      let closest = {offset: -Infinity, element: null};
+      items.forEach(child=>{
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height/2;
+        if(offset < 0 && offset > closest.offset){
+          closest = {offset, element: child};
+        }
+      });
+      return closest.element;
+    }
+
+    syncRankedOrder();
+  }
+
+  /* ---------------------------------------------------------
+     SCREEN: CHAPTER 3 — Timeline mapping
+  --------------------------------------------------------- */
+  function renderChapter3(){
+    main.innerHTML = "";
+    const screen = el("div", {cls:"screen"});
+
+    screen.appendChild(el("span", {cls:"badge", text:"Chapter 3 · Map Your Thinking"}));
+    screen.appendChild(el("h2", {text:"Place each moment along your decision timeline"}));
+    screen.appendChild(el("p", {cls:"lead", text:"Drag each token onto the timeline in the order it usually happens for you — from 'Something happens' to how you typically resolve it. Use arrow keys after focusing a token to nudge it left or right."}));
+
+    const card = el("div", {cls:"card"});
+
+    const poolLabel = el("div", {cls:"drop-zone-hint", text:"Unplaced moments"});
+    const pool = el("div", {cls:"timeline-pool", attrs:{id:"timeline-pool"}});
+    card.appendChild(poolLabel);
+    card.appendChild(pool);
+
+    const track = el("div", {cls:"timeline-track", attrs:{id:"timeline-track", role:"application", "aria-label":"Decision timeline drop area"}});
+    card.appendChild(track);
+    const labels = el("div", {cls:"timeline-labels"});
+    labels.appendChild(el("span", {text:"Trigger"}));
+    labels.appendChild(el("span", {text:"Resolution"}));
+    card.appendChild(labels);
+
+    screen.appendChild(card);
+
+    // build tokens
+    TIMELINE_TOKENS.forEach(tok=>{
+      const t = makeTimelineToken(tok);
+      if(state.timelinePositions[tok.id] !== undefined){
+        t.style.left = state.timelinePositions[tok.id] + "%";
+        track.appendChild(t);
+      } else {
+        pool.appendChild(t);
+      }
+    });
+
+    setupTimelineDrag(pool, track);
+
+    const navRow = el("div", {cls:"nav-row"});
+    const backBtn = el("button", {cls:"btn secondary", text:"← Back"});
+    backBtn.addEventListener("click", ()=>{
+      state.chapter = 2;
+      transitionTo(renderChapter2);
+    });
+    const nextBtn = el("button", {cls:"btn", text:"See my reflection →", attrs:{id:"ch3-next"}});
+    nextBtn.disabled = Object.keys(state.timelinePositions).length < TIMELINE_TOKENS.length;
+    nextBtn.addEventListener("click", ()=>{
+      scoreTimeline();
+      state.chapter = 4;
+      transitionTo(renderFinal);
+    });
+    navRow.appendChild(backBtn);
+    navRow.appendChild(nextBtn);
+    screen.appendChild(navRow);
+
+    main.appendChild(screen);
+    updateProgress("Chapter 3 · Timeline");
+  }
+
+  function makeTimelineToken(tok){
+    const t = el("div", {cls:"timeline-token", attrs:{
+      tabindex:"0", draggable:"true", "data-id": tok.id,
+      "aria-label": tok.label + ": " + tok.desc + ". Draggable timeline token."
+    }});
+    t.textContent = tok.label;
+    t.title = tok.desc;
+    return t;
+  }
+
+  function setupTimelineDrag(pool, track){
+    let dragTok = null;
+
+    function placeAtPercent(tok, clientX){
+      const rect = track.getBoundingClientRect();
+      let pct = ((clientX - rect.left) / rect.width) * 100;
+      pct = Math.max(4, Math.min(96, pct));
+      tok.style.left = pct + "%";
+      state.timelinePositions[tok.dataset.id] = pct;
+      if(!track.contains(tok)) track.appendChild(tok);
+      updateCh3NextBtn();
+    }
+
+    function updateCh3NextBtn(){
+      const nextBtn = document.getElementById("ch3-next");
+      if(nextBtn) nextBtn.disabled = Object.keys(state.timelinePositions).length < TIMELINE_TOKENS.length;
+    }
+
+    function attachTokenEvents(tok){
+      tok.addEventListener("dragstart", ()=>{ dragTok = tok; });
+      tok.addEventListener("dragend", ()=>{ dragTok = null; });
+
+      tok.addEventListener("touchstart", ()=>{ dragTok = tok; }, {passive:true});
+      tok.addEventListener("touchmove", (e)=>{
+        if(!dragTok) return;
+        e.preventDefault();
+        const t = e.touches[0];
+        const overTrack = document.elementFromPoint(t.clientX, t.clientY);
+        if(overTrack && overTrack.closest("#timeline-track")){
+          placeAtPercent(dragTok, t.clientX);
+        }
+      }, {passive:false});
+      tok.addEventListener("touchend", ()=>{ dragTok = null; });
+
+      tok.addEventListener("keydown", (e)=>{
+        const id = tok.dataset.id;
+        let pct = state.timelinePositions[id];
+        if(pct === undefined){
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            pct = 50;
+            tok.style.left = "50%";
+            state.timelinePositions[id] = 50;
+            track.appendChild(tok);
+            updateCh3NextBtn();
+          }
+          return;
+        }
+        if(e.key === "ArrowLeft"){
+          e.preventDefault();
+          pct = Math.max(4, pct - 5);
+          tok.style.left = pct + "%";
+          state.timelinePositions[id] = pct;
+        } else if(e.key === "ArrowRight"){
+          e.preventDefault();
+          pct = Math.min(96, pct + 5);
+          tok.style.left = pct + "%";
+          state.timelinePositions[id] = pct;
+        }
+      });
+    }
+
+    track.addEventListener("dragover", (e)=> e.preventDefault());
+    track.addEventListener("drop", (e)=>{
+      e.preventDefault();
+      if(dragTok) placeAtPercent(dragTok, e.clientX);
+    });
+
+    Array.from(pool.children).forEach(attachTokenEvents);
+    Array.from(track.children).forEach(attachTokenEvents);
+  }
+
+  function scoreTimeline(){
+    // sort placed tokens by x position to get sequence
+    const placed = Object.keys(state.timelinePositions)
+      .map(id=>({id, x: state.timelinePositions[id]}))
+      .sort((a,b)=>a.x-b.x);
+
+    placed.forEach((p, idx)=>{
+      const tok = TIMELINE_TOKENS.find(t=>t.id===p.id);
+      if(tok && tok.trait){
+        addScore({[tok.trait]: 1.5}, 1);
+      }
+    });
+
+    // Bonus: if "Replay" placed very late (near resolution end), extra overthinking weight
+    const replay = placed.find(p=>p.id==="t4");
+    if(replay && replay.x > 60){
+      addScore({overthinking: 1}, 1);
+    }
+    // Bonus: if "Act" placed early, extra action weight
+    const act = placed.find(p=>p.id==="t5");
+    if(act && act.x < 40){
+      addScore({action: 1}, 1);
+    }
+  }
+
+  /* ---------------------------------------------------------
+     SCREEN: FINAL REFLECTION
+  --------------------------------------------------------- */
+  function renderFinal(){
+    main.innerHTML = "";
+    const screen = el("div", {cls:"screen"});
+
+    screen.appendChild(el("span", {cls:"badge", text:"Final Reflection"}));
+    screen.appendChild(el("h2", {text:"Your thinking pattern snapshot"}));
+    screen.appendChild(el("p", {cls:"lead", text:"This is a reflective snapshot based on how you responded today — not a fixed label. Your patterns can shift with mood, context, and practice."}));
+
+    const total = Object.values(state.scores).reduce((a,b)=>a+b, 0) || 1;
+    const breakdown = Object.keys(state.scores).map(key=>({
+      key, name: TRAITS[key].name, pct: Math.round((state.scores[key]/total)*100)
+    })).sort((a,b)=>b.pct-a.pct);
+
+    const card = el("div", {cls:"card"});
+    card.appendChild(el("h2", {text:"Breakdown", attrs:{style:"font-size:1.1rem;"}}));
+
+    breakdown.forEach(b=>{
+      const row = el("div", {cls:"breakdown-row"});
+      row.appendChild(el("div", {cls:"breakdown-label", text:b.name}));
+      const track = el("div", {cls:"breakdown-bar-track"});
+      const fill = el("div", {cls:"breakdown-bar-fill"});
+      track.appendChild(fill);
+      row.appendChild(track);
+      row.appendChild(el("div", {cls:"breakdown-pct", text:b.pct + "%"}));
+      card.appendChild(row);
+      requestAnimationFrame(()=>{ fill.style.width = b.pct + "%"; });
+    });
+
+    screen.appendChild(card);
+
+    const top = breakdown[0];
+    const second = breakdown[1];
+    const insight = el("div", {cls:"insight-box"});
+    insight.appendChild(el("h2", {text: top.name, attrs:{style:"font-size:1.2rem;"}}));
+    insight.appendChild(el("p", {cls:"lead", text: TRAITS[top.key].blurb}));
+    const secondP = el("p", {cls:"lead"});
+    secondP.textContent = "There's also a notable thread of " + second.name.toLowerCase() + " in how you approach things — " + TRAITS[second.key].blurb.toLowerCase();
+    insight.appendChild(secondP);
+    screen.appendChild(insight);
+
+    const journalCard = el("div", {cls:"card"});
+    journalCard.appendChild(el("h2", {text:"Reflection journal", attrs:{style:"font-size:1.1rem;"}}));
+    journalCard.appendChild(el("p", {cls:"lead", text:"Optional: jot a quick note on what resonated, or what surprised you."}));
+    const textarea = el("textarea", {cls:"journal-note", attrs:{"aria-label":"Reflection journal note", placeholder:"Write a private note to yourself..."}});
+    textarea.value = state.journalNote;
+    textarea.addEventListener("input", (e)=>{ state.journalNote = e.target.value; });
+    journalCard.appendChild(textarea);
+    screen.appendChild(journalCard);
+
+    const disclaimer = el("p", {cls:"disclaimer"});
+    disclaimer.textContent = "Reminder: this tool offers reflective, educational observations only. It is not a psychological assessment, diagnosis, or clinical tool. If you have concerns about your mental health, please consult a qualified professional.";
+    screen.appendChild(disclaimer);
+
+    const navRow = el("div", {cls:"nav-row"});
+    const backBtn = el("button", {cls:"btn secondary", text:"← Back"});
+    backBtn.addEventListener("click", ()=>{
+      state.chapter = 3;
+      transitionTo(renderChapter3);
+    });
+    const restartBtn = el("button", {cls:"btn", text:"Start over"});
+    restartBtn.addEventListener("click", resetJourney);
+    navRow.appendChild(backBtn);
+    navRow.appendChild(restartBtn);
+    screen.appendChild(navRow);
+
+    main.appendChild(screen);
+    updateProgress("Complete");
+  }
+
+  function resetJourney(){
+    state.chapter = 0;
+    state.scenarioIndex = 0;
+    state.scenarioAnswers = [];
+    state.rankedOrder = [];
+    state.timelinePositions = {};
+    state.timelinePlacedOrder = [];
+    state.scores = { analytical:0, emotional:0, overthinking:0, action:0, balanced:0 };
+    state.journalNote = "";
+    transitionTo(renderStart);
+  }
+
+  /* ---------------------------------------------------------
+     MODE TOGGLE
+  --------------------------------------------------------- */
+  function setMode(mode){
+    state.mode = mode;
+    document.body.setAttribute("data-mode", mode);
+    document.getElementById("mode-calm").classList.toggle("active", mode==="calm");
+    document.getElementById("mode-calm").setAttribute("aria-pressed", mode==="calm");
+    document.getElementById("mode-stress").classList.toggle("active", mode==="stress");
+    document.getElementById("mode-stress").setAttribute("aria-pressed", mode==="stress");
+  }
+  document.getElementById("mode-calm").addEventListener("click", ()=>setMode("calm"));
+  document.getElementById("mode-stress").addEventListener("click", ()=>setMode("stress"));
+
+  /* ---------------------------------------------------------
+     INIT
+  --------------------------------------------------------- */
+  renderStart();
+
+})();
+</script>
+</body>
+</html>
