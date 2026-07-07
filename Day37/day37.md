@@ -112,11 +112,11 @@ Successfully developed a fully interactive organizational workflow simulator tha
 **Stage 1 – Ownership**
   ![](day37.png)
 **Stage 2 – Task Routing**
-   ![](day37.png)
+   ![](day-37.png)
 **Stage 3 – Collaboration**
-   ![](day37.png)
+   ![](day_37.png)
 **Organizational Thinking Dashboard**
-   ![](day37.png)
+   ![](d37.png)
 
 ---
 
