@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Learning Studio — Array &amp; Object Methods</title>
+<style>
+:root{
+  --bg:#0B0E14;
+  --bg-panel:#10141C;
+  --bg-raised:#161B26;
+  --line:#232A38;
+  --text:#D8DEE9;
+  --text-dim:#8892A6;
+  --teal:#5EEAD4;
+  --teal-dim:#2DD4BF33;
+  --amber:#F5A623;
+  --violet:#A78BFA;
+  --red:#F87171;
+  --green:#4ADE80;
+  --font-display:'JetBrains Mono', 'Courier New', monospace;
+  --font-body:'Inter', -apple-system, sans-serif;
+  --radius:10px;
+  --shadow:0 8px 30px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(ellipse at top left, #101826 0%, transparent 55%),
+    radial-gradient(ellipse at bottom right, #14202017 0%, transparent 50%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.65;
+  min-height:100vh;
+  padding-bottom:80px;
+}
+@font-face{font-family:'JetBrains Mono';src:local('JetBrains Mono');}
+::selection{background:var(--teal-dim); color:var(--teal);}
+a{color:var(--teal);}
+
+/* ---------- Progress bar (sticky) ---------- */
+#progressBar{
+  position:sticky; top:0; z-index:100;
+  background:rgba(11,14,20,0.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:10px 20px;
+  display:flex; align-items:center; gap:14px;
+}
+#progressBar .label{font-family:var(--font-display); font-size:11px; color:var(--text-dim); white-space:nowrap;}
+#progressTrack{flex:1; height:6px; background:var(--bg-raised); border-radius:4px; overflow:hidden; border:1px solid var(--line);}
+#progressFill{height:100%; width:0%; background:linear-gradient(90deg,var(--teal),var(--violet)); transition:width .5s ease;}
+#progressPct{font-family:var(--font-display); font-size:11px; color:var(--teal); min-width:38px; text-align:right;}
+#rewardBadges{display:flex; gap:6px;}
+.badge-dot{width:10px; height:10px; border-radius:50%; background:var(--bg-raised); border:1px solid var(--line);}
+.badge-dot.earned{background:var(--amber); border-color:var(--amber); box-shadow:0 0 8px var(--amber);}
+
+/* ---------- Container ---------- */
+.wrap{max-width:900px; margin:0 auto; padding:0 24px;}
+section{padding:60px 0;}
+.eyebrow{
+  font-family:var(--font-display); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--teal); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:'▸'; color:var(--amber);}
+h1,h2,h3{font-family:var(--font-display); font-weight:700; color:#fff; letter-spacing:-0.01em;}
+h1{font-size:clamp(28px,5vw,44px); line-height:1.15;}
+h2{font-size:clamp(22px,3.5vw,30px); margin-bottom:14px;}
+h3{font-size:18px; color:var(--teal); margin:20px 0 10px;}
+p{color:var(--text); margin-bottom:12px;}
+.muted{color:var(--text-dim);}
+code, .inline-code{
+  font-family:var(--font-display); background:var(--bg-raised); border:1px solid var(--line);
+  padding:2px 6px; border-radius:5px; font-size:0.88em; color:var(--amber);
+}
+pre{
+  background:#0A0D13; border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px; overflow-x:auto; margin:14px 0; font-family:var(--font-display); font-size:13.5px;
+  line-height:1.6; box-shadow:inset 0 0 20px rgba(0,0,0,0.3);
+}
+pre .c-key{color:var(--violet);}
+pre .c-str{color:var(--green);}
+pre .c-fn{color:var(--teal);}
+pre .c-com{color:var(--text-dim); font-style:italic;}
+pre .c-num{color:var(--amber);}
+
+/* ---------- Hero ---------- */
+.hero{
+  padding:70px 0 40px;
+  position:relative;
+}
+.hero-pipeline{
+  margin-top:34px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--bg-panel);
+  padding:22px;
+  overflow-x:auto;
+}
+.pipe-row{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:13px; min-width:640px;}
+.pipe-box{
+  background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:10px 14px;
+  text-align:center; white-space:nowrap;
+}
+.pipe-box.data{color:var(--text-dim);}
+.pipe-box.method{color:var(--bg); background:var(--teal); border-color:var(--teal); font-weight:700;}
+.pipe-arrow{color:var(--amber); font-size:18px;}
+.hero-meta{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-top:30px;}
+.meta-card{
+  background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px;
+}
+.meta-card .k{font-family:var(--font-display); font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.08em;}
+.meta-card .v{font-family:var(--font-display); font-size:20px; color:var(--teal); margin-top:4px;}
+ul.obj-list{list-style:none; margin:14px 0;}
+ul.obj-list li{padding:8px 0 8px 26px; position:relative; border-bottom:1px dashed var(--line);}
+ul.obj-list li::before{content:'✓'; position:absolute; left:0; color:var(--green); font-family:var(--font-display);}
+
+/* ---------- Module ---------- */
+.module{
+  border:1px solid var(--line); border-radius:14px; background:var(--bg-panel);
+  margin-bottom:40px; overflow:hidden; box-shadow:var(--shadow);
+  opacity:0.35; pointer-events:none; filter:grayscale(0.6);
+  transition:opacity .5s ease, filter .5s ease;
+}
+.module.unlocked{opacity:1; pointer-events:auto; filter:none;}
+.module-head{
+  padding:22px 28px; border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  background:linear-gradient(180deg, var(--bg-raised), var(--bg-panel));
+}
+.module-head .tag{font-family:var(--font-display); font-size:11px; color:var(--text-dim);}
+.module-num{
+  font-family:var(--font-display); font-size:13px; color:var(--bg); background:var(--teal);
+  padding:4px 10px; border-radius:6px; font-weight:700;
+}
+.lock-icon{font-size:20px; color:var(--text-dim);}
+.module-body{padding:28px;}
+.diagram-box{
+  background:var(--bg-raised); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px; margin:16px 0; overflow-x:auto;
+}
+.analogy-box{
+  border-left:3px solid var(--amber); background:#F5A62311; padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0;
+}
+.analogy-box .lbl{font-family:var(--font-display); font-size:11px; color:var(--amber); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;}
+.misconception-box{
+  border-left:3px solid var(--red); background:#F8717111; padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0;
+}
+.misconception-box .lbl{font-family:var(--font-display); font-size:11px; color:var(--red); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;}
+.takeaway-box{
+  border:1px solid var(--teal); background:var(--teal-dim); padding:16px 18px; border-radius:8px; margin:18px 0;
+}
+.takeaway-box .lbl{font-family:var(--font-display); font-size:11px; color:var(--teal); text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px;}
+.takeaway-box ul{list-style:none;}
+.takeaway-box li{padding:4px 0 4px 20px; position:relative;}
+.takeaway-box li::before{content:'—'; position:absolute; left:0; color:var(--teal);}
+
+.compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0;}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr;}}
+.compare-card{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:16px;}
+.compare-card h4{font-family:var(--font-display); font-size:14px; margin-bottom:8px;}
+.compare-card.mutating h4{color:var(--red);}
+.compare-card.pure h4{color:var(--green);}
+
+/* Interactive playground */
+.playground{
+  background:#0A0D13; border:1px solid var(--line); border-radius:var(--radius); margin:18px 0; overflow:hidden;
+}
+.playground .pg-head{padding:10px 16px; background:var(--bg-raised); border-bottom:1px solid var(--line); font-family:var(--font-display); font-size:12px; color:var(--text-dim); display:flex; justify-content:space-between;}
+.playground .pg-body{padding:16px;}
+.pg-controls{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+button{
+  font-family:var(--font-display); font-size:12.5px; cursor:pointer;
+  background:var(--bg-raised); color:var(--text); border:1px solid var(--line);
+  padding:8px 14px; border-radius:7px; transition:.2s;
+}
+button:hover{border-color:var(--teal); color:var(--teal);}
+button.primary{background:var(--teal); color:#00201c; border-color:var(--teal); font-weight:700;}
+button.primary:hover{filter:brightness(1.1); color:#00201c;}
+button:disabled{opacity:.4; cursor:not-allowed;}
+.pg-output{font-family:var(--font-display); font-size:13px; background:var(--bg-panel); border:1px solid var(--line); border-radius:6px; padding:12px; min-height:30px; white-space:pre-wrap; color:var(--green);}
+
+/* Exercises */
+.exercise-box{border:1px solid var(--violet); border-radius:var(--radius); padding:18px; margin:16px 0; background:#A78BFA0D;}
+.exercise-box .lbl{font-family:var(--font-display); font-size:11px; color:var(--violet); text-transform:uppercase; margin-bottom:8px;}
+textarea.code-input{
+  width:100%; min-height:90px; background:#0A0D13; color:var(--text); border:1px solid var(--line);
+  border-radius:6px; font-family:var(--font-display); font-size:13px; padding:12px; resize:vertical;
+}
+.result-line{margin-top:10px; font-family:var(--font-display); font-size:13px; padding:8px 10px; border-radius:6px; display:none;}
+.result-line.ok{display:block; background:#4ADE8022; color:var(--green); border:1px solid var(--green);}
+.result-line.err{display:block; background:#F8717122; color:var(--red); border:1px solid var(--red);}
+
+/* Quiz */
+.quiz{background:var(--bg-raised); border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-top:26px;}
+.quiz h3{margin-top:0;}
+.quiz-q{margin-bottom:22px; padding-bottom:18px; border-bottom:1px dashed var(--line);}
+.quiz-q:last-of-type{border-bottom:none;}
+.quiz-q .qtext{font-weight:600; color:#fff; margin-bottom:10px;}
+.quiz-opts{display:flex; flex-direction:column; gap:8px;}
+.quiz-opt{
+  text-align:left; background:var(--bg-panel); border:1px solid var(--line); border-radius:7px;
+  padding:10px 14px; color:var(--text); font-family:var(--font-body); font-size:14px;
+}
+.quiz-opt:hover{border-color:var(--teal);}
+.quiz-opt.selected{border-color:var(--violet); background:#A78BFA1A;}
+.quiz-opt.correct{border-color:var(--green); background:#4ADE8022; color:var(--green);}
+.quiz-opt.incorrect{border-color:var(--red); background:#F8717122; color:var(--red);}
+.quiz-explain{
+  margin-top:8px; font-size:13px; color:var(--text-dim); padding:10px 12px; background:var(--bg-panel);
+  border-left:2px solid var(--teal); border-radius:0 6px 6px 0; display:none;
+}
+.quiz-explain.show{display:block;}
+.quiz-summary{
+  text-align:center; padding:22px; border-radius:8px; margin-top:10px; display:none;
+}
+.quiz-summary.show{display:block;}
+.score-ring{
+  width:100px; height:100px; border-radius:50%; margin:0 auto 14px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-size:24px; font-weight:700;
+  border:6px solid var(--line);
+}
+
+/* Final section */
+.cheatsheet-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin:16px 0;}
+.cheat-card{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:14px;}
+.cheat-card h4{font-family:var(--font-display); font-size:13px; color:var(--teal); margin-bottom:6px;}
+.cheat-card code{display:block; margin-bottom:4px; font-size:12px;}
+
+.resource-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:14px 0;}
+.resource-card{background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:16px;}
+.resource-card h4{font-family:var(--font-display); font-size:13px; color:var(--amber); margin-bottom:8px; text-transform:uppercase; letter-spacing:.06em;}
+.resource-card ul{list-style:none;}
+.resource-card li{padding:4px 0; font-size:13.5px; color:var(--text-dim);}
+.kw-chip-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+.kw-chip{font-family:var(--font-display); font-size:11.5px; background:var(--bg-raised); border:1px solid var(--line); padding:5px 10px; border-radius:20px; color:var(--teal);}
+
+.print-btn{position:fixed; bottom:24px; right:24px; z-index:50; border-radius:30px; padding:12px 20px; box-shadow:var(--shadow);}
+footer{text-align:center; padding:40px 0; color:var(--text-dim); font-family:var(--font-display); font-size:12px;}
+
+@media print{
+  #progressBar,.print-btn,button,.playground .pg-controls{display:none !important;}
+  .module{opacity:1 !important; filter:none !important;}
+  body{background:#fff; color:#000;}
+}
+</style>
+</head>
+<body>
+
+<div id="progressBar">
+  <span class="label">PROGRESS</span>
+  <div id="progressTrack"><div id="progressFill"></div></div>
+  <span id="progressPct">0%</span>
+  <div id="rewardBadges">
+    <div class="badge-dot" data-b="1" title="Module 1 complete"></div>
+    <div class="badge-dot" data-b="2" title="Module 2 complete"></div>
+    <div class="badge-dot" data-b="3" title="Module 3 complete"></div>
+    <div class="badge-dot" data-b="4" title="Module 4 complete"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ HERO / INTRO ============ -->
+  <section class="hero">
+    <div class="eyebrow">Interactive Learning Studio</div>
+    <h1>Array &amp; Object Methods in JavaScript</h1>
+    <p class="muted" style="max-width:640px; margin-top:12px;">
+      Data doesn't sit still in a real JavaScript program — it moves through a pipeline of transformations.
+      This tutorial teaches you to build, read, and reason about those pipelines using <code>map</code>,
+      <code>filter</code>, <code>reduce</code>, <code>forEach</code>, <code>find</code>, sorting, and the
+      full <code>Object</code> toolkit.
+    </p>
+
+    <div class="hero-pipeline">
+      <div class="pipe-row">
+        <div class="pipe-box data">[1,2,3,4,5]</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-box method">.filter(isEven)</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-box data">[2,4]</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-box method">.map(double)</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-box data">[4,8]</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-box method">.reduce(sum)</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-box data" style="color:var(--amber); border-color:var(--amber);">12</div>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <div class="meta-card"><div class="k">Estimated time</div><div class="v">70–90 min</div></div>
+      <div class="meta-card"><div class="k">Modules</div><div class="v">4 stages</div></div>
+      <div class="meta-card"><div class="k">Prerequisites</div><div class="v" style="font-size:14px;">Basic JS: variables, functions, loops</div></div>
+      <div class="meta-card"><div class="k">Reward system</div><div class="v" style="font-size:14px;">🏅 4 badges + final certificate</div></div>
+    </div>
+
+    <h3 style="margin-top:34px;">Learning objectives</h3>
+    <ul class="obj-list">
+      <li>Explain the difference between mutating and non-mutating array methods</li>
+      <li>Use <code>map</code>, <code>filter</code>, <code>forEach</code> and <code>reduce</code> confidently and correctly</li>
+      <li>Search and test arrays with <code>find</code>, <code>findIndex</code>, <code>some</code>, <code>every</code>, <code>includes</code></li>
+      <li>Read, write, and reshape objects with <code>Object.keys/values/entries</code>, <code>Object.assign</code>, spread, and destructuring</li>
+      <li>Chain multiple methods into a single readable data pipeline</li>
+      <li>Recognize common bugs and misconceptions before they hit production</li>
+    </ul>
+
+    <h3>Expected outcomes</h3>
+    <p>By the end, you'll be able to look at any array/object transformation task and pick the right method
+    immediately — instead of reaching for a manual <code>for</code> loop — and you'll be able to explain
+    <em>why</em> that method is the right choice to another developer.</p>
+
+    <div class="analogy-box">
+      <div class="lbl">Big-picture analogy</div>
+      Think of an array as a conveyor belt on a factory floor. Each method is a station the belt passes through:
+      <code>filter</code> removes defective items, <code>map</code> repaints every item the same way,
+      <code>reduce</code> is the packing station where everything gets combined into one crate. Objects are the
+      labeled boxes riding the belt — <code>Object</code> methods are how you read or relabel what's inside a box.
+    </div>
+  </section>
+
+  <!-- ============ MODULE 1 ============ -->
+  <div class="module unlocked" id="module-1">
+    <div class="module-head">
+      <div>
+        <div class="module-num">MODULE 01</div>
+        <div class="tag" style="margin-top:6px;">Foundations</div>
+      </div>
+      <div class="lock-icon" id="lock-1">🔓</div>
+    </div>
+    <div class="module-body">
+      <h2>Foundations: Iterating Without Loops</h2>
+      <p>Every array method you'll learn does one job: it walks the array from front to back and runs a callback
+      function on each element. The differences between them are entirely about <strong>what they do with the
+      return value</strong> of that callback.</p>
+
+      <h3>forEach — just do something, return nothing</h3>
+      <pre><span class="c-key">const</span> cart = [<span class="c-num">120</span>, <span class="c-num">45</span>, <span class="c-num">300</span>];
+cart.<span class="c-fn">forEach</span>(price <span class="c-key">=></span> {
+  console.<span class="c-fn">log</span>(<span class="c-str">`Item costs ₹${price}`</span>);
+});
+<span class="c-com">// forEach always returns undefined — never chain after it</span></pre>
+
+      <h3>map — transform every element, same length out</h3>
+      <pre><span class="c-key">const</span> prices = [<span class="c-num">120</span>, <span class="c-num">45</span>, <span class="c-num">300</span>];
+<span class="c-key">const</span> withTax = prices.<span class="c-fn">map</span>(p <span class="c-key">=></span> p * <span class="c-num">1.18</span>);
+<span class="c-com">// withTax → [141.6, 53.1, 354] — a brand-new array, same length</span></pre>
+
+      <h3>filter — keep only what passes a test</h3>
+      <pre><span class="c-key">const</span> prices = [<span class="c-num">120</span>, <span class="c-num">45</span>, <span class="c-num">300</span>];
+<span class="c-key">const</span> affordable = prices.<span class="c-fn">filter</span>(p <span class="c-key">=></span> p < <span class="c-num">150</span>);
+<span class="c-com">// affordable → [120, 45] — a new, possibly shorter array</span></pre>
+
+      <div class="analogy-box">
+        <div class="lbl">Analogy</div>
+        <code>forEach</code> is a security guard walking past every shop and glancing in — no report is produced.
+        <code>map</code> is a renovation crew that repaints every shop front and hands back a full new street.
+        <code>filter</code> is a health inspector who only keeps the shops that pass inspection on a new list.
+      </div>
+
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 150" width="100%" style="max-width:640px;">
+          <defs>
+            <marker id="arrow1" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 z" fill="#F5A623"/>
+            </marker>
+          </defs>
+          <text x="10" y="20" fill="#8892A6" font-family="JetBrains Mono" font-size="11">INPUT</text>
+          <g font-family="JetBrains Mono" font-size="13">
+            <rect x="10" y="30" width="40" height="30" rx="5" fill="#161B26" stroke="#232A38"/>
+            <text x="30" y="50" fill="#D8DEE9" text-anchor="middle">2</text>
+            <rect x="55" y="30" width="40" height="30" rx="5" fill="#161B26" stroke="#232A38"/>
+            <text x="75" y="50" fill="#D8DEE9" text-anchor="middle">5</text>
+            <rect x="100" y="30" width="40" height="30" rx="5" fill="#161B26" stroke="#232A38"/>
+            <text x="120" y="50" fill="#D8DEE9" text-anchor="middle">8</text>
+          </g>
+          <line x1="150" y1="45" x2="230" y2="45" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow1)"/>
+          <text x="155" y="35" fill="#F5A623" font-family="JetBrains Mono" font-size="11">.map(x=>x*10)</text>
+          <g font-family="JetBrains Mono" font-size="13">
+            <rect x="235" y="30" width="46" height="30" rx="5" fill="#5EEAD4" stroke="#5EEAD4"/>
+            <text x="258" y="50" fill="#00201c" text-anchor="middle">20</text>
+            <rect x="285" y="30" width="46" height="30" rx="5" fill="#5EEAD4" stroke="#5EEAD4"/>
+            <text x="308" y="50" fill="#00201c" text-anchor="middle">50</text>
+            <rect x="335" y="30" width="46" height="30" rx="5" fill="#5EEAD4" stroke="#5EEAD4"/>
+            <text x="358" y="50" fill="#00201c" text-anchor="middle">80</text>
+          </g>
+          <text x="10" y="100" fill="#8892A6" font-family="JetBrains Mono" font-size="11">Same length in → same length out. That's the signature of map().</text>
+        </svg>
+      </div>
+
+      <h3>Mutating vs. non-mutating</h3>
+      <div class="compare-grid">
+        <div class="compare-card mutating">
+          <h4>⚠ Mutating (changes original)</h4>
+          <p class="muted" style="font-size:13.5px;"><code>push</code>, <code>pop</code>, <code>splice</code>,
+          <code>sort</code>, <code>reverse</code> change the array in place.</p>
+        </div>
+        <div class="compare-card pure">
+          <h4>✓ Non-mutating (returns new)</h4>
+          <p class="muted" style="font-size:13.5px;"><code>map</code>, <code>filter</code>, <code>slice</code>,
+          <code>concat</code> always return a fresh array, leaving the original untouched.</p>
+        </div>
+      </div>
+
+      <div class="misconception-box">
+        <div class="lbl">Common misconception</div>
+        "<code>map</code> and <code>forEach</code> are interchangeable if I don't use the return value." They are
+        not — <code>map</code> always allocates a new array in memory even if you throw the result away, which
+        wastes memory and confuses readers about intent. Use <code>forEach</code> when you only want side effects.
+      </div>
+
+      <h3>Try it — live playground</h3>
+      <div class="playground">
+        <div class="pg-head"><span>playground.js</span><span>array = [3, 7, 2, 9, 4]</span></div>
+        <div class="pg-body">
+          <div class="pg-controls">
+            <button onclick="pgRun(1,'map')">Run .map(x => x * 2)</button>
+            <button onclick="pgRun(1,'filter')">Run .filter(x => x > 4)</button>
+            <button onclick="pgRun(1,'forEach')">Run .forEach(log)</button>
+          </div>
+          <div class="pg-output" id="pg-out-1">// output will appear here</div>
+        </div>
+      </div>
+
+      <div class="exercise-box">
+        <div class="lbl">Practical exercise</div>
+        <p>Given <code>const ages = [12, 19, 25, 16, 31]</code>, write an expression using <code>filter</code>
+        that returns only the adults (18+). Type your answer below (just the expression, e.g.
+        <code>ages.filter(a => a >= 18)</code>) and check it.</p>
+        <textarea class="code-input" id="ex1" placeholder="ages.filter(...)"></textarea>
+        <div class="pg-controls" style="margin-top:10px;">
+          <button class="primary" onclick="checkExercise(1)">Check my answer</button>
+        </div>
+        <div class="result-line" id="ex1-result"></div>
+      </div>
+
+      <div class="takeaway-box">
+        <div class="lbl">Key takeaways</div>
+        <ul>
+          <li><code>forEach</code> = side effects only, returns undefined</li>
+          <li><code>map</code> = same-length transformation, returns a new array</li>
+          <li><code>filter</code> = keeps elements that pass a test, returns a new (possibly shorter) array</li>
+          <li>None of these three mutate the original array</li>
+        </ul>
+      </div>
+
+      <div class="quiz" id="quiz-1">
+        <h3>Module 1 Quiz</h3>
+        <div id="quiz-1-questions"></div>
+        <button class="primary" id="quiz-1-submit" onclick="submitQuiz(1)">Submit answers</button>
+        <div class="quiz-summary" id="quiz-1-summary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODULE 2 ============ -->
+  <div class="module" id="module-2">
+    <div class="module-head">
+      <div>
+        <div class="module-num">MODULE 02</div>
+        <div class="tag" style="margin-top:6px;">Aggregation &amp; Search</div>
+      </div>
+      <div class="lock-icon" id="lock-2">🔒</div>
+    </div>
+    <div class="module-body">
+      <h2>Aggregation &amp; Search: Reduce, Find, and Boolean Tests</h2>
+      <p><code>reduce</code> is the most powerful — and most feared — array method. Once you understand it, you'll
+      realize <code>map</code> and <code>filter</code> could theoretically be built from it.</p>
+
+      <h3>reduce — collapse an array into one value</h3>
+      <pre><span class="c-key">const</span> prices = [<span class="c-num">120</span>, <span class="c-num">45</span>, <span class="c-num">300</span>];
+<span class="c-key">const</span> total = prices.<span class="c-fn">reduce</span>((acc, price) <span class="c-key">=></span> acc + price, <span class="c-num">0</span>);
+<span class="c-com">// acc starts at 0, then becomes 120, then 165, then 465</span>
+<span class="c-com">// total → 465</span></pre>
+
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 130" width="100%" style="max-width:640px;">
+          <text x="10" y="18" fill="#8892A6" font-family="JetBrains Mono" font-size="11">accumulator walks left→right, absorbing each item</text>
+          <g font-family="JetBrains Mono" font-size="12">
+            <rect x="10" y="30" width="70" height="28" rx="5" fill="#A78BFA" />
+            <text x="45" y="49" fill="#1c1130" text-anchor="middle">acc=0</text>
+            <text x="90" y="49" fill="#F5A623">+120→</text>
+            <rect x="150" y="30" width="80" height="28" rx="5" fill="#A78BFA" />
+            <text x="190" y="49" fill="#1c1130" text-anchor="middle">acc=120</text>
+            <text x="235" y="49" fill="#F5A623">+45→</text>
+            <rect x="285" y="30" width="80" height="28" rx="5" fill="#A78BFA" />
+            <text x="325" y="49" fill="#1c1130" text-anchor="middle">acc=165</text>
+            <text x="370" y="49" fill="#F5A623">+300→</text>
+            <rect x="430" y="30" width="90" height="28" rx="5" fill="#5EEAD4" />
+            <text x="475" y="49" fill="#00201c" text-anchor="middle" font-weight="bold">acc=465</text>
+          </g>
+        </svg>
+      </div>
+
+      <h3>find, findIndex, some, every, includes</h3>
+      <pre><span class="c-key">const</span> users = [{id:<span class="c-num">1</span>,active:<span class="c-key">true</span>}, {id:<span class="c-num">2</span>,active:<span class="c-key">false</span>}];
+
+users.<span class="c-fn">find</span>(u <span class="c-key">=></span> !u.active);      <span class="c-com">// {id:2, active:false} — first match, or undefined</span>
+users.<span class="c-fn">findIndex</span>(u <span class="c-key">=></span> u.id === <span class="c-num">2</span>); <span class="c-com">// 1 — index, or -1</span>
+users.<span class="c-fn">some</span>(u <span class="c-key">=></span> !u.active);      <span class="c-com">// true — at least one</span>
+users.<span class="c-fn">every</span>(u <span class="c-key">=></span> u.active);      <span class="c-com">// false — not all</span>
+[<span class="c-num">1</span>,<span class="c-num">2</span>,<span class="c-num">3</span>].<span class="c-fn">includes</span>(<span class="c-num">2</span>);           <span class="c-com">// true — value check, not a callback</span></pre>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h4 style="color:var(--teal)">find vs filter</h4>
+          <p class="muted" style="font-size:13.5px;"><code>find</code> stops at the first match and returns one
+          element (or <code>undefined</code>). <code>filter</code> checks everything and returns an array.</p>
+        </div>
+        <div class="compare-card">
+          <h4 style="color:var(--teal)">some vs every</h4>
+          <p class="muted" style="font-size:13.5px;"><code>some</code> asks "does at least one pass?"
+          <code>every</code> asks "do all of them pass?" Both short-circuit as soon as the answer is known.</p>
+        </div>
+      </div>
+
+      <div class="analogy-box">
+        <div class="lbl">Analogy</div>
+        <code>reduce</code> is a snowball rolling downhill, picking up a bit of every patch of snow it crosses
+        until it's one big ball. <code>find</code> is a bouncer checking IDs at a door — the moment one guest
+        matches, the search is over.
+      </div>
+
+      <div class="misconception-box">
+        <div class="lbl">Common misconception</div>
+        "I always need to pass an initial value to <code>reduce</code>." You don't — if omitted, the first array
+        element becomes the initial accumulator and iteration starts from index 1. But skipping it on an empty
+        array throws a <code>TypeError</code>, so passing an explicit initial value is the safer default.
+      </div>
+
+      <h3>Try it — live playground</h3>
+      <div class="playground">
+        <div class="pg-head"><span>playground.js</span><span>array = [3, 7, 2, 9, 4]</span></div>
+        <div class="pg-body">
+          <div class="pg-controls">
+            <button onclick="pgRun(2,'reduce')">Run .reduce(sum)</button>
+            <button onclick="pgRun(2,'find')">Run .find(x > 5)</button>
+            <button onclick="pgRun(2,'every')">Run .every(x > 0)</button>
+          </div>
+          <div class="pg-output" id="pg-out-2">// output will appear here</div>
+        </div>
+      </div>
+
+      <div class="exercise-box">
+        <div class="lbl">Practical exercise</div>
+        <p>Given <code>const nums = [4, 8, 15, 16, 23, 42]</code>, write a <code>reduce</code> expression that
+        finds the <strong>maximum</strong> value (don't use <code>Math.max</code>).</p>
+        <textarea class="code-input" id="ex2" placeholder="nums.reduce(...)"></textarea>
+        <div class="pg-controls" style="margin-top:10px;">
+          <button class="primary" onclick="checkExercise(2)">Check my answer</button>
+        </div>
+        <div class="result-line" id="ex2-result"></div>
+      </div>
+
+      <div class="takeaway-box">
+        <div class="lbl">Key takeaways</div>
+        <ul>
+          <li><code>reduce(callback, initial)</code> collapses an array into a single value of any type</li>
+          <li><code>find</code>/<code>findIndex</code> return the first match or undefined/-1</li>
+          <li><code>some</code>/<code>every</code> return booleans and short-circuit</li>
+          <li><code>includes</code> checks a raw value, not a callback</li>
+        </ul>
+      </div>
+
+      <div class="quiz" id="quiz-2">
+        <h3>Module 2 Quiz</h3>
+        <div id="quiz-2-questions"></div>
+        <button class="primary" id="quiz-2-submit" onclick="submitQuiz(2)">Submit answers</button>
+        <div class="quiz-summary" id="quiz-2-summary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODULE 3 ============ -->
+  <div class="module" id="module-3">
+    <div class="module-head">
+      <div>
+        <div class="module-num">MODULE 03</div>
+        <div class="tag" style="margin-top:6px;">Object Methods &amp; Reshaping Data</div>
+      </div>
+      <div class="lock-icon" id="lock-3">🔒</div>
+    </div>
+    <div class="module-body">
+      <h2>Object Methods: Reading, Copying, and Reshaping</h2>
+      <p>Objects are the "labeled boxes" from our earlier analogy. JavaScript gives you a small, sharp toolkit
+      for inspecting and reshaping them without ever writing a manual <code>for...in</code> loop.</p>
+
+      <h3>Object.keys / values / entries</h3>
+      <pre><span class="c-key">const</span> user = { name: <span class="c-str">"Rafiya"</span>, role: <span class="c-str">"Developer"</span>, level: <span class="c-num">3</span> };
+
+Object.<span class="c-fn">keys</span>(user);    <span class="c-com">// ["name", "role", "level"]</span>
+Object.<span class="c-fn">values</span>(user);  <span class="c-com">// ["Rafiya", "Developer", 3]</span>
+Object.<span class="c-fn">entries</span>(user); <span class="c-com">// [["name","Rafiya"], ["role","Developer"], ["level",3]]</span>
+
+<span class="c-com">// entries() is what unlocks array methods on objects:</span>
+Object.entries(user).<span class="c-fn">forEach</span>(([key, value]) <span class="c-key">=></span> {
+  console.<span class="c-fn">log</span>(<span class="c-str">`${key}: ${value}`</span>);
+});</pre>
+
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 130" width="100%" style="max-width:640px;">
+          <rect x="10" y="15" width="180" height="100" rx="8" fill="#161B26" stroke="#232A38"/>
+          <text x="100" y="35" fill="#D8DEE9" text-anchor="middle" font-family="JetBrains Mono" font-size="12">{ name, role, level }</text>
+          <text x="20" y="58" fill="#8892A6" font-family="JetBrains Mono" font-size="11">object (unordered box)</text>
+          <line x1="200" y1="65" x2="270" y2="65" stroke="#F5A623" stroke-width="2"/>
+          <text x="205" y="55" fill="#F5A623" font-family="JetBrains Mono" font-size="11">Object.entries()</text>
+          <rect x="280" y="15" width="340" height="100" rx="8" fill="#5EEAD4"/>
+          <text x="450" y="45" fill="#00201c" text-anchor="middle" font-family="JetBrains Mono" font-size="12">[["name","Rafiya"],</text>
+          <text x="450" y="65" fill="#00201c" text-anchor="middle" font-family="JetBrains Mono" font-size="12">["role","Developer"],</text>
+          <text x="450" y="85" fill="#00201c" text-anchor="middle" font-family="JetBrains Mono" font-size="12">["level",3]]</text>
+          <text x="290" y="105" fill="#00302a" font-family="JetBrains Mono" font-size="10">→ now every array method works</text>
+        </svg>
+      </div>
+
+      <h3>Object.assign &amp; spread — copying and merging</h3>
+      <pre><span class="c-key">const</span> defaults = { theme: <span class="c-str">"dark"</span>, notifications: <span class="c-key">true</span> };
+<span class="c-key">const</span> userPrefs = { notifications: <span class="c-key">false</span> };
+
+<span class="c-com">// Object.assign mutates the first argument — pass {} to avoid that</span>
+<span class="c-key">const</span> merged1 = Object.<span class="c-fn">assign</span>({}, defaults, userPrefs);
+
+<span class="c-com">// Spread syntax — the modern, more readable equivalent</span>
+<span class="c-key">const</span> merged2 = { ...defaults, ...userPrefs };
+<span class="c-com">// both → { theme: "dark", notifications: false }  (later keys win)</span></pre>
+
+      <h3>Destructuring — pulling values out cleanly</h3>
+      <pre><span class="c-key">const</span> { name, role } = user;      <span class="c-com">// object destructuring</span>
+<span class="c-key">const</span> [first, second] = [<span class="c-num">10</span>, <span class="c-num">20</span>]; <span class="c-com">// array destructuring</span>
+<span class="c-key">const</span> { level = <span class="c-num">1</span> } = {};        <span class="c-com">// default value if missing</span></pre>
+
+      <h3>sort — the one that surprises everyone</h3>
+      <pre>[<span class="c-num">10</span>, <span class="c-num">1</span>, <span class="c-num">2</span>].<span class="c-fn">sort</span>();
+<span class="c-com">// [1, 10, 2] — sorted as STRINGS, not numbers! "10" comes before "2" as text.</span>
+
+[<span class="c-num">10</span>, <span class="c-num">1</span>, <span class="c-num">2</span>].<span class="c-fn">sort</span>((a, b) <span class="c-key">=></span> a - b);
+<span class="c-com">// [1, 2, 10] — always pass a comparator for numeric sorts</span></pre>
+
+      <div class="misconception-box">
+        <div class="lbl">Common misconception</div>
+        "<code>.sort()</code> sorts numbers numerically by default." It doesn't — it converts every element to a
+        <strong>string</strong> and sorts lexicographically. For example <code>[10, 1, 2].sort()</code> produces
+        <code>[1, 10, 2]</code>, not <code>[1, 2, 10]</code>, because <code>"10"</code> comes before
+        <code>"2"</code> as text. <strong>Always pass a comparator</strong> (<code>(a,b) =&gt; a - b</code>) for
+        numeric sorts. Also remember: <code>sort()</code> mutates the original array in place.
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card mutating">
+          <h4>⚠ sort() / reverse()</h4>
+          <p class="muted" style="font-size:13.5px;">Mutate the array in place and also return it — easy to
+          accidentally change data you didn't mean to touch.</p>
+        </div>
+        <div class="compare-card pure">
+          <h4>✓ [...arr].sort()</h4>
+          <p class="muted" style="font-size:13.5px;">Spread into a new array first if you need the original
+          order preserved elsewhere.</p>
+        </div>
+      </div>
+
+      <div class="analogy-box">
+        <div class="lbl">Analogy</div>
+        <code>Object.entries</code> is like taking every labeled box off a shelf and lining them up on a
+        conveyor belt as [label, contents] pairs — once they're in a line, every array method you already know
+        works on them.
+      </div>
+
+      <h3>Try it — live playground</h3>
+      <div class="playground">
+        <div class="pg-head"><span>playground.js</span><span>user = {name:"Rafiya", role:"Developer", level:3}</span></div>
+        <div class="pg-body">
+          <div class="pg-controls">
+            <button onclick="pgRun(3,'keys')">Run Object.keys(user)</button>
+            <button onclick="pgRun(3,'entries')">Run Object.entries(user)</button>
+            <button onclick="pgRun(3,'spread')">Run {...user, level:4}</button>
+          </div>
+          <div class="pg-output" id="pg-out-3">// output will appear here</div>
+        </div>
+      </div>
+
+      <div class="exercise-box">
+        <div class="lbl">Practical exercise</div>
+        <p>Given <code>const scores = {alice: 90, bob: 72, carla: 88}</code>, write an expression using
+        <code>Object.entries</code> + <code>filter</code> that returns entries with a score above 80.</p>
+        <textarea class="code-input" id="ex3" placeholder="Object.entries(scores).filter(...)"></textarea>
+        <div class="pg-controls" style="margin-top:10px;">
+          <button class="primary" onclick="checkExercise(3)">Check my answer</button>
+        </div>
+        <div class="result-line" id="ex3-result"></div>
+      </div>
+
+      <div class="takeaway-box">
+        <div class="lbl">Key takeaways</div>
+        <ul>
+          <li><code>Object.keys/values/entries</code> turn an object into an array you can use array methods on</li>
+          <li>Spread (<code>{...obj}</code>) is the modern way to copy/merge objects immutably</li>
+          <li>Destructuring extracts values with optional defaults</li>
+          <li><code>sort()</code> is string-based and mutating by default — always pass a comparator</li>
+        </ul>
+      </div>
+
+      <div class="quiz" id="quiz-3">
+        <h3>Module 3 Quiz</h3>
+        <div id="quiz-3-questions"></div>
+        <button class="primary" id="quiz-3-submit" onclick="submitQuiz(3)">Submit answers</button>
+        <div class="quiz-summary" id="quiz-3-summary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODULE 4 ============ -->
+  <div class="module" id="module-4">
+    <div class="module-head">
+      <div>
+        <div class="module-num">MODULE 04</div>
+        <div class="tag" style="margin-top:6px;">Mastery — Chaining Real Pipelines</div>
+      </div>
+      <div class="lock-icon" id="lock-4">🔒</div>
+    </div>
+    <div class="module-body">
+      <h2>Mastery: Chaining Methods Into Real Data Pipelines</h2>
+      <p>Production code rarely uses one method at a time. The real skill is chaining
+      <code>filter → map → reduce</code> (and friends) into a single readable pipeline that reads almost like
+      a sentence.</p>
+
+      <h3>A realistic chain</h3>
+      <pre><span class="c-key">const</span> orders = [
+  { item: <span class="c-str">"Laptop"</span>, price: <span class="c-num">55000</span>, inStock: <span class="c-key">true</span> },
+  { item: <span class="c-str">"Mouse"</span>,  price: <span class="c-num">500</span>,   inStock: <span class="c-key">true</span> },
+  { item: <span class="c-str">"Monitor"</span>,price: <span class="c-num">12000</span>, inStock: <span class="c-key">false</span> },
+];
+
+<span class="c-key">const</span> totalInStockValue = orders
+  .<span class="c-fn">filter</span>(o <span class="c-key">=></span> o.inStock)          <span class="c-com">// keep only in-stock items</span>
+  .<span class="c-fn">map</span>(o <span class="c-key">=></span> o.price)              <span class="c-com">// pull out just the prices</span>
+  .<span class="c-fn">reduce</span>((sum, p) <span class="c-key">=></span> sum + p, <span class="c-num">0</span>); <span class="c-com">// add them up</span>
+
+<span class="c-com">// totalInStockValue → 55500</span></pre>
+
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 100" width="100%" style="max-width:640px;">
+          <g font-family="JetBrains Mono" font-size="12">
+            <rect x="10" y="30" width="110" height="40" rx="6" fill="#161B26" stroke="#232A38"/>
+            <text x="65" y="55" fill="#D8DEE9" text-anchor="middle">3 orders</text>
+            <text x="130" y="45" fill="#F5A623">.filter→</text>
+            <rect x="185" y="30" width="110" height="40" rx="6" fill="#A78BFA22" stroke="#A78BFA"/>
+            <text x="240" y="55" fill="#A78BFA" text-anchor="middle">2 orders</text>
+            <text x="305" y="45" fill="#F5A623">.map→</text>
+            <rect x="350" y="30" width="110" height="40" rx="6" fill="#5EEAD422" stroke="#5EEAD4"/>
+            <text x="405" y="55" fill="#5EEAD4" text-anchor="middle">2 prices</text>
+            <text x="470" y="45" fill="#F5A623">.reduce→</text>
+            <rect x="540" y="30" width="90" height="40" rx="6" fill="#F5A623" stroke="#F5A623"/>
+            <text x="585" y="55" fill="#00201c" text-anchor="middle" font-weight="bold">55500</text>
+          </g>
+        </svg>
+      </div>
+
+      <h3>Performance: when to reach for one loop instead</h3>
+      <p>Chaining <code>filter().map().reduce()</code> is readable but walks the array three separate times.
+      For very large arrays (hundreds of thousands of items) in hot code paths, a single manual loop or one
+      combined <code>reduce</code> can be meaningfully faster. Readability wins by default — optimize only when
+      you've measured a real bottleneck.</p>
+
+      <pre><span class="c-com">// Same result, one pass, less readable — only reach for this after profiling</span>
+<span class="c-key">const</span> totalInStockValue2 = orders.<span class="c-fn">reduce</span>(
+  (sum, o) <span class="c-key">=></span> o.inStock ? sum + o.price : sum,
+  <span class="c-num">0</span>
+);</pre>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h4 style="color:var(--teal)">Chained methods</h4>
+          <p class="muted" style="font-size:13.5px;">Highly readable, self-documenting, easy to insert a new
+          step. Slightly more memory/passes.</p>
+        </div>
+        <div class="compare-card">
+          <h4 style="color:var(--amber)">Manual loop / single reduce</h4>
+          <p class="muted" style="font-size:13.5px;">One pass, fastest raw performance, but harder to read and
+          modify. Reach for this only when profiling shows it matters.</p>
+        </div>
+      </div>
+
+      <div class="misconception-box">
+        <div class="lbl">Common misconception</div>
+        "Chaining more methods is always slower and should be avoided." In almost all real UI/backend code the
+        array sizes are small enough that the difference is unmeasurable — premature optimization here usually
+        just makes code harder to maintain for no real benefit.
+      </div>
+
+      <h3>Try it — live playground</h3>
+      <div class="playground">
+        <div class="pg-head"><span>playground.js</span><span>orders (see example above)</span></div>
+        <div class="pg-body">
+          <div class="pg-controls">
+            <button onclick="pgRun(4,'chain')">Run filter→map→reduce chain</button>
+            <button onclick="pgRun(4,'names')">Run in-stock item names</button>
+          </div>
+          <div class="pg-output" id="pg-out-4">// output will appear here</div>
+        </div>
+      </div>
+
+      <div class="exercise-box">
+        <div class="lbl">Final module exercise</div>
+        <p>Given the <code>orders</code> array above, write a chain that returns an array of item <em>names</em>
+        (not prices) for items that cost more than ₹1000.</p>
+        <textarea class="code-input" id="ex4" placeholder="orders.filter(...).map(...)"></textarea>
+        <div class="pg-controls" style="margin-top:10px;">
+          <button class="primary" onclick="checkExercise(4)">Check my answer</button>
+        </div>
+        <div class="result-line" id="ex4-result"></div>
+      </div>
+
+      <div class="takeaway-box">
+        <div class="lbl">Key takeaways</div>
+        <ul>
+          <li>Chains read like sentences: filter what you want, map what you need, reduce to one answer</li>
+          <li>Each link in the chain should do exactly one job</li>
+          <li>Readability wins by default; only collapse into one loop after profiling proves it matters</li>
+        </ul>
+      </div>
+
+      <div class="quiz" id="quiz-4">
+        <h3>Module 4 Quiz</h3>
+        <div id="quiz-4-questions"></div>
+        <button class="primary" id="quiz-4-submit" onclick="submitQuiz(4)">Submit answers</button>
+        <div class="quiz-summary" id="quiz-4-summary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FINAL CHALLENGE ============ -->
+  <section id="finalChallenge" style="display:none;">
+    <div class="eyebrow">Capstone</div>
+    <h2>Final Practical Challenge</h2>
+    <p>You're given a small dataset of student records. Write a single chained expression that returns the
+    <strong>names of students who passed (score ≥ 40), sorted by score descending</strong>.</p>
+    <pre><span class="c-key">const</span> students = [
+  { name: <span class="c-str">"Aman"</span>, score: <span class="c-num">55</span> },
+  { name: <span class="c-str">"Riya"</span>, score: <span class="c-num">32</span> },
+  { name: <span class="c-str">"Kabir"</span>, score: <span class="c-num">78</span> },
+  { name: <span class="c-str">"Zoya"</span>, score: <span class="c-num">40</span> },
+];</pre>
+    <div class="exercise-box">
+      <div class="lbl">Capstone challenge</div>
+      <textarea class="code-input" id="exFinal" placeholder="students.filter(...).sort(...).map(...)" style="min-height:110px;"></textarea>
+      <div class="pg-controls" style="margin-top:10px;">
+        <button class="primary" onclick="checkFinal()">Run &amp; check</button>
+      </div>
+      <div class="result-line" id="exFinal-result"></div>
+    </div>
+
+    <h2 style="margin-top:44px;">Cheat Sheet</h2>
+    <div class="cheatsheet-grid">
+      <div class="cheat-card"><h4>Array — transform</h4>
+        <code>arr.map(x => ...)</code>
+        <code>arr.filter(x => ...)</code>
+        <code>arr.forEach(x => ...)</code>
+      </div>
+      <div class="cheat-card"><h4>Array — aggregate</h4>
+        <code>arr.reduce((a,x)=>..., init)</code>
+        <code>arr.sort((a,b)=>a-b)</code>
+      </div>
+      <div class="cheat-card"><h4>Array — search</h4>
+        <code>arr.find(x => ...)</code>
+        <code>arr.findIndex(x => ...)</code>
+        <code>arr.some(x => ...)</code>
+        <code>arr.every(x => ...)</code>
+        <code>arr.includes(value)</code>
+      </div>
+      <div class="cheat-card"><h4>Object</h4>
+        <code>Object.keys(obj)</code>
+        <code>Object.values(obj)</code>
+        <code>Object.entries(obj)</code>
+        <code>Object.assign({}, a, b)</code>
+        <code>{ ...a, ...b }</code>
+      </div>
+      <div class="cheat-card"><h4>Destructuring</h4>
+        <code>const {a, b=1} = obj</code>
+        <code>const [x, y] = arr</code>
+      </div>
+      <div class="cheat-card"><h4>Mutating (careful!)</h4>
+        <code>push / pop / shift / unshift</code>
+        <code>splice / sort / reverse</code>
+      </div>
+    </div>
+
+    <h2 style="margin-top:44px;">Summary Notes</h2>
+    <p>Array methods replace manual loops for the vast majority of everyday transformations: reach for
+    <code>map</code> to transform, <code>filter</code> to select, <code>reduce</code> to combine, and
+    <code>find</code>/<code>some</code>/<code>every</code> to search or test. Object methods
+    (<code>keys</code>/<code>values</code>/<code>entries</code>) are the bridge that lets those same array
+    methods work on objects too. Always know whether a method mutates the original data before you use it —
+    that single habit prevents most real-world bugs in this area.</p>
+
+    <h2 style="margin-top:44px;">Continue Learning</h2>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <h4>📚 Books</h4>
+        <ul>
+          <li>"Eloquent JavaScript" — Marijn Haverbeke (free online)</li>
+          <li>"You Don't Know JS Yet" — Kyle Simpson</li>
+          <li>"JavaScript: The Definitive Guide" — David Flanagan</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h4>📖 Documentation</h4>
+        <ul>
+          <li>MDN — Array prototype methods</li>
+          <li>MDN — Object static methods</li>
+          <li>MDN — Destructuring assignment</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h4>🔬 Research &amp; specs</h4>
+        <ul>
+          <li>ECMA-262 (ECMAScript Language Specification)</li>
+          <li>TC39 proposals repository (upcoming Array/Object features)</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h4>👥 Communities</h4>
+        <ul>
+          <li>r/javascript, r/learnjavascript</li>
+          <li>Stack Overflow — [javascript] tag</li>
+          <li>freeCodeCamp forum</li>
+          <li>Dev.to JavaScript community</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h4>🧪 Practice platforms</h4>
+        <ul>
+          <li>LeetCode (array/hashmap tagged problems)</li>
+          <li>freeCodeCamp — JS Algorithms &amp; Data Structures</li>
+          <li>Codewars — JS kata</li>
+          <li>JavaScript30 (Wes Bos)</li>
+        </ul>
+      </div>
+      <div class="resource-card">
+        <h4>🔎 Search keywords</h4>
+        <div class="kw-chip-row">
+          <span class="kw-chip">array method chaining</span>
+          <span class="kw-chip">reduce vs map filter</span>
+          <span class="kw-chip">object entries array methods</span>
+          <span class="kw-chip">immutable array update JS</span>
+          <span class="kw-chip">Array.prototype performance</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:30px;">Additional AI prompts for further learning</h3>
+    <div class="takeaway-box">
+      <ul>
+        <li>"Give me 5 progressively harder reduce() challenges with hidden edge cases."</li>
+        <li>"Explain how map/filter/reduce could be polyfilled from scratch using a for loop."</li>
+        <li>"Compare structuredClone, spread, and Object.assign for deep vs shallow copying."</li>
+        <li>"Show me 3 real bugs caused by sort() mutating shared state, and how to fix each."</li>
+        <li>"Quiz me on when to use flatMap vs map + flat."</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center; margin-top:50px; padding:30px; border:1px solid var(--teal); border-radius:14px; background:var(--teal-dim);">
+      <div class="eyebrow" style="justify-content:center;">Certificate of completion</div>
+      <h2>🏆 Array &amp; Object Methods — Mastered</h2>
+      <p class="muted">All 4 modules complete. All badges earned.</p>
+    </div>
+  </section>
+
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save Notes</button>
+
+<footer>Interactive Learning Studio · Built for ABTalks 60 Days Claude AI Challenge</footer>
+
+<script>
+/* ================= STATE ================= */
+const state = {
+  moduleComplete: [false,false,false,false],
+};
+
+function updateProgress(){
+  const done = state.moduleComplete.filter(Boolean).length;
+  const pct = Math.round((done/4)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.querySelectorAll('.badge-dot').forEach((el,i)=>{
+    el.classList.toggle('earned', state.moduleComplete[i]);
+  });
+  if(done===4){
+    document.getElementById('finalChallenge').style.display='block';
+  }
+}
+
+function unlockModule(n){
+  const mod = document.getElementById('module-'+n);
+  if(mod){ mod.classList.add('unlocked'); document.getElementById('lock-'+n).textContent='🔓'; }
+}
+
+/* ================= PLAYGROUND ================= */
+function pgRun(mod, kind){
+  const out = document.getElementById('pg-out-'+mod);
+  const arr = [3,7,2,9,4];
+  const user = {name:"Rafiya", role:"Developer", level:3};
+  const orders = [
+    { item:"Laptop", price:55000, inStock:true },
+    { item:"Mouse", price:500, inStock:true },
+    { item:"Monitor", price:12000, inStock:false },
+  ];
+  let res;
+  try{
+    if(mod===1){
+      if(kind==='map') res = arr.map(x=>x*2);
+      if(kind==='filter') res = arr.filter(x=>x>4);
+      if(kind==='forEach'){ let log=[]; arr.forEach(x=>log.push('logged: '+x)); res = log.join('\\n'); }
+    }
+    if(mod===2){
+      if(kind==='reduce') res = arr.reduce((a,x)=>a+x,0);
+      if(kind==='find') res = arr.find(x=>x>5);
+      if(kind==='every') res = arr.every(x=>x>0);
+    }
+    if(mod===3){
+      if(kind==='keys') res = Object.keys(user);
+      if(kind==='entries') res = Object.entries(user);
+      if(kind==='spread') res = {...user, level:4};
+    }
+    if(mod===4){
+      if(kind==='chain') res = orders.filter(o=>o.inStock).map(o=>o.price).reduce((s,p)=>s+p,0);
+      if(kind==='names') res = orders.filter(o=>o.inStock).map(o=>o.item);
+    }
+    out.textContent = typeof res==='string' ? res : JSON.stringify(res, null, 2);
+  }catch(e){ out.textContent = 'Error: '+e.message; }
+}
+
+/* ================= EXERCISES ================= */
+const exerciseCheckers = {
+  1: (code)=>{
+    try{
+      const ages=[12,19,25,16,31];
+      const fn = new Function('ages', 'return ('+code+')');
+      const result = fn(ages);
+      const expected = ages.filter(a=>a>=18);
+      return JSON.stringify(result)===JSON.stringify(expected)
+        ? {ok:true, msg:'✓ Correct! Result: '+JSON.stringify(result)}
+        : {ok:false, msg:'✗ Got '+JSON.stringify(result)+' — expected '+JSON.stringify(expected)+'. Hint: filter(a => a >= 18)'};
+    }catch(e){ return {ok:false, msg:'✗ Error: '+e.message}; }
+  },
+  2: (code)=>{
+    try{
+      const nums=[4,8,15,16,23,42];
+      const fn = new Function('nums', 'return ('+code+')');
+      const result = fn(nums);
+      const expected = nums.reduce((a,x)=>x>a?x:a, -Infinity);
+      return result===expected
+        ? {ok:true, msg:'✓ Correct! Max is '+result}
+        : {ok:false, msg:'✗ Got '+result+' — expected '+expected+'. Hint: reduce((max,x) => x > max ? x : max)'};
+    }catch(e){ return {ok:false, msg:'✗ Error: '+e.message}; }
+  },
+  3: (code)=>{
+    try{
+      const scores={alice:90, bob:72, carla:88};
+      const fn = new Function('scores', 'return ('+code+')');
+      const result = fn(scores);
+      const expected = Object.entries(scores).filter(([k,v])=>v>80);
+      return JSON.stringify(result)===JSON.stringify(expected)
+        ? {ok:true, msg:'✓ Correct! Result: '+JSON.stringify(result)}
+        : {ok:false, msg:'✗ Got '+JSON.stringify(result)+' — expected '+JSON.stringify(expected)+'. Hint: Object.entries(scores).filter(([k,v]) => v > 80)'};
+    }catch(e){ return {ok:false, msg:'✗ Error: '+e.message}; }
+  },
+  4: (code)=>{
+    try{
+      const orders=[{item:"Laptop",price:55000,inStock:true},{item:"Mouse",price:500,inStock:true},{item:"Monitor",price:12000,inStock:false}];
+      const fn = new Function('orders', 'return ('+code+')');
+      const result = fn(orders);
+      const expected = orders.filter(o=>o.price>1000).map(o=>o.item);
+      return JSON.stringify(result)===JSON.stringify(expected)
+        ? {ok:true, msg:'✓ Correct! Result: '+JSON.stringify(result)}
+        : {ok:false, msg:'✗ Got '+JSON.stringify(result)+' — expected '+JSON.stringify(expected)+'. Hint: filter(o => o.price > 1000).map(o => o.item)'};
+    }catch(e){ return {ok:false, msg:'✗ Error: '+e.message}; }
+  }
+};
+function checkExercise(n){
+  const code = document.getElementById('ex'+n).value.trim();
+  const box = document.getElementById('ex'+n+'-result');
+  if(!code){ box.className='result-line err'; box.textContent='Please write an expression first.'; return; }
+  const r = exerciseCheckers[n](code);
+  box.className = 'result-line ' + (r.ok?'ok':'err');
+  box.textContent = r.msg;
+}
+function checkFinal(){
+  const code = document.getElementById('exFinal').value.trim();
+  const box = document.getElementById('exFinal-result');
+  if(!code){ box.className='result-line err'; box.textContent='Please write an expression first.'; return; }
+  try{
+    const students=[{name:"Aman",score:55},{name:"Riya",score:32},{name:"Kabir",score:78},{name:"Zoya",score:40}];
+    const fn = new Function('students', 'return ('+code+')');
+    const result = fn(students);
+    const expected = students.filter(s=>s.score>=40).sort((a,b)=>b.score-a.score).map(s=>s.name);
+    if(JSON.stringify(result)===JSON.stringify(expected)){
+      box.className='result-line ok';
+      box.textContent='✓ Correct! Result: '+JSON.stringify(result)+' — challenge complete!';
+    }else{
+      box.className='result-line err';
+      box.textContent='✗ Got '+JSON.stringify(result)+' — expected '+JSON.stringify(expected)+'. Hint: filter → sort by score desc → map to name';
+    }
+  }catch(e){ box.className='result-line err'; box.textContent='✗ Error: '+e.message; }
+}
+
+/* ================= QUIZZES ================= */
+const quizData = {
+  1:[
+    {q:"Which method should you use if you only need side effects (like console.log) and don't need a returned array?",
+     opts:["map","forEach","filter","reduce"], correct:1,
+     explain:"forEach runs a callback for each element and returns undefined — perfect for side effects, wasteful to use map for this."},
+    {q:"const result = [1,2,3].map(x => x); What is result.length?",
+     opts:["0","1","3","undefined"], correct:2,
+     explain:"map always returns a new array of the same length as the original, one output per input."},
+    {q:"Does .filter() mutate the original array?",
+     opts:["Yes, always","No, it returns a new array","Only for numbers","Only if no elements match"], correct:1,
+     explain:"filter is non-mutating — it always returns a brand-new array, leaving the source array untouched."},
+    {q:"[5,12,8].filter(x => x > 10) returns:",
+     opts:["[12]","[5,12,8]","12","true"], correct:0,
+     explain:"Only 12 is greater than 10, so filter keeps just that element in a new array: [12]."}
+  ],
+  2:[
+    {q:"What does [1,2,3].reduce((a,x)=>a+x, 10) return?",
+     opts:["6","10","16","NaN"], correct:2,
+     explain:"Starting accumulator is 10, then 10+1=11, 11+2=13, 13+3=16. Final result: 16."},
+    {q:"[1,2,3].find(x => x > 5) returns:",
+     opts:["undefined","-1","null","3"], correct:0,
+     explain:"No element is greater than 5, so find returns undefined (not -1, which is what findIndex would return)."},
+    {q:"Which method returns true only if ALL elements satisfy the condition?",
+     opts:["some","every","find","includes"], correct:1,
+     explain:"every() checks that every single element passes the test; some() only needs one to pass."},
+    {q:"What is the safest reason to always pass an initial value to reduce()?",
+     opts:["It runs faster","It avoids a TypeError on empty arrays","It's required by the syntax","It sorts the array first"], correct:1,
+     explain:"Without an initial value, reduce() on an empty array throws a TypeError since there's nothing to use as the starting accumulator."}
+  ],
+  3:[
+    {q:"What does Object.entries({a:1,b:2}) return?",
+     opts:["['a','b']","[1,2]","[['a',1],['b',2]]","{a:1,b:2}"], correct:2,
+     explain:"Object.entries turns an object into an array of [key, value] pairs — the format array methods can work with."},
+    {q:"Which correctly merges two objects without mutating either?",
+     opts:["Object.assign(a,b)","a.merge(b)","{...a, ...b}","a + b"], correct:2,
+     explain:"Spread syntax {...a, ...b} creates a brand-new object; Object.assign(a,b) actually mutates 'a', the first argument."},
+    {q:"[10,2,33,4].sort() (no comparator) sorts as:",
+     opts:["Ascending numeric order","Descending numeric order","Alphabetical/string order","Random order"], correct:2,
+     explain:"Without a comparator, sort() converts elements to strings and compares them lexicographically — a classic JS gotcha."},
+    {q:"const {level = 1} = {}; What is level?",
+     opts:["undefined","null","1","Error"], correct:2,
+     explain:"Destructuring defaults kick in when the property is missing, so level becomes 1."}
+  ],
+  4:[
+    {q:"In orders.filter(o=>o.inStock).map(o=>o.price).reduce((s,p)=>s+p,0), what does .map() produce?",
+     opts:["A single total number","An array of prices for in-stock items","A boolean array","The original orders array"], correct:1,
+     explain:"map() runs after filter(), so it transforms the already-filtered in-stock orders into just their price values."},
+    {q:"Why might a manual for-loop outperform a filter().map().reduce() chain?",
+     opts:["Loops are always more readable","Chaining walks the array multiple times","filter() is deprecated","reduce() cannot be chained"], correct:1,
+     explain:"Each chained method makes its own full pass over the array; a single loop or reduce can do the same work in one pass."},
+    {q:"What is the recommended default when choosing between a readable chain and a faster manual loop?",
+     opts:["Always use the manual loop","Always use the chain, optimize only after profiling shows a real bottleneck","Randomly alternate","Never use reduce"], correct:1,
+     explain:"Readability should win by default in most real-world code; only optimize for performance after measuring an actual problem."},
+    {q:"Which chain order correctly gets total price of in-stock orders?",
+     opts:["map → filter → reduce","reduce → filter → map","filter → map → reduce","filter → reduce → map"], correct:2,
+     explain:"You must first filter to the relevant items, then map to extract just the field you need, then reduce to combine them."}
+  ]
+};
+
+function renderQuiz(n){
+  const container = document.getElementById('quiz-'+n+'-questions');
+  const qs = quizData[n];
+  container.innerHTML = qs.map((item, qi)=>`
+    <div class="quiz-q" data-qi="${qi}">
+      <div class="qtext">${qi+1}. ${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((opt,oi)=>`<button type="button" class="quiz-opt" data-oi="${oi}" onclick="selectOpt(${n},${qi},${oi})">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="explain-${n}-${qi}"></div>
+    </div>
+  `).join('');
+}
+
+const quizAnswers = {1:{},2:{},3:{},4:{}};
+
+function selectOpt(n, qi, oi){
+  quizAnswers[n][qi]=oi;
+  const qBlock = document.querySelectorAll('#quiz-'+n+'-questions .quiz-q')[qi];
+  qBlock.querySelectorAll('.quiz-opt').forEach(b=>b.classList.remove('selected'));
+  qBlock.querySelectorAll('.quiz-opt')[oi].classList.add('selected');
+}
+
+function submitQuiz(n){
+  const qs = quizData[n];
+  let score = 0;
+  qs.forEach((item, qi)=>{
+    const qBlock = document.querySelectorAll('#quiz-'+n+'-questions .quiz-q')[qi];
+    const opts = qBlock.querySelectorAll('.quiz-opt');
+    const chosen = quizAnswers[n][qi];
+    opts.forEach((btn, oi)=>{
+      btn.disabled = true;
+      if(oi===item.correct) btn.classList.add('correct');
+      else if(oi===chosen) btn.classList.add('incorrect');
+    });
+    const exp = document.getElementById('explain-'+n+'-'+qi);
+    exp.textContent = (chosen===item.correct ? '✓ Correct. ' : '✗ Not quite. ') + item.explain;
+    exp.classList.add('show');
+    if(chosen===item.correct) score++;
+  });
+  document.getElementById('quiz-'+n+'-submit').disabled = true;
+
+  const summary = document.getElementById('quiz-'+n+'-summary');
+  const pct = Math.round((score/qs.length)*100);
+  const ringColor = pct>=75 ? 'var(--green)' : pct>=50 ? 'var(--amber)' : 'var(--red)';
+  summary.innerHTML = `
+    <div class="score-ring" style="border-color:${ringColor}; color:${ringColor};">${score}/${qs.length}</div>
+    <p style="color:#fff; font-weight:600;">${pct>=75?'Excellent work! 🎉':pct>=50?'Good effort — review the explanations above.':'Worth a second look — review the module and try again.'}</p>
+  `;
+  summary.classList.add('show');
+
+  state.moduleComplete[n-1] = true;
+  updateProgress();
+  if(n<4) unlockModule(n+1);
+
+  const nextMod = document.getElementById('module-'+(n+1));
+  if(nextMod){ setTimeout(()=>nextMod.scrollIntoView({behavior:'smooth', block:'start'}), 600); }
+  else { setTimeout(()=>document.getElementById('finalChallenge').scrollIntoView({behavior:'smooth'}), 600); }
+}
+
+/* ================= INIT ================= */
+[1,2,3,4].forEach(renderQuiz);
+updateProgress();
+</script>
+</body>
+</html>
