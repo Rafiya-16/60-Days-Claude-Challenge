@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Workflow Architect — LinkedIn Personal Branding for Job-Seekers</title>
+<style>
+:root{
+  --bg:#0A0D12;
+  --surface:#12161F;
+  --surface-2:#1A2029;
+  --border:rgba(255,255,255,0.08);
+  --text:#E8EAEE;
+  --muted:#8B93A3;
+  --emerald:#34D399;
+  --gold:#F0C05A;
+  --violet:#A78BFA;
+  --emerald-dim:rgba(52,211,153,0.12);
+  --gold-dim:rgba(240,192,90,0.12);
+  --violet-dim:rgba(167,139,250,0.12);
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(52,211,153,0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(167,139,250,0.06), transparent),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.6;
+  min-height:100vh;
+}
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--surface-2);border-radius:10px;}
+
+a{color:var(--emerald);text-decoration:none;}
+button{font-family:var(--font-body);cursor:pointer;}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--emerald);
+}
+
+/* ===== TOP BAR ===== */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(16px);
+  background:rgba(10,13,18,0.85);
+  border-bottom:1px solid var(--border);
+  padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:16px;}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--emerald);box-shadow:0 0 12px var(--emerald);}
+.topbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.pill-btn{
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+  padding:8px 16px;border-radius:999px;font-size:12.5px;font-weight:600;
+  display:flex;align-items:center;gap:6px;transition:.2s;
+}
+.pill-btn:hover{border-color:var(--emerald);color:var(--emerald);}
+.progress-mini{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.progress-mini .bar{width:90px;height:5px;background:var(--surface-2);border-radius:4px;overflow:hidden;}
+.progress-mini .fill{height:100%;background:linear-gradient(90deg,var(--emerald),var(--gold));transition:width .4s;}
+
+/* ===== HERO ===== */
+.hero{padding:64px 28px 40px;max-width:1180px;margin:0 auto;}
+.hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center;}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(32px,4.4vw,52px);line-height:1.06;letter-spacing:-0.01em;
+  margin:14px 0 18px;
+}
+.hero h1 span{color:var(--emerald);}
+.hero p.lede{color:var(--muted);font-size:16.5px;max-width:52ch;margin-bottom:26px;}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;}
+.tag{
+  font-family:var(--font-mono);font-size:11px;padding:6px 12px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--border);color:var(--muted);
+}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{
+  background:linear-gradient(135deg,var(--emerald),#22b98c);
+  color:#06110C;font-weight:700;padding:13px 24px;border-radius:10px;border:none;font-size:14px;
+  box-shadow:0 8px 24px rgba(52,211,153,0.25);transition:.2s;
+}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-ghost{
+  background:transparent;border:1px solid var(--border);color:var(--text);
+  padding:13px 24px;border-radius:10px;font-size:14px;font-weight:600;transition:.2s;
+}
+.btn-ghost:hover{border-color:var(--violet);color:var(--violet);}
+
+/* Signature element: trajectory ring */
+.trajectory-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;position:relative;overflow:hidden;
+}
+.trajectory-card::before{
+  content:'';position:absolute;top:-40%;right:-30%;width:60%;height:180%;
+  background:radial-gradient(circle,rgba(167,139,250,0.15),transparent 70%);
+}
+.traj-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;}
+.traj-ring-wrap{display:flex;align-items:center;gap:22px;}
+svg.ring{width:120px;height:120px;flex-shrink:0;}
+.traj-stat{font-family:var(--font-display);font-weight:800;font-size:34px;}
+.traj-stat span{color:var(--muted);font-family:var(--font-body);font-weight:500;font-size:13px;display:block;margin-top:2px;}
+.traj-steps{margin-top:22px;display:flex;flex-direction:column;gap:10px;}
+.traj-step{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);}
+.traj-step .n{
+  width:20px;height:20px;border-radius:50%;background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;
+  border:1px solid var(--border);
+}
+.traj-step.done .n{background:var(--emerald);color:#06110C;border-color:var(--emerald);}
+.traj-step.done{color:var(--text);}
+
+/* ===== STAGE RAIL (signature nav) ===== */
+.rail-wrap{max-width:1180px;margin:0 auto;padding:0 28px 10px;}
+.rail{
+  display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:6px;overflow-x:auto;
+}
+.rail-item{
+  flex:1;min-width:140px;padding:12px 14px;border-radius:10px;text-align:left;
+  background:transparent;border:none;color:var(--muted);transition:.2s;position:relative;
+}
+.rail-item .ri-num{font-family:var(--font-mono);font-size:10px;opacity:.7;}
+.rail-item .ri-name{display:block;font-size:12.5px;font-weight:600;margin-top:3px;color:var(--text);}
+.rail-item.active{background:var(--emerald-dim);}
+.rail-item.active .ri-num{color:var(--emerald);}
+.rail-item.complete::after{
+  content:'✓';position:absolute;top:8px;right:10px;color:var(--emerald);font-size:11px;
+}
+.rail-item:hover{background:var(--surface-2);}
+
+/* ===== MAIN LAYOUT ===== */
+.main-wrap{max-width:1180px;margin:0 auto;padding:24px 28px 80px;display:grid;grid-template-columns:1fr 300px;gap:28px;}
+@media(max-width:960px){.main-wrap{grid-template-columns:1fr;}}
+
+.stage-panel{display:none;animation:fadein .35s ease;}
+.stage-panel.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.stage-header{margin-bottom:22px;}
+.stage-header h2{font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:6px;}
+.stage-header p{color:var(--muted);font-size:14.5px;max-width:60ch;}
+.stage-meta{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap;}
+.meta-chip{
+  font-family:var(--font-mono);font-size:11px;padding:6px 12px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--border);display:flex;gap:6px;align-items:center;
+}
+.meta-chip.time{color:var(--gold);border-color:rgba(240,192,90,0.3);}
+
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px 24px;margin-bottom:18px;
+}
+.card h3{
+  font-family:var(--font-display);font-size:15px;font-weight:700;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.card h3 .ic{color:var(--emerald);font-family:var(--font-mono);font-size:13px;}
+.card ul{padding-left:0;list-style:none;}
+.card ul li{
+  padding:9px 0 9px 20px;border-bottom:1px solid var(--border);position:relative;font-size:14px;color:var(--text);
+}
+.card ul li:last-child{border-bottom:none;}
+.card ul li::before{content:'—';position:absolute;left:0;color:var(--muted);}
+.card.mistakes ul li::before{content:'✕';color:#F0716A;}
+.card.mistakes h3 .ic{color:#F0716A;}
+.card.practices ul li::before{content:'✓';color:var(--emerald);}
+
+.task-check{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.task-check:last-child{border-bottom:none;}
+.task-check input{margin-top:3px;accent-color:var(--emerald);width:15px;height:15px;flex-shrink:0;}
+.task-check label{font-size:14px;cursor:pointer;}
+
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:640px){.tool-grid{grid-template-columns:1fr;}}
+.tool-card{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;
+}
+.tool-card .tool-name{font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+.tool-badge{font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:6px;background:var(--emerald-dim);color:var(--emerald);}
+.tool-card .why{font-size:12.5px;color:var(--muted);margin:8px 0;}
+.tool-card .alt{font-size:11.5px;color:var(--violet);font-family:var(--font-mono);}
+
+.prompt-box{
+  background:#0D1015;border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:8px;padding:14px 16px;font-family:var(--font-mono);font-size:12.5px;
+  color:#D8DCE3;margin-bottom:10px;position:relative;white-space:pre-wrap;line-height:1.55;
+}
+.prompt-box .copy-btn{
+  position:absolute;top:10px;right:10px;background:var(--surface-2);border:1px solid var(--border);
+  color:var(--muted);font-size:10px;padding:4px 9px;border-radius:6px;font-family:var(--font-body);
+}
+.prompt-box .copy-btn:hover{color:var(--emerald);border-color:var(--emerald);}
+
+.output-row{display:flex;gap:10px;flex-wrap:wrap;}
+.output-chip{
+  background:var(--gold-dim);border:1px solid rgba(240,192,90,0.3);color:var(--gold);
+  font-size:12.5px;padding:7px 13px;border-radius:8px;
+}
+
+/* Sidebar */
+.sidebar{display:flex;flex-direction:column;gap:18px;position:sticky;top:80px;align-self:start;}
+.side-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.side-card h4{font-family:var(--font-display);font-size:13px;margin-bottom:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+textarea.notes{
+  width:100%;min-height:110px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);padding:10px;font-family:var(--font-body);font-size:13px;resize:vertical;
+}
+.bookmark-list{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.bookmark-item{
+  font-size:12.5px;padding:8px 10px;background:var(--surface-2);border-radius:7px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.bookmark-item button{background:none;border:none;color:var(--muted);font-size:14px;}
+.bookmark-item button:hover{color:#F0716A;}
+.small-btn{
+  width:100%;margin-top:10px;background:var(--surface-2);border:1px solid var(--border);
+  color:var(--text);padding:9px;border-radius:8px;font-size:12.5px;font-weight:600;
+}
+.small-btn:hover{border-color:var(--emerald);color:var(--emerald);}
+
+/* Decision tree */
+.tree{display:flex;flex-direction:column;gap:10px;}
+.tree-q{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;
+}
+.tree-q p{font-weight:600;margin-bottom:10px;font-size:14px;}
+.tree-options{display:flex;gap:8px;flex-wrap:wrap;}
+.tree-opt{
+  background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;
+  border-radius:8px;font-size:12.5px;
+}
+.tree-opt:hover{border-color:var(--violet);color:var(--violet);}
+.tree-result{
+  margin-top:12px;padding:14px;background:var(--emerald-dim);border-radius:8px;font-size:13.5px;
+  border-left:3px solid var(--emerald);display:none;
+}
+.tree-result.show{display:block;}
+
+/* Comparison table */
+table.compare{width:100%;border-collapse:collapse;font-size:13px;}
+table.compare th{
+  font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;color:var(--muted);
+  text-align:left;padding:10px;border-bottom:1px solid var(--border);
+}
+table.compare td{padding:12px 10px;border-bottom:1px solid var(--border);}
+table.compare tr:last-child td{border-bottom:none;}
+.star{color:var(--gold);}
+
+/* Footer / Conclusion sections */
+.conclusion{max-width:1180px;margin:0 auto;padding:20px 28px 90px;}
+.conclusion-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:900px){.conclusion-grid{grid-template-columns:1fr;}}
+.section-title{font-family:var(--font-display);font-weight:800;font-size:24px;margin:44px 0 18px;}
+.chip-cloud{display:flex;flex-wrap:wrap;gap:8px;}
+.chip-cloud span{
+  font-family:var(--font-mono);font-size:11.5px;background:var(--violet-dim);color:var(--violet);
+  padding:6px 12px;border-radius:8px;border:1px solid rgba(167,139,250,0.25);
+}
+.stack-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);}
+.stack-row:last-child{border-bottom:none;}
+.stack-row .role{font-size:12.5px;color:var(--muted);font-family:var(--font-mono);}
+.stack-row .tool{font-weight:700;font-size:14px;}
+
+footer{
+  text-align:center;padding:30px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);
+  font-family:var(--font-mono);
+}
+
+@media print{
+  .topbar,.rail-wrap,.sidebar,.cta-row,.small-btn,.copy-btn{display:none !important;}
+  body{background:#fff;color:#111;}
+  .card,.stage-panel{page-break-inside:avoid;}
+  .stage-panel{display:block !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span> AI Workflow Architect</div>
+  <div class="topbar-actions">
+    <div class="progress-mini">
+      <span id="progressLabel">0% complete</span>
+      <div class="bar"><div class="fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <button class="pill-btn" onclick="window.print()">🖨 Print Guide</button>
+    <button class="pill-btn" id="resetBtn">↺ Reset Progress</button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Workflow Blueprint · Marketing → Personal Branding → LinkedIn</span>
+      <h1>Build a <span>hireable</span> LinkedIn presence, from blank profile to inbound offers.</h1>
+      <p class="lede">A complete, end-to-end AI-assisted workflow for students and job-seekers — six stages, real prompts, real tools, and a system you actually run, not just read.</p>
+      <div class="hero-tags">
+        <span class="tag">6 STAGES</span>
+        <span class="tag">STUDENT / JOB-SEEKER</span>
+        <span class="tag">AUTO-STRUCTURED</span>
+        <span class="tag">~4–6 WEEKS TO MOMENTUM</span>
+      </div>
+      <div class="cta-row">
+        <button class="btn-primary" onclick="document.getElementById('railTop').scrollIntoView({behavior:'smooth'})">Start the Workflow →</button>
+        <button class="btn-ghost" onclick="document.getElementById('decisionTree').scrollIntoView({behavior:'smooth'})">Try the Decision Tree</button>
+      </div>
+    </div>
+    <div class="trajectory-card">
+      <div class="traj-label">Your Trajectory</div>
+      <div class="traj-ring-wrap">
+        <svg class="ring" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" stroke="var(--surface-2)" stroke-width="10" fill="none"/>
+          <circle id="ringProgress" cx="60" cy="60" r="52" stroke="url(#grad)" stroke-width="10" fill="none"
+            stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#34D399"/><stop offset="100%" stop-color="#F0C05A"/>
+          </linearGradient></defs>
+        </svg>
+        <div>
+          <div class="traj-stat" id="ringPct">0%<span>Workflow complete</span></div>
+        </div>
+      </div>
+      <div class="traj-steps" id="trajSteps"></div>
+    </div>
+  </div>
+</section>
+
+<div class="rail-wrap" id="railTop">
+  <div class="rail" id="stageRail"></div>
+</div>
+
+<div class="main-wrap">
+  <div id="stagePanels"></div>
+  <aside class="sidebar">
+    <div class="side-card">
+      <h4>Notes</h4>
+      <textarea class="notes" id="notesArea" placeholder="Jot thoughts, drafts, or reminders for this stage..."></textarea>
+      <button class="small-btn" id="saveNoteBtn">Save Note</button>
+    </div>
+    <div class="side-card">
+      <h4>Bookmarks</h4>
+      <button class="small-btn" id="bookmarkBtn">☆ Bookmark this stage</button>
+      <div class="bookmark-list" id="bookmarkList"></div>
+    </div>
+    <div class="side-card">
+      <h4>Quick Insight</h4>
+      <p style="font-size:12.5px;color:var(--muted);" id="quickInsight">Recruiters spend under 10 seconds on a first profile scan — your headline and banner do the selling before anyone reads a line.</p>
+    </div>
+  </aside>
+</div>
+
+<section class="conclusion" id="decisionTree">
+  <h2 class="section-title">Decision Tree — "What should I post today?"</h2>
+  <div class="tree" id="treeRoot"></div>
+</section>
+
+<section class="conclusion">
+  <h2 class="section-title">Tool Comparison</h2>
+  <div class="card" style="overflow-x:auto;">
+    <table class="compare">
+      <thead><tr><th>Tool</th><th>Best For</th><th>Free Tier</th><th>Learning Curve</th><th>Rating</th></tr></thead>
+      <tbody id="compareBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="conclusion">
+  <h2 class="section-title">Workflow Summary</h2>
+  <div class="card">
+    <p style="font-size:14.5px;color:var(--text);">This workflow takes you from an unclaimed LinkedIn identity to a positioned, content-active profile that generates recruiter inbound. It runs on six stages — <strong>Positioning, Profile Optimization, Content Strategy, AI-Assisted Creation, Distribution &amp; Engagement, and Tracking &amp; Conversion</strong> — each with its own AI tool stack, prompts, and success checkpoints. Total realistic runtime to visible traction: <strong>4–6 weeks</strong> at 3–5 hours/week, with content and networking becoming a lightweight weekly habit afterward.</p>
+  </div>
+
+  <h2 class="section-title">Recommended AI Stack</h2>
+  <div class="card">
+    <div class="stack-row"><span class="tool">Claude</span><span class="role">POSITIONING · WRITING · CONTENT DRAFTING</span></div>
+    <div class="stack-row"><span class="tool">ChatGPT</span><span class="role">BRAINSTORM VARIANTS · QUICK ITERATIONS</span></div>
+    <div class="stack-row"><span class="tool">Canva Magic Studio</span><span class="role">BANNER · CAROUSEL · VISUAL ASSETS</span></div>
+    <div class="stack-row"><span class="tool">Grammarly</span><span class="role">TONE + PROOFREADING PASS</span></div>
+    <div class="stack-row"><span class="tool">Taplio / Shield Analytics</span><span class="role">SCHEDULING · POST ANALYTICS</span></div>
+    <div class="stack-row"><span class="tool">Notion AI</span><span class="role">CONTENT CALENDAR + TRACKING</span></div>
+  </div>
+
+  <h2 class="section-title">Learning Resources</h2>
+  <div class="card"><ul>
+    <li>LinkedIn Learning — "Personal Branding on LinkedIn" course</li>
+    <li>Justin Welsh's "LinkedIn Operating System" (free newsletter breakdowns)</li>
+    <li>Anthropic's Prompt Engineering documentation (docs.claude.com)</li>
+    <li>"So Good They Can't Ignore You" — Cal Newport (positioning mindset)</li>
+  </ul></div>
+
+  <h2 class="section-title">Communities</h2>
+  <div class="card"><ul>
+    <li>r/LinkedInLunatics &amp; r/careerguidance (pattern-spot what NOT to do / real Q&A)</li>
+    <li>LinkedIn Creator communities — search "Creator Accelerator Program"</li>
+    <li>Indian tech job-seeker Discords / Telegram groups (Placement Prep India, GFG communities)</li>
+    <li>Your own college's alumni LinkedIn group — highest-signal, lowest-competition network</li>
+  </ul></div>
+
+  <h2 class="section-title">Search Keywords</h2>
+  <div class="chip-cloud">
+    <span>LinkedIn personal branding student</span><span>ATS resume keywords 2026</span>
+    <span>LinkedIn headline examples freshers</span><span>content pillars for job seekers</span>
+    <span>LinkedIn algorithm 2026</span><span>AI prompt engineering portfolio</span>
+    <span>open to work LinkedIn banner</span><span>recruiter InMail response rate</span>
+  </div>
+
+  <h2 class="section-title">Additional AI Prompts</h2>
+  <div class="prompt-box">Act as a LinkedIn strategist. Review my last 5 posts (paste text) and identify which content pillar each belongs to, then flag any pillar I'm neglecting.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+  <div class="prompt-box">Rewrite this LinkedIn About section to lead with impact, not job titles. Keep it under 2000 characters, conversational tone, one clear CTA at the end. [paste About section]<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+  <div class="prompt-box">I'm a final-year CS student targeting [role]. Generate 10 LinkedIn post hooks (first lines only) that would stop a recruiter mid-scroll, based on real project work — not generic advice.<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>
+
+  <h2 class="section-title">Future Automation Opportunities</h2>
+  <div class="card"><ul>
+    <li>Auto-draft a weekly post from your GitHub commit history using a Claude + GitHub API script</li>
+    <li>Zapier/Make pipeline: new blog post → auto-generated LinkedIn teaser draft in Notion</li>
+    <li>Weekly analytics digest emailed automatically from Shield/Taplio exports</li>
+    <li>Auto-tag inbound recruiter messages by role type using a simple keyword classifier</li>
+  </ul></div>
+</section>
+
+<footer>AI WORKFLOW ARCHITECT · Generated for a self-contained offline workflow guide · Progress saved locally in your browser</footer>
+
+<script>
+/* ================= DATA ================= */
+const stages = [
+  {
+    id:'positioning', name:'Positioning', time:'3–4 hrs',
+    title:'Stage 1 — Foundation & Positioning',
+    desc:'Before touching your profile, define who you are for the algorithm and the recruiter: your niche, your audience, and the 3–4 pillars everything else will hang off.',
+    objectives:['Define a specific professional identity (not "aspiring developer" — "React frontend developer building AI-powered tools")','Identify target audience: recruiters, hiring managers, or peer network','Choose 3–4 content pillars that map to your actual skills and goals'],
+    tasks:['List every project, skill, and achievement — no filtering yet','Cluster them into 3–4 themes (e.g. Projects, AI/Prompt Engineering, DSA Journey, Career Learnings)','Write a one-line positioning statement and stress-test it against 3 target job postings'],
+    tools:[
+      {name:'Claude', why:'Best for structured reasoning — helps cluster scattered skills into coherent positioning and pressure-tests your statement against real job descriptions.', alt:'ChatGPT, Perplexity'},
+      {name:'Perplexity', why:'Good for researching how similar professionals in your target role position themselves publicly.', alt:'Google + LinkedIn search'}
+    ],
+    prompts:['Act as a career positioning strategist. Here are my skills, projects, and target roles: [paste]. Suggest 3 possible personal brand positioning statements, each with a different angle (technical depth, breadth, or unique story).'],
+    practices:['Anchor positioning in real evidence (shipped projects), never aspirational-only claims','Revisit positioning every 4–6 weeks as skills grow'],
+    mistakes:['Trying to appeal to every recruiter at once and ending up generic','Copying someone else\'s positioning statement verbatim'],
+    outputs:['One-paragraph positioning statement','List of 3–4 content pillars'],
+    tips:'Write your positioning statement, then delete every word that could apply to literally any other student — what\'s left is your real angle.'
+  },
+  {
+    id:'profile', name:'Profile Optimization', time:'2–3 hrs',
+    title:'Stage 2 — Profile Optimization',
+    desc:'Turn your positioning into a scannable profile: headline, banner, About section, and Featured section that survive a 10-second recruiter scan.',
+    objectives:['Rewrite headline for keyword match + human readability','Design a banner that visually signals your niche','Write an About section that leads with impact'],
+    tasks:['Draft 3 headline variants and A/B pick based on peer feedback','Generate a banner in Canva reflecting your niche colors/skills','Rewrite About section: hook → proof → CTA','Curate Featured section with 3 best projects (with live links, not just PDFs)'],
+    tools:[
+      {name:'Claude', why:'Strong at rewriting dense resume-speak into natural, confident first-person narrative for the About section.', alt:'ChatGPT, Jasper'},
+      {name:'Canva Magic Studio', why:'Fast, template-based banner and visual asset generation — no design background needed.', alt:'Figma, Photoshop'},
+      {name:'Grammarly', why:'Final tone + grammar pass so writing reads polished without sounding AI-generated.', alt:'Hemingway Editor'}
+    ],
+    prompts:['Rewrite this LinkedIn headline to include my target keywords ([React, MERN, AI]) while still sounding human and specific, under 220 characters: [paste current headline]','Turn these bullet points from my resume into a first-person LinkedIn About section, conversational tone, ending with an open invitation to connect: [paste bullets]'],
+    practices:['Use all 220 characters in the headline — it\'s indexed by LinkedIn search','Pin your 3 strongest, most recent projects to Featured, each with a live demo link'],
+    mistakes:['Leaving the default "Student at [University]" headline','Writing About in third person or resume-speak ("Results-driven individual seeking...")'],
+    outputs:['Finalized headline','Custom banner image','Rewritten About section','Curated Featured section'],
+    tips:'Screenshot your profile on mobile — most recruiters browse LinkedIn on their phone, and layout breaks are common.'
+  },
+  {
+    id:'strategy', name:'Content Strategy', time:'2 hrs setup + 30 min/wk', 
+    title:'Stage 3 — Content Strategy & Calendar',
+    desc:'Turn your pillars into a repeatable weekly content system so you\'re never staring at a blank post box.',
+    objectives:['Build a 4-week content calendar template','Set a sustainable posting cadence (2–3x/week is enough)','Map each pillar to a specific content format'],
+    tasks:['Create a content calendar (Notion or spreadsheet) with pillar, format, and hook columns','Batch-brainstorm 15–20 post ideas in one sitting','Schedule using a queue tool so posting doesn\'t depend on daily willpower'],
+    tools:[
+      {name:'Notion AI', why:'Database + AI in one place — tag posts by pillar, track performance, and generate ideas inline.', alt:'Trello, Google Sheets'},
+      {name:'Claude', why:'Generates high volumes of on-brand, non-generic post ideas fast when given your pillars and voice.', alt:'ChatGPT'}
+    ],
+    prompts:['Act as a LinkedIn content strategist. My pillars are: [list]. Generate 20 post ideas across these pillars, each as a one-line hook, avoiding generic advice-listicle format.'],
+    practices:['Batch ideation weekly, batch writing separately — don\'t do both in one sitting','Track which pillar underperforms and rotate emphasis, don\'t abandon it'],
+    mistakes:['Posting only when inspiration strikes — cadence is what the algorithm rewards','Copying viral post formats without adapting them to your actual pillar'],
+    outputs:['4-week content calendar','Bank of 15–20 draft hooks'],
+    tips:'Keep a running "swipe file" of hooks and formats that stopped your own scroll — reverse-engineer why they worked.'
+  },
+  {
+    id:'creation', name:'AI-Assisted Creation', time:'20–40 min/post',
+    title:'Stage 4 — Content Creation (AI-Assisted)',
+    desc:'Turn a hook into a finished, human-sounding post using AI as a first-draft engine, not a ghostwriter.',
+    objectives:['Draft posts efficiently without losing your voice','Build a repeatable prompt-and-edit loop','Produce a mix of text posts, carousels, and short case-study posts'],
+    tasks:['Draft with AI, then rewrite the first and last line yourself in your own voice','Add one specific, concrete detail AI can\'t know (a real number, a real moment)','Design any carousel/visual asset','Proofread and check formatting for mobile line breaks'],
+    tools:[
+      {name:'Claude', why:'Produces structurally sound long-form posts and respects nuance in role-based prompting — good first-draft quality.', alt:'ChatGPT'},
+      {name:'Canva', why:'Quick carousel templates that keep visual consistency across posts.', alt:'Figma'},
+      {name:'Grammarly', why:'Catches AI-flavored phrasing patterns and tightens sentences before publishing.', alt:'Hemingway Editor'}
+    ],
+    prompts:['Write a LinkedIn post about [specific project/lesson]. Hook in the first line, 3–5 short paragraphs, one concrete example, end with a question to invite comments. Avoid emojis-as-bullets and avoid the phrase "game changer."','Turn this long post into a 6-slide carousel outline: slide 1 = hook, slides 2–5 = one idea each, slide 6 = CTA. [paste post]'],
+    practices:['Always add one real, specific detail AI couldn\'t have generated — it\'s what separates you from templated posts','Read every AI draft out loud before posting — if it doesn\'t sound like you, rewrite it'],
+    mistakes:['Publishing AI output unedited — audiences increasingly detect and penalize this','Overusing emoji bullet points and generic listicle structure'],
+    outputs:['Published-ready post drafts','Carousel visual assets'],
+    tips:'Keep 3–5 finished posts in a buffer at all times so a busy week never breaks your cadence.'
+  },
+  {
+    id:'distribution', name:'Distribution & Engagement', time:'20–30 min/day',
+    title:'Stage 5 — Distribution & Engagement',
+    desc:'Posting is half the job — the algorithm rewards early engagement and consistent participation across others\' content too.',
+    objectives:['Maximize early engagement window (first 60–90 minutes)','Build genuine two-way engagement with your niche community','Grow a relevant, quality-first network'],
+    tasks:['Post at consistent, tested times (test Tue–Thu, 9–11am IST as a starting point)','Reply to every comment within the first hour','Spend 15 min/day leaving substantive comments on 5 relevant posts','Send 5 personalized connection requests weekly to people in your target companies/roles'],
+    tools:[
+      {name:'Taplio', why:'Scheduling + best-time-to-post analytics purpose-built for LinkedIn.', alt:'Buffer, Shield Analytics'},
+      {name:'Claude', why:'Drafts thoughtful, specific comment replies fast when you\'re short on time and volume of engagement matters.', alt:'ChatGPT'}
+    ],
+    prompts:['Write 3 different substantive comment replies (not "Great post!") to this LinkedIn post, each adding a genuine perspective or question: [paste post]'],
+    practices:['Comment before you post your own content that day — reciprocity primes the algorithm and your network','Personalize every connection request with one specific reason'],
+    mistakes:['Generic one-word comments ("Nice!", "Agreed!") — these get filtered/deprioritized','Mass-connecting with no personalization, which tanks acceptance rate'],
+    outputs:['Engagement log','Growing quality connection list'],
+    tips:'The first 90 minutes after posting matter more than the whole rest of the day — be present for it.'
+  },
+  {
+    id:'tracking', name:'Tracking & Conversion', time:'1 hr/week',
+    title:'Stage 6 — Tracking, Networking & Conversion',
+    desc:'Close the loop: turn visibility into interviews by measuring what\'s working and actively converting attention into conversations.',
+    objectives:['Track post performance against pillars','Convert profile visitors and engaged commenters into real conversations','Feed learnings back into Stage 1 positioning'],
+    tasks:['Weekly review: which pillar/format got the most saves, comments, profile clicks?','DM 3 warm engagers per week with a specific, non-salesy opener','Update resume/portfolio links whenever a new project ships','Revisit positioning statement monthly against results'],
+    tools:[
+      {name:'Shield Analytics', why:'Deep LinkedIn analytics beyond native insights — tracks follower growth attribution by post.', alt:'Taplio, native LinkedIn analytics'},
+      {name:'Notion AI', why:'Central weekly review dashboard combining metrics, notes, and next actions.', alt:'Google Sheets'}
+    ],
+    prompts:['Here are this week\'s post metrics: [paste]. Identify the pattern in what performed best and suggest 3 post ideas that double down on it.','Draft a warm, specific LinkedIn DM to someone who commented meaningfully on my post about [topic], inviting a short conversation — not a job ask.'],
+    practices:['Track leading indicators (comments, saves, profile clicks) not just likes','Always give before you ask — comment/help before requesting a referral'],
+    mistakes:['Only tracking vanity metrics like likes','Cold-DMing recruiters immediately with a resume attached, no context'],
+    outputs:['Weekly performance log','List of warm conversations initiated'],
+    tips:'A profile-click-to-DM rate is a far stronger job-search signal than raw follower count — optimize for it.'
+  }
+];
+
+const compareData = [
+  ['Claude','Long-form writing, positioning, structured reasoning','Yes (limited)','Low','★★★★★'],
+  ['ChatGPT','Fast brainstorming, quick variants','Yes (limited)','Low','★★★★☆'],
+  ['Canva Magic Studio','Banners, carousels, visual assets','Yes (generous)','Low','★★★★☆'],
+  ['Grammarly','Tone + grammar polish','Yes','Very Low','★★★★☆'],
+  ['Taplio','Scheduling + LinkedIn-specific analytics','Trial only','Medium','★★★★☆'],
+  ['Notion AI','Calendar, tracking, central dashboard','Yes (limited)','Medium','★★★★☆']
+];
+
+const treeData = {
+  q:'What do you have to work with this week?',
+  options:[
+    {label:'A finished project', result:'Post a case-study format: problem → approach → result, with a live link. This is your highest-converting format for recruiters.'},
+    {label:'A lesson or mistake', result:'Post a short reflective story (3–4 short paragraphs). Vulnerability + specificity outperforms generic advice posts.'},
+    {label:'Nothing new, low energy', result:'Comment thoughtfully on 5 posts in your niche instead of posting — engagement maintains algorithm favor without the pressure to create.'},
+    {label:'A trending topic in AI/tech', result:'Post a quick-take with your own specific angle or experience — avoid pure news-repost, add a personal opinion or application.'}
+  ]
+};
+
+/* ================= RENDER STAGES ================= */
+const railEl = document.getElementById('stageRail');
+const panelsEl = document.getElementById('stagePanels');
+const trajStepsEl = document.getElementById('trajSteps');
+
+stages.forEach((s,i)=>{
+  const railBtn = document.createElement('button');
+  railBtn.className='rail-item';
+  railBtn.dataset.stage=s.id;
+  railBtn.innerHTML=`<span class="ri-num">STAGE ${String(i+1).padStart(2,'0')}</span><span class="ri-name">${s.name}</span>`;
+  railBtn.onclick=()=>showStage(s.id);
+  railEl.appendChild(railBtn);
+
+  const panel = document.createElement('div');
+  panel.className='stage-panel';
+  panel.id='panel-'+s.id;
+  panel.innerHTML = `
+    <div class="stage-header">
+      <span class="eyebrow">STAGE ${i+1} OF ${stages.length}</span>
+      <h2>${s.title}</h2>
+      <p>${s.desc}</p>
+      <div class="stage-meta">
+        <span class="meta-chip time">⏱ ${s.time}</span>
+        <span class="meta-chip">PILLAR-LEVEL FOCUS</span>
+      </div>
+    </div>
+
+    <div class="card"><h3><span class="ic">◆</span> Objectives</h3><ul>${s.objectives.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+
+    <div class="card"><h3><span class="ic">◆</span> Tasks (check off as you go)</h3>
+      ${s.tasks.map((t,ti)=>`<div class="task-check"><input type="checkbox" id="${s.id}-task-${ti}" onchange="onTaskToggle('${s.id}')"><label for="${s.id}-task-${ti}">${t}</label></div>`).join('')}
+    </div>
+
+    <div class="card"><h3><span class="ic">◆</span> Best AI Tools for This Stage</h3>
+      <div class="tool-grid">
+        ${s.tools.map(t=>`<div class="tool-card"><div class="tool-name">${t.name}<span class="tool-badge">RECOMMENDED</span></div><div class="why">${t.why}</div><div class="alt">Alt: ${t.alt}</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card"><h3><span class="ic">◆</span> Prompt Examples</h3>
+      ${s.prompts.map(p=>`<div class="prompt-box">${p}<button class="copy-btn" onclick="copyPrompt(this)">Copy</button></div>`).join('')}
+    </div>
+
+    <div class="card practices"><h3><span class="ic">◆</span> Best Practices</h3><ul>${s.practices.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+    <div class="card mistakes"><h3><span class="ic">◆</span> Common Mistakes</h3><ul>${s.mistakes.map(o=>`<li>${o}</li>`).join('')}</ul></div>
+
+    <div class="card"><h3><span class="ic">◆</span> Expected Outputs</h3><div class="output-row">${s.outputs.map(o=>`<span class="output-chip">${o}</span>`).join('')}</div></div>
+
+    <div class="card"><h3><span class="ic">◆</span> Efficiency Tip</h3><p style="font-size:14px;color:var(--text);">${s.tips}</p></div>
+  `;
+  panelsEl.appendChild(panel);
+
+  const step = document.createElement('div');
+  step.className='traj-step';
+  step.id='traj-'+s.id;
+  step.innerHTML=`<span class="n">${i+1}</span><span>${s.name}</span>`;
+  trajStepsEl.appendChild(step);
+});
+
+function showStage(id){
+  document.querySelectorAll('.stage-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.rail-item').forEach(r=>r.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelector(`.rail-item[data-stage="${id}"]`).classList.add('active');
+  currentStage = id;
+  loadNote(id);
+  document.getElementById('railTop').scrollIntoView({behavior:'smooth',block:'start'});
+}
+let currentStage = stages[0].id;
+showStage(currentStage);
+
+/* ================= PROGRESS TRACKING ================= */
+function totalTasks(){ return stages.reduce((sum,s)=>sum+s.tasks.length,0); }
+function checkedTasks(){
+  let c=0;
+  stages.forEach(s=>s.tasks.forEach((t,ti)=>{ if(document.getElementById(`${s.id}-task-${ti}`)?.checked) c++; }));
+  return c;
+}
+function updateProgress(){
+  const total = totalTasks();
+  const done = checkedTasks();
+  const pct = Math.round((done/total)*100);
+  document.getElementById('progressLabel').textContent = pct+'% complete';
+  document.getElementById('progressFill').style.width = pct+'%';
+  const circumference = 326.7;
+  document.getElementById('ringProgress').style.strokeDashoffset = circumference - (circumference*pct/100);
+  document.getElementById('ringPct').innerHTML = pct+'%<span>Workflow complete</span>';
+
+  stages.forEach(s=>{
+    const stageDone = s.tasks.every((t,ti)=>document.getElementById(`${s.id}-task-${ti}`)?.checked);
+    const railItem = document.querySelector(`.rail-item[data-stage="${s.id}"]`);
+    const trajItem = document.getElementById('traj-'+s.id);
+    if(stageDone){ railItem?.classList.add('complete'); trajItem?.classList.add('done'); }
+    else { railItem?.classList.remove('complete'); trajItem?.classList.remove('done'); }
+  });
+}
+function onTaskToggle(stageId){
+  saveTasks();
+  updateProgress();
+}
+function saveTasks(){
+  const state={};
+  stages.forEach(s=>s.tasks.forEach((t,ti)=>{ state[`${s.id}-task-${ti}`] = document.getElementById(`${s.id}-task-${ti}`)?.checked || false; }));
+  localStorage.setItem('awa_tasks', JSON.stringify(state));
+}
+function loadTasks(){
+  const raw = localStorage.getItem('awa_tasks');
+  if(!raw) return;
+  const state = JSON.parse(raw);
+  Object.keys(state).forEach(k=>{ const el=document.getElementById(k); if(el) el.checked = state[k]; });
+}
+loadTasks();
+updateProgress();
+
+document.getElementById('resetBtn').onclick=()=>{
+  if(confirm('Reset all progress, notes, and bookmarks?')){
+    localStorage.removeItem('awa_tasks');
+    localStorage.removeItem('awa_notes');
+    localStorage.removeItem('awa_bookmarks');
+    location.reload();
+  }
+};
+
+/* ================= NOTES ================= */
+function loadNote(stageId){
+  const raw = localStorage.getItem('awa_notes');
+  const notes = raw ? JSON.parse(raw) : {};
+  document.getElementById('notesArea').value = notes[stageId] || '';
+}
+document.getElementById('saveNoteBtn').onclick=()=>{
+  const raw = localStorage.getItem('awa_notes');
+  const notes = raw ? JSON.parse(raw) : {};
+  notes[currentStage] = document.getElementById('notesArea').value;
+  localStorage.setItem('awa_notes', JSON.stringify(notes));
+  const btn = document.getElementById('saveNoteBtn');
+  const orig = btn.textContent; btn.textContent='Saved ✓';
+  setTimeout(()=>btn.textContent=orig, 1200);
+};
+
+/* ================= BOOKMARKS ================= */
+function renderBookmarks(){
+  const raw = localStorage.getItem('awa_bookmarks');
+  const marks = raw ? JSON.parse(raw) : [];
+  const list = document.getElementById('bookmarkList');
+  list.innerHTML='';
+  marks.forEach(id=>{
+    const stage = stages.find(s=>s.id===id);
+    if(!stage) return;
+    const item = document.createElement('div');
+    item.className='bookmark-item';
+    item.innerHTML=`<span onclick="showStage('${id}')" style="cursor:pointer;">${stage.name}</span><button onclick="removeBookmark('${id}')">✕</button>`;
+    list.appendChild(item);
+  });
+}
+function removeBookmark(id){
+  const raw = localStorage.getItem('awa_bookmarks');
+  let marks = raw ? JSON.parse(raw) : [];
+  marks = marks.filter(m=>m!==id);
+  localStorage.setItem('awa_bookmarks', JSON.stringify(marks));
+  renderBookmarks();
+}
+document.getElementById('bookmarkBtn').onclick=()=>{
+  const raw = localStorage.getItem('awa_bookmarks');
+  let marks = raw ? JSON.parse(raw) : [];
+  if(!marks.includes(currentStage)){ marks.push(currentStage); localStorage.setItem('awa_bookmarks', JSON.stringify(marks)); }
+  renderBookmarks();
+};
+renderBookmarks();
+
+/* ================= COPY PROMPT ================= */
+function copyPrompt(btn){
+  const text = btn.parentElement.textContent.replace('Copy','').trim();
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig = btn.textContent; btn.textContent='Copied ✓';
+    setTimeout(()=>btn.textContent=orig, 1200);
+  });
+}
+
+/* ================= DECISION TREE ================= */
+const treeRoot = document.getElementById('treeRoot');
+const qDiv = document.createElement('div');
+qDiv.className='tree-q';
+qDiv.innerHTML = `<p>${treeData.q}</p><div class="tree-options">${treeData.options.map((o,i)=>`<button class="tree-opt" data-i="${i}">${o.label}</button>`).join('')}</div><div class="tree-result" id="treeResult"></div>`;
+treeRoot.appendChild(qDiv);
+qDiv.querySelectorAll('.tree-opt').forEach(btn=>{
+  btn.onclick=()=>{
+    const i = btn.dataset.i;
+    const resEl = document.getElementById('treeResult');
+    resEl.textContent = treeData.options[i].result;
+    resEl.classList.add('show');
+  };
+});
+
+/* ================= COMPARISON TABLE ================= */
+const compareBody = document.getElementById('compareBody');
+compareData.forEach(row=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><strong>${row[0]}</strong></td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td class="star">${row[4]}</td>`;
+  compareBody.appendChild(tr);
+});
+</script>
+</body>
+</html>
