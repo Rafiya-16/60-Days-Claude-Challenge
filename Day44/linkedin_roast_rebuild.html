@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rafiya's LinkedIn Roast & Rebuild</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root{
+    --bg:#0a0b0f;
+    --panel:rgba(255,255,255,0.04);
+    --panel-border:rgba(255,255,255,0.08);
+    --emerald:#34d399;
+    --gold:#fbbf24;
+    --violet:#a78bfa;
+    --red:#f87171;
+    --text:#e5e7eb;
+    --sub:#9ca3af;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:radial-gradient(circle at 20% 0%, #14171f 0%, #0a0b0f 55%);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    padding:24px 16px 80px;
+    min-height:100vh;
+  }
+  .wrap{max-width:900px; margin:0 auto;}
+  h1,h2,h3{font-family:'Syne',sans-serif;}
+  .hero{
+    text-align:center; padding:32px 16px 24px;
+  }
+  .hero h1{font-size:2rem; font-weight:800; background:linear-gradient(90deg,var(--emerald),var(--gold),var(--violet)); -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:8px;}
+  .hero p{color:var(--sub); font-size:0.95rem;}
+  .nav{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:24px 0 32px; position:sticky; top:8px; z-index:10;
+  }
+  .nav button{
+    background:var(--panel); border:1px solid var(--panel-border); color:var(--text);
+    padding:8px 14px; border-radius:20px; font-size:0.78rem; cursor:pointer; font-family:'Inter'; font-weight:600;
+    backdrop-filter:blur(10px); transition:all .2s;
+  }
+  .nav button.active{background:linear-gradient(90deg,var(--emerald),#059669); border-color:transparent; color:#031b12;}
+  .section{display:none; animation:fadeIn .3s ease;}
+  .section.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:16px;
+    padding:20px; margin-bottom:16px; backdrop-filter:blur(12px);
+  }
+  .card h3{font-size:1.05rem; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;}
+  .score-badge{
+    font-family:'JetBrains Mono'; font-weight:600; font-size:0.85rem; padding:4px 10px; border-radius:8px;
+  }
+  .s-low{background:rgba(248,113,113,0.15); color:var(--red);}
+  .s-mid{background:rgba(251,191,36,0.15); color:var(--gold);}
+  .s-high{background:rgba(52,211,153,0.15); color:var(--emerald);}
+
+  .quote{
+    font-style:italic; color:var(--sub); border-left:2px solid var(--violet); padding-left:12px; margin:10px 0; font-size:0.9rem;
+  }
+  .label{font-weight:700; font-size:0.82rem; margin-top:10px; display:block;}
+  .label.problem{color:var(--red);}
+  .label.why{color:var(--violet);}
+  .label.cost{color:var(--gold);}
+  p.body-txt{font-size:0.88rem; color:var(--text); line-height:1.5; margin-top:4px;}
+
+  .overall-score{
+    text-align:center; padding:24px;
+  }
+  .ring-wrap{position:relative; width:160px; height:160px; margin:0 auto;}
+  .ring-num{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    font-family:'JetBrains Mono'; font-size:2rem; font-weight:700;
+  }
+
+  .before-after{
+    display:grid; grid-template-columns:1fr; gap:12px;
+  }
+  @media(min-width:640px){.before-after{grid-template-columns:1fr 1fr;}}
+  .ba-box{border-radius:12px; padding:14px; border:1px solid var(--panel-border);}
+  .ba-before{background:rgba(248,113,113,0.06);}
+  .ba-after{background:rgba(52,211,153,0.06);}
+  .ba-box h4{font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--sub); margin-bottom:8px;}
+  .ba-box p{font-size:0.88rem; line-height:1.5;}
+
+  .option{
+    background:rgba(255,255,255,0.03); border:1px solid var(--panel-border); border-radius:12px; padding:14px; margin-bottom:12px;
+  }
+  .option .tag{font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--emerald); text-transform:uppercase; letter-spacing:0.05em;}
+  .option p{font-size:0.95rem; margin-top:6px; font-weight:600;}
+  .option .use-when{font-size:0.8rem; color:var(--sub); margin-top:6px;}
+
+  .kw-list{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .kw{background:rgba(167,139,250,0.15); color:var(--violet); font-family:'JetBrains Mono'; font-size:0.72rem; padding:3px 9px; border-radius:6px;}
+
+  table{width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:8px;}
+  th,td{text-align:left; padding:8px 6px; border-bottom:1px solid var(--panel-border);}
+  th{color:var(--sub); font-weight:600; font-size:0.75rem; text-transform:uppercase;}
+  .delta{color:var(--emerald); font-family:'JetBrains Mono'; font-weight:600;}
+
+  .day-card{
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:16px; padding:18px; margin-bottom:14px;
+  }
+  .day-card .day-tag{
+    display:inline-block; background:linear-gradient(90deg,var(--violet),#7c3aed); color:#fff; font-family:'JetBrains Mono';
+    font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:6px; margin-bottom:10px;
+  }
+  ul.checklist{list-style:none; margin-top:8px;}
+  ul.checklist li{font-size:0.85rem; padding:6px 0; padding-left:24px; position:relative; color:var(--text);}
+  ul.checklist li::before{content:"☐"; position:absolute; left:0; color:var(--emerald);}
+  .post-draft{
+    background:rgba(0,0,0,0.3); border-left:3px solid var(--gold); padding:12px 14px; border-radius:8px; font-size:0.85rem; line-height:1.6; margin-top:10px; white-space:pre-wrap;
+  }
+  .msg-template{
+    background:rgba(0,0,0,0.3); border-left:3px solid var(--emerald); padding:12px 14px; border-radius:8px; font-size:0.85rem; margin-top:10px; font-family:'JetBrains Mono';
+  }
+
+  .summary-card{
+    background:linear-gradient(135deg, rgba(52,211,153,0.1), rgba(167,139,250,0.1));
+    border:1px solid var(--panel-border); border-radius:20px; padding:28px; text-align:left;
+  }
+  .summary-card h2{font-size:1.3rem; margin-bottom:16px; text-align:center;}
+  .summary-score{display:flex; justify-content:center; gap:24px; margin:16px 0; font-family:'JetBrains Mono';}
+  .summary-score div{text-align:center;}
+  .summary-score .num{font-size:1.8rem; font-weight:700;}
+  .summary-score .num.before{color:var(--red);}
+  .summary-score .num.after{color:var(--emerald);}
+  .summary-card ol{margin:12px 0 12px 20px; font-size:0.88rem; line-height:1.8;}
+  .summary-card .highlight{
+    background:rgba(251,191,36,0.1); border-radius:10px; padding:12px; margin-top:12px; font-size:0.88rem; color:var(--gold); font-weight:600;
+  }
+  .footer-note{text-align:center; color:var(--sub); font-size:0.75rem; margin-top:40px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>The Roast & Rebuild</h1>
+    <p>Rafiya Khan · linkedin.com/in/rafiya-16-khan</p>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn active" data-target="roast">Roast</button>
+    <button class="nav-btn" data-target="rebuild">Rebuild</button>
+    <button class="nav-btn" data-target="scorecard">Scorecard</button>
+    <button class="nav-btn" data-target="plan">7-Day Plan</button>
+    <button class="nav-btn" data-target="summary">Summary Card</button>
+  </div>
+
+  <!-- ROAST -->
+  <div class="section active" id="roast">
+    <div class="card overall-score">
+      <h3 style="justify-content:center;">Overall Profile Strength</h3>
+      <div class="ring-wrap">
+        <svg width="160" height="160">
+          <circle cx="80" cy="80" r="70" stroke="rgba(255,255,255,0.08)" stroke-width="12" fill="none"/>
+          <circle cx="80" cy="80" r="70" stroke="#f87171" stroke-width="12" fill="none"
+            stroke-dasharray="439.8" stroke-dashoffset="378.2" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+        </svg>
+        <div class="ring-num" style="color:var(--red);">14/100</div>
+      </div>
+      <p style="color:var(--sub); margin-top:12px; font-size:0.85rem;">This profile is currently invisible to recruiters — not because you lack substance, but because none of it is written down.</p>
+    </div>
+
+    <div class="card">
+      <h3>Headline <span class="score-badge s-low">1/10</span></h3>
+      <div class="quote">"Student at Integral University, Lucknow, Uttar Pradesh"</div>
+      <span class="label problem">❌ The problem</span>
+      <p class="body-txt">This is LinkedIn's auto-generated default. You never actually wrote a headline.</p>
+      <span class="label why">🧠 Why it hurts</span>
+      <p class="body-txt">The headline is the single most-viewed piece of text on LinkedIn — it shows up in search results, connection requests, comments, and messages. Recruiters scan headlines before they ever click into a profile. Yours currently says nothing about what you do, what you're skilled in, or what you're looking for.</p>
+      <span class="label cost">🔍 Invisible cost</span>
+      <p class="body-txt">You do not show up in recruiter searches for "React developer," "MERN stack," "frontend intern," or any keyword tied to your actual target roles. Zero search visibility.</p>
+    </div>
+
+    <div class="card">
+      <h3>About — First 2 Lines <span class="score-badge s-low">0/10</span></h3>
+      <span class="label problem">❌ The problem</span>
+      <p class="body-txt">There is no About section at all.</p>
+      <span class="label why">🧠 Why it hurts</span>
+      <p class="body-txt">This is the "before the fold" real estate — the two lines a recruiter sees before tapping "see more." It's arguably the highest-value writing space on your entire profile, and right now it's blank.</p>
+      <span class="label cost">🔍 Invisible cost</span>
+      <p class="body-txt">A recruiter landing on your profile has nothing to hook them into reading further. They bounce in under 5 seconds.</p>
+    </div>
+
+    <div class="card">
+      <h3>About — Full Section <span class="score-badge s-low">0/10</span></h3>
+      <span class="label problem">❌ The problem</span>
+      <p class="body-txt">Empty. LinkedIn is even nudging you to "Write a summary to highlight your personality or work experience" — that's the platform itself flagging the gap.</p>
+      <span class="label why">🧠 Why it hurts</span>
+      <p class="body-txt">Your resume mentions NutriScope, the Environmental Health Analyzer, MERN stack focus, and your ABTalks challenge — none of that exists on LinkedIn. A recruiter has zero way of knowing who you are beyond "CS student."</p>
+      <span class="label cost">🔍 Invisible cost</span>
+      <p class="body-txt">You are being out-competed by classmates with weaker skills but a filled-out profile, simply because theirs is readable and yours isn't.</p>
+    </div>
+
+    <div class="card">
+      <h3>Experience <span class="score-badge s-mid">3/10</span></h3>
+      <div class="quote">"Coordinated event activities and collaborated with teams for successful execution."</div>
+      <div class="quote">"Completed IBM's Machine Learning with Python certification through etrain, gaining hands-on knowledge of machine learning concepts, data preprocessing, model training, evaluation, and predictive analytics using python."</div>
+      <span class="label problem">❌ The problem</span>
+      <p class="body-txt">Both entries describe what you <em>did</em>, not what you <em>achieved</em>. No numbers, no outcomes, no strong action verbs. "Coordinated event activities" could describe literally anyone in any club, anywhere.</p>
+      <span class="label why">🧠 Why it hurts</span>
+      <p class="body-txt">Recruiters skim bullets for evidence of impact and skill depth. Passive, description-style bullets read as filler — they signal "I did the minimum to list this," not "I built something."</p>
+      <span class="label cost">🔍 Invisible cost</span>
+      <p class="body-txt">Bigger issue: neither entry has anything to do with your actual target (MERN/frontend internships). A recruiter hiring for a React role sees "ML certification" and "event coordination" and has zero signal you can code a UI. Your real skillset — the one that's landed you two deployed projects — is completely absent from this profile.</p>
+    </div>
+
+    <div class="card">
+      <h3>Skills & Keywords <span class="score-badge s-mid">3/10</span></h3>
+      <span class="label problem">❌ The problem</span>
+      <p class="body-txt">Current skills: Data Processing, Data Analysis, Data Visualization, Python, Team Management, Teamwork, Event Management, Leadership, Management.</p>
+      <span class="label why">🧠 Why it hurts</span>
+      <p class="body-txt">These are respectable, but they position you for a data/ML role — not the frontend/full-stack roles you're actually chasing. Not one skill here is React, JavaScript, Node.js, MongoDB, Express, HTML/CSS, or Git — the exact terms a recruiter searching for a MERN intern would type.</p>
+      <span class="label cost">🔍 Invisible cost</span>
+      <p class="body-txt">LinkedIn's search algorithm ranks profiles by skill-keyword match. You are functionally invisible in every search for the roles you actually want.</p>
+    </div>
+  </div>
+
+  <!-- REBUILD -->
+  <div class="section" id="rebuild">
+
+    <div class="card">
+      <h3>Headline — 3 Options</h3>
+      <p style="font-size:0.82rem; color:var(--sub); margin-bottom:12px;">Formula: [Role/Identity] | [Who I Help or What I Do] | [Proof or Differentiator]</p>
+
+      <div class="option">
+        <div class="tag">Option 1 · Keyword-optimized</div>
+        <p>MERN Stack Developer | React.js & JavaScript | Building Full-Stack Web Apps | B.Tech CSE '27</p>
+        <div class="use-when">Use this as your default. It's front-loaded with exact search terms recruiters type — "MERN," "React," "full-stack" — so you surface in more searches.</div>
+      </div>
+
+      <div class="option">
+        <div class="tag">Option 2 · Value-proposition</div>
+        <p>I Build Web Apps That Solve Real Problems | Frontend & Full-Stack (MERN) | Open to Internships</p>
+        <div class="use-when">Use if you're reaching out to startups/founders directly — it leads with outcome, not just tech stack, which lands better with non-technical hiring folks.</div>
+      </div>
+
+      <div class="option">
+        <div class="tag">Option 3 · Authority / thought leadership</div>
+        <p>Aspiring Full-Stack Developer | Documenting My AI + Web Dev Journey (ABTalks, Day 30+) | React · Node · Prompt Engineering</p>
+        <div class="use-when">Use this if your near-term priority is growing the ABTalks audience and building a personal brand around AI literacy — it signals consistency and visibility, which attracts collaborators and followers over pure recruiter search.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>About Section — Full Rewrite</h3>
+
+      <span class="label" style="color:var(--emerald);">Line 1-2 · The Hook</span>
+      <p class="body-txt">I'm a Computer Science student who ships — not just studies. From an AI-powered nutrition platform to a real-time air quality dashboard, I build things people can actually use.</p>
+
+      <span class="label" style="color:var(--emerald);">Line 3-5 · The Story</span>
+      <p class="body-txt">I'm Rafiya, a final-year B.Tech CSE student at Integral University, Lucknow, focused on full-stack development with the MERN stack (React, Node.js, MongoDB, Express) and applied generative AI. I care about building software that's genuinely useful — not just technically impressive — and I'm currently sharpening my TypeScript and DSA fundamentals while applying for frontend and full-stack internships.</p>
+
+      <span class="label" style="color:var(--emerald);">Line 6-8 · Proof</span>
+      <p class="body-txt">
+      🔹 Built and deployed NutriScope, an AI-powered nutrition analysis platform<br>
+      🔹 Built an Environmental Health Analyzer tracking AQI, PM2.5, and PM10 in real time<br>
+      🔹 Completed IBM's Machine Learning with Python certification (50-day program, Aug-Sep 2024)<br>
+      🔹 Running a 60-day public challenge (#ABTalks) on AI literacy and prompt engineering — currently past the halfway mark
+      </p>
+
+      <span class="label" style="color:var(--emerald);">Last line · CTA</span>
+      <p class="body-txt">Open to frontend/full-stack internship opportunities — feel free to connect, or check out my projects in the Featured section below.</p>
+
+      <span class="label" style="margin-top:16px;">SEO keywords embedded</span>
+      <div class="kw-list">
+        <span class="kw">MERN stack</span><span class="kw">React</span><span class="kw">Node.js</span>
+        <span class="kw">MongoDB</span><span class="kw">Express</span><span class="kw">JavaScript</span>
+        <span class="kw">full-stack development</span><span class="kw">frontend developer</span>
+        <span class="kw">generative AI</span><span class="kw">prompt engineering</span>
+        <span class="kw">B.Tech Computer Science</span><span class="kw">web development intern</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Experience — Rewrite</h3>
+
+      <p style="font-weight:700; margin-top:6px;">IBM Internship</p>
+      <div class="before-after">
+        <div class="ba-box ba-before"><h4>Before</h4><p>Completed IBM's Machine Learning with Python certification through etrain, gaining hands-on knowledge of machine learning concepts, data preprocessing, model training, evaluation, and predictive analytics using python.</p></div>
+        <div class="ba-box ba-after"><h4>After</h4><p>Built foundational ML pipeline skills through IBM's 50-day Machine Learning with Python certification (eTrain program), covering data preprocessing, model training, evaluation, and predictive analytics in Python.</p></div>
+      </div>
+
+      <p style="font-weight:700; margin-top:20px;">Volunteer, Integral University</p>
+      <div class="before-after">
+        <div class="ba-box ba-before"><h4>Before</h4><p>Coordinated event activities and collaborated with teams for successful execution.</p></div>
+        <div class="ba-box ba-after"><h4>After</h4><p>Coordinated logistics and on-ground activities for a university event, collaborating with cross-functional student teams to deliver smooth, on-time execution.</p></div>
+      </div>
+      <p style="font-size:0.78rem; color:var(--gold); margin-top:8px;">⚠️ Add a real number if you have one — team size, attendee count, or number of activities managed. Even an estimate beats no number.</p>
+    </div>
+
+    <div class="card">
+      <h3>Skills Recommendations</h3>
+      <span class="label" style="color:var(--emerald);">Add (priority order, for your internship target)</span>
+      <p class="body-txt">1. React.js &nbsp; 2. JavaScript (ES6+) &nbsp; 3. Node.js &nbsp; 4. MongoDB &nbsp; 5. Express.js &nbsp; 6. HTML5 &nbsp; 7. CSS3 / Tailwind CSS &nbsp; 8. Git & GitHub &nbsp; 9. REST APIs &nbsp; 10. Responsive Web Design</p>
+
+      <span class="label problem" style="margin-top:14px;">Remove / deprioritize</span>
+      <p class="body-txt">Data Visualization and Event Management — they dilute your positioning and don't map to what you're applying for. Keep Python and Data Processing as secondary (AI-adjacent, still relevant), but they shouldn't lead.</p>
+
+      <span class="label" style="color:var(--gold); margin-top:14px;">Pin to top 3</span>
+      <p class="body-txt">React.js · JavaScript · MERN Stack / Full-Stack Development</p>
+    </div>
+  </div>
+
+  <!-- SCORECARD -->
+  <div class="section" id="scorecard">
+    <div class="card">
+      <h3>Before vs After</h3>
+      <table>
+        <tr><th>Section</th><th>Before</th><th>After</th><th>Change</th></tr>
+        <tr><td>Headline</td><td>1/10</td><td>9/10</td><td class="delta">+8</td></tr>
+        <tr><td>About (Hook)</td><td>0/10</td><td>9/10</td><td class="delta">+9</td></tr>
+        <tr><td>About (Full)</td><td>0/10</td><td>9/10</td><td class="delta">+9</td></tr>
+        <tr><td>Experience</td><td>3/10</td><td>7/10</td><td class="delta">+4</td></tr>
+        <tr><td>Skills/Keywords</td><td>3/10</td><td>8/10</td><td class="delta">+5</td></tr>
+      </table>
+      <div class="overall-score" style="margin-top:20px;">
+        <h3 style="justify-content:center; font-size:0.95rem; color:var(--sub);">OVERALL PROFILE STRENGTH</h3>
+        <div class="summary-score">
+          <div><div class="num before">14</div><div style="font-size:0.72rem; color:var(--sub);">BEFORE</div></div>
+          <div style="align-self:center; font-size:1.2rem; color:var(--sub);">→</div>
+          <div><div class="num after">84</div><div style="font-size:0.72rem; color:var(--sub);">AFTER</div></div>
+        </div>
+        <p style="color:var(--emerald); font-family:'JetBrains Mono'; font-weight:600;">+70 points</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 DAY PLAN -->
+  <div class="section" id="plan">
+
+    <div class="day-card">
+      <span class="day-tag">DAY 1</span>
+      <h3 style="font-size:1rem;">Make all profile changes</h3>
+      <ul class="checklist">
+        <li>Update headline (pick Option 1, 2, or 3 above)</li>
+        <li>Paste in the new About section</li>
+        <li>Rewrite both Experience bullets</li>
+        <li>Add the 10 recommended skills, remove Data Visualization & Event Management</li>
+        <li>Pin React.js, JavaScript, and MERN Stack to top skills</li>
+        <li>Upload a real profile photo (the purple "R" placeholder is costing you trust)</li>
+        <li>Add NutriScope and Environmental Health Analyzer to Featured/Projects with live links</li>
+      </ul>
+    </div>
+
+    <div class="day-card">
+      <span class="day-tag">DAY 2</span>
+      <h3 style="font-size:1rem;">Publish Post #1 — "I just rebuilt my LinkedIn"</h3>
+      <div class="post-draft">I just spent a day rewriting my entire LinkedIn profile — and realized how much I'd been hiding.
+
+For months, my profile said "Student at Integral University" and nothing else. No About section. No projects. Just a default headline doing absolutely nothing for me.
+
+Meanwhile I'd built an AI-powered nutrition platform, an air quality dashboard, and been documenting a 60-day AI learning challenge — none of it was visible anywhere on my profile.
+
+Lesson: your work doesn't speak for itself if you never write it down.
+
+If your profile is basically a placeholder right now too, you're not alone — go fix it today.
+
+What's one thing on YOUR profile you've been putting off updating?
+
+#OpenToWork #MERNStack #WebDevelopment #Students</div>
+    </div>
+
+    <div class="day-card">
+      <span class="day-tag">DAY 3</span>
+      <h3 style="font-size:1rem;">Send 10 strategic connection requests</h3>
+      <p class="body-txt"><strong>Who to target:</strong> React/frontend developers at Indian startups (Series A-C), tech recruiters at product companies hiring interns, alumni from Integral University in tech roles, and founders of small dev studios in Lucknow/NCR who post about hiring.</p>
+      <div class="msg-template">Hi [Name], I'm a CS student building full-stack projects with React/Node and documenting my AI learning journey publicly. Would love to connect and learn from your work in [their field]!</div>
+    </div>
+
+    <div class="day-card">
+      <span class="day-tag">DAY 4</span>
+      <h3 style="font-size:1rem;">Comment on 5 posts in your target space</h3>
+      <p class="body-txt"><strong>The Value Comment formula:</strong> Agree + Add Insight + Ask a Question.</p>
+      <p class="body-txt">Example: "Completely agree that [their point] — I've noticed the same thing while building [your project], especially around [specific detail]. Curious how you'd handle [related question]?"</p>
+      <p class="body-txt" style="color:var(--sub); font-size:0.8rem;">This does two things: shows genuine engagement (not just "Great post!") and puts your name in front of that poster's audience.</p>
+    </div>
+
+    <div class="day-card">
+      <span class="day-tag">DAY 5</span>
+      <h3 style="font-size:1rem;">Publish Post #2 — Lessons-learned / hot take</h3>
+      <div class="post-draft">Unpopular opinion: most student LinkedIn profiles are optimized for looking busy, not for being findable.
+
+I had certifications, skills, projects — all real — and still showed up in zero relevant recruiter searches. Why? My profile had none of the actual keywords recruiters search for.
+
+"Machine Learning" ≠ "React Developer." If your skills section doesn't match the job title you want, you're invisible for it — no matter how good your resume is.
+
+Fix: open your profile right now, search the exact job title you want, and check if your headline and skills actually contain those words.
+
+#CareerAdvice #LinkedInTips #TechStudents</div>
+    </div>
+
+    <div class="day-card">
+      <span class="day-tag">DAY 6</span>
+      <h3 style="font-size:1rem;">Engage + expand network</h3>
+      <ul class="checklist">
+        <li>Reply to every comment on both posts within a few hours of posting</li>
+        <li>Send 5 more connection requests (same targeting as Day 3)</li>
+        <li>Revisit any comments you left on Day 4 — reply if the poster responded</li>
+      </ul>
+    </div>
+
+    <div class="day-card">
+      <span class="day-tag">DAY 7</span>
+      <h3 style="font-size:1rem;">Review the numbers</h3>
+      <p class="body-txt"><strong>Profile views:</strong> A jump from near-zero to double digits in a week means your headline/keywords are working. Flat numbers mean the headline still isn't specific enough.</p>
+      <p class="body-txt"><strong>Connection acceptance rate:</strong> Above 40-50% is healthy for cold requests with a personalized note. Below that, your message template needs to be more specific to each person.</p>
+      <p class="body-txt"><strong>Post engagement:</strong> Comments matter more than likes — they signal real reach, not just a passive scroll-past. If a post underperforms, the hook (first line) is usually the fix, not the whole post.</p>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARD -->
+  <div class="section" id="summary">
+    <div class="summary-card">
+      <h2>📌 I let AI roast my LinkedIn profile today. Here's what changed:</h2>
+      <div class="summary-score">
+        <div><div class="num before">14</div><div style="font-size:0.75rem; color:var(--sub);">BEFORE / 100</div></div>
+        <div style="align-self:center; font-size:1.4rem; color:var(--sub);">→</div>
+        <div><div class="num after">84</div><div style="font-size:0.75rem; color:var(--sub);">AFTER / 100</div></div>
+      </div>
+      <p style="font-weight:700; margin-top:8px;">Top 3 mistakes I was making:</p>
+      <ol>
+        <li>My headline was still LinkedIn's default auto-text — never customized it, ever.</li>
+        <li>My About section was completely empty, so recruiters had zero context on who I am.</li>
+        <li>My Skills and Experience were all data/ML-focused, while I'm actually targeting MERN/frontend roles — I was invisible in the exact searches I wanted to show up in.</li>
+      </ol>
+      <div class="highlight">The #1 thing that made the biggest difference: writing an About section that actually named my real projects and target role — instead of leaving recruiters to guess who I am.</div>
+    </div>
+  </div>
+
+  <p class="footer-note">Built for Rafiya Khan · ABTalks 60 Days Claude AI Challenge</p>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.nav-btn');
+  const sections = document.querySelectorAll('.section');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+</script>
+</body>
+</html>
