@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Report — Study Path</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-main:#0f0f14;
+    --bg-card:#1a1a24;
+    --bg-card-alt:#1e1e2e;
+    --text-primary:#f0f0f5;
+    --text-secondary:#8888a0;
+    --accent-green:#34d399;
+    --accent-red:#f87171;
+    --accent-blue:#60a5fa;
+    --accent-gold:#fbbf24;
+    --accent-purple:#a78bfa;
+    --border-subtle:rgba(255,255,255,0.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-main);
+    color:var(--text-primary);
+    font-family:'Inter',system-ui,sans-serif;
+    padding:32px 16px 60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+  header{padding-bottom:20px;}
+  h1.title{font-size:28px;font-weight:800;letter-spacing:-0.5px;}
+  .subtitle{color:var(--text-secondary);font-size:16px;margin-top:6px;}
+  .date{color:var(--text-secondary);font-size:12px;margin-top:10px;font-family:'JetBrains Mono',monospace;}
+  .rule{height:2px;margin-top:18px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple),var(--accent-gold));border-radius:2px;}
+
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--border-subtle);
+    border-radius:16px;
+    padding:28px;
+    margin-top:28px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.3);
+    border-left:4px solid var(--accent-blue);
+    transition:transform .2s ease;
+  }
+  .card:hover{transform:translateY(-2px);}
+  .card.green{border-left-color:var(--accent-green);}
+  .card.purple{border-left-color:var(--accent-purple);}
+  .card.red{border-left-color:var(--accent-red);}
+  .card.gold{border-left-color:var(--accent-gold);background:var(--bg-card-alt);padding:34px;box-shadow:0 0 20px rgba(251,191,36,0.15);}
+
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+  h2{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+  .blue{color:var(--accent-blue);}
+  .green{color:var(--accent-green);}
+  .purple{color:var(--accent-purple);}
+  .red{color:var(--accent-red);}
+  .gold{color:var(--accent-gold);}
+
+  p{font-size:15px;line-height:1.7;color:var(--text-primary);}
+  .muted{color:var(--text-secondary);}
+
+  /* Option cards */
+  .option{
+    background:var(--bg-card-alt);
+    border-radius:12px;
+    padding:20px;
+    margin-top:16px;
+    border:1px solid var(--border-subtle);
+  }
+  .option h3{font-size:16px;font-weight:700;margin-bottom:10px;}
+  .option .row{margin-top:8px;font-size:14px;line-height:1.6;}
+  .tag{display:inline-block;font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-right:6px;}
+
+  ul{margin:8px 0 0 18px;font-size:14px;line-height:1.7;}
+  li{margin-bottom:4px;}
+
+  /* matrix */
+  .matrix-row{display:flex;align-items:center;margin-top:14px;gap:12px;}
+  .matrix-label{width:40%;font-size:13px;color:var(--text-secondary);font-weight:500;}
+  .bar-group{width:60%;display:flex;flex-direction:column;gap:6px;}
+  .bar-container{height:26px;background:rgba(255,255,255,0.05);border-radius:8px;position:relative;overflow:hidden;}
+  .bar-fill{
+    height:100%;border-radius:8px;
+    display:flex;align-items:center;justify-content:flex-end;
+    padding-right:8px;font-size:12px;font-weight:700;color:#0f0f14;
+    width:0%;
+    animation:grow 0.8s ease-out forwards;
+  }
+  .a-fill{background:linear-gradient(90deg,#60a5fa,#3b82f6);}
+  .b-fill{background:linear-gradient(90deg,#34d399,#10b981);}
+  @keyframes grow{from{width:0%;}to{width:var(--target);}}
+
+  .legend{display:flex;gap:20px;font-size:13px;margin-bottom:6px;color:var(--text-secondary);}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
+  .dot.a{background:#60a5fa;}
+  .dot.b{background:#34d399;}
+
+  .total-row{
+    margin-top:20px;padding:16px;border-radius:10px;
+    background:rgba(255,255,255,0.04);
+    display:flex;justify-content:space-between;align-items:center;
+    font-weight:700;font-size:16px;
+  }
+  .total-row.win{outline:1px solid rgba(251,191,36,0.4);}
+
+  /* premortem */
+  .pre-block{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-subtle);}
+  .pre-block h3{font-size:15px;margin-bottom:8px;}
+
+  /* 7 day plan */
+  .day-row{display:flex;gap:14px;margin-top:12px;align-items:baseline;}
+  .day-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent-green);font-weight:700;min-width:56px;}
+  .day-text{font-size:14px;line-height:1.6;}
+
+  /* verdict */
+  .verdict-winner{font-size:30px;font-weight:800;color:var(--accent-gold);margin-bottom:10px;}
+  .hard-truth{font-style:italic;color:var(--text-secondary);margin-top:14px;font-size:14px;}
+
+  /* shareable */
+  .share-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;}
+  .mini-card{
+    flex:1;min-width:200px;
+    background:var(--bg-card-alt);
+    border-radius:12px;padding:16px;
+    border:1px solid var(--border-subtle);
+    display:flex;flex-direction:column;justify-content:space-between;
+    min-height:170px;
+  }
+  .mini-card h4{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:10px;}
+  .mini-score{font-size:22px;font-weight:800;}
+  .watermark{font-size:10px;color:var(--text-secondary);margin-top:12px;opacity:.7;}
+
+  footer{text-align:center;color:var(--text-secondary);font-size:12px;margin-top:40px;}
+
+  @media(max-width:600px){
+    .card{padding:20px;}
+    .matrix-row{flex-direction:column;align-items:flex-start;}
+    .matrix-label{width:100%;margin-bottom:4px;}
+    .bar-group{width:100%;}
+    .share-row{flex-direction:column;}
+    h1.title{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1 class="title">DECISION REPORT</h1>
+    <div class="subtitle">Where to start studying for your internship push</div>
+    <div class="date">Generated · July 15, 2026</div>
+    <div class="rule"></div>
+  </header>
+
+  <!-- SECTION 1 -->
+  <div class="card blue">
+    <div class="eyebrow">Section 1</div>
+    <h2 class="blue">The Real Decision</h2>
+    <p>This isn't really "which YouTube video" — it's <strong>scattered free exploration vs. one structured, committed path</strong>. The trade-off is speed-to-basics vs. flexibility-to-explore. It's hard because picking one path means closing off the others, and you're scared that if you choose wrong, your basics stay weak with only 6 months on the clock.</p>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="card green">
+    <div class="eyebrow">Section 2</div>
+    <h2 class="green">The Case For Each Option</h2>
+
+    <div class="option">
+      <h3>Option A — Free YouTube, self-curated</h3>
+      <div class="row"><span class="tag green">Strongest case</span>Zero cost, infinite supply, you already have the instinct to start here — momentum is immediate.</div>
+      <div class="row"><span class="tag blue">Hidden upside</span>Forces you to build the skill of evaluating sources — a real skill you'll need for the rest of your career.</div>
+      <div class="row"><span class="tag red">Biggest weakness</span>No accountability or sequencing — easy to binge-watch without retaining or building anything real.</div>
+      <div class="row"><span class="tag gold">Best if you value:</span>Flexibility, zero cost, self-direction</div>
+    </div>
+
+    <div class="option">
+      <h3>Option B — One structured path, chosen and locked in</h3>
+      <div class="row"><span class="tag green">Strongest case</span>Removes decision fatigue entirely — you follow a sequence instead of re-deciding every day, which directly protects your 6-month timeline.</div>
+      <div class="row"><span class="tag blue">Hidden upside</span>A finished, structured path gives you a portfolio-ready narrative ("I completed X") — good for resumes and interviews.</div>
+      <div class="row"><span class="tag red">Biggest weakness</span>Requires an upfront commitment decision — you have to trust a choice before you've seen the whole landscape.</div>
+      <div class="row"><span class="tag gold">Best if you value:</span>Strong basics, momentum, low regret risk</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="card purple">
+    <div class="eyebrow">Section 3</div>
+    <h2 class="purple">Assumption Buster</h2>
+    <p><strong>Assumptions you may be making:</strong></p>
+    <ul>
+      <li>That there's one "correct" video/channel out there, and finding it is the real task.</li>
+      <li>That more searching = more certainty (it usually just delays starting).</li>
+      <li>That basics can only be "strong" if the source is perfect, rather than through repetition and practice.</li>
+    </ul>
+    <p style="margin-top:14px;"><strong>Biases at play:</strong></p>
+    <ul>
+      <li><strong>Choice overload / analysis paralysis</strong> — more options are making the decision feel harder than the actual content difference between them.</li>
+      <li><strong>Perfectionism bias</strong> — waiting for the "best" resource before starting, when a "good enough" one used consistently outperforms a perfect one left unwatched.</li>
+    </ul>
+    <p style="margin-top:14px;"><strong>What you're definitely ignoring:</strong> the resource matters far less than consistency and practice — 6 months of an average tutorial with daily coding beats 6 months of searching for the perfect one.</p>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="card blue">
+    <div class="eyebrow">Section 4</div>
+    <h2 class="blue">Decision Matrix</h2>
+    <div class="legend">
+      <span><span class="dot a"></span>A: YouTube (self-curated)</span>
+      <span><span class="dot b"></span>B: One structured path</span>
+    </div>
+
+    <div class="matrix-row">
+      <div class="matrix-label">Life/Career Upside</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:60%;animation-delay:.1s;">6</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:80%;animation-delay:.2s;">8</div></div>
+      </div>
+    </div>
+    <div class="matrix-row">
+      <div class="matrix-label">Financial Safety</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:100%;animation-delay:.15s;">10</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:80%;animation-delay:.25s;">8</div></div>
+      </div>
+    </div>
+    <div class="matrix-row">
+      <div class="matrix-label">Growth & Learning</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:50%;animation-delay:.1s;">5</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:80%;animation-delay:.2s;">8</div></div>
+      </div>
+    </div>
+    <div class="matrix-row">
+      <div class="matrix-label">Stress Level (10=low)</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:30%;animation-delay:.15s;">3</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:70%;animation-delay:.25s;">7</div></div>
+      </div>
+    </div>
+    <div class="matrix-row">
+      <div class="matrix-label">Reversibility</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:90%;animation-delay:.1s;">9</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:70%;animation-delay:.2s;">7</div></div>
+      </div>
+    </div>
+    <div class="matrix-row">
+      <div class="matrix-label">Long-term Alignment</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:50%;animation-delay:.15s;">5</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:85%;animation-delay:.25s;">8.5</div></div>
+      </div>
+    </div>
+    <div class="matrix-row">
+      <div class="matrix-label">Regret Risk (10=low)</div>
+      <div class="bar-group">
+        <div class="bar-container"><div class="bar-fill a-fill" style="--target:40%;animation-delay:.1s;">4</div></div>
+        <div class="bar-container"><div class="bar-fill b-fill" style="--target:75%;animation-delay:.2s;">7.5</div></div>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <span style="color:var(--accent-blue);">Option A Total</span><span>42 / 70</span>
+    </div>
+    <div class="total-row win">
+      <span style="color:var(--accent-green);">Option B Total</span><span>54.5 / 70 🏆</span>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="card red">
+    <div class="eyebrow">Section 5</div>
+    <h2 class="red">Premortem — It's 12 Months Later and It Failed</h2>
+
+    <div class="pre-block">
+      <h3 class="blue">Option A — Free YouTube failed because:</h3>
+      <ul>
+        <li>You kept switching channels mid-topic, never finishing a sequence.</li>
+        <li>Basics stayed shaky because nothing built on the last video systematically.</li>
+        <li>Time got lost re-deciding "which video next" instead of practicing.</li>
+      </ul>
+      <p class="muted" style="margin-top:8px;"><strong>Early warning sign:</strong> you're on your 3rd different channel for the same topic within two weeks.</p>
+      <p class="muted"><strong>Prevention:</strong> pick one channel/playlist per topic and finish it before evaluating alternatives.</p>
+    </div>
+
+    <div class="pre-block">
+      <h3 class="green">Option B — Structured path failed because:</h3>
+      <ul>
+        <li>You picked a course that didn't match your actual skill level (too basic or too advanced).</li>
+        <li>You followed it passively without building anything hands-on.</li>
+        <li>You stuck with a bad-fit resource too long out of sunk cost, instead of switching early.</li>
+      </ul>
+      <p class="muted" style="margin-top:8px;"><strong>Early warning sign:</strong> two weeks in, you can't explain what you learned without rewatching.</p>
+      <p class="muted"><strong>Prevention:</strong> pair every module with a small build — no passive-only weeks allowed.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="card green">
+    <div class="eyebrow">Section 6</div>
+    <h2 class="green">7-Day Test Plan</h2>
+    <div class="day-row"><div class="day-num">DAY 1-2</div><div class="day-text">Shortlist 3 candidate resources (1 YouTube playlist, 1 structured course/roadmap, 1 official docs) — no watching yet, just scan syllabus/content list.</div></div>
+    <div class="day-row"><div class="day-num">DAY 3-4</div><div class="day-text">Pick one and complete its first module fully, then build one tiny thing from it (a function, a snippet, a mini page).</div></div>
+    <div class="day-row"><div class="day-num">DAY 5-6</div><div class="day-text">Talk to one senior/mentor or a peer already interning — ask what basics actually got tested in their interviews.</div></div>
+    <div class="day-row"><div class="day-num">DAY 7</div><div class="day-text">Decision day: if you finished Day 3-4's module without switching resources and could explain it out loud — lock it in for 6 months.</div></div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="card gold">
+    <div class="eyebrow">Section 7</div>
+    <h2 class="gold">The Verdict</h2>
+    <div class="verdict-winner">Option B — One Structured Path</div>
+    <p>It wins because it directly protects the thing you're most scared of — weak basics — by forcing sequence and completion instead of endless comparison. With only 6 months, the cost of switching resources repeatedly is higher than the cost of a slightly imperfect starting choice.</p>
+    <p class="muted" style="margin-top:10px;">This could flip if, after the 7-day test, you find structured courses feel too slow-paced for your current level — then a curated YouTube playlist with a written checklist becomes the better fit.</p>
+    <p class="hard-truth">The hard truth: no resource will make your basics strong — only finishing one and practicing daily will.</p>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="card gold">
+    <div class="eyebrow">Section 8</div>
+    <h2 class="gold">Shareable Cards</h2>
+    <div class="share-row">
+      <div class="mini-card">
+        <h4>Matrix Summary</h4>
+        <div>
+          <div class="mini-score blue">A: 42/70</div>
+          <div class="mini-score green" style="margin-top:6px;">B: 54.5/70</div>
+        </div>
+        <div class="watermark">Built with Claude AI</div>
+      </div>
+      <div class="mini-card">
+        <h4>Verdict</h4>
+        <div>
+          <div class="mini-score gold">Option B</div>
+          <p class="muted" style="font-size:12px;margin-top:8px;">One structured path beats scattered searching when the clock is ticking.</p>
+        </div>
+        <div class="watermark">Built with Claude AI</div>
+      </div>
+      <div class="mini-card">
+        <h4>LinkedIn Hook</h4>
+        <div>
+          <p style="font-size:13px;font-weight:600;">"I almost lost 6 months to 'which video should I watch.'"</p>
+          <p class="muted" style="font-size:12px;margin-top:6px;">Used AI to run a full decision audit on my learning path — turns out the resource mattered less than finishing one. #ABTalksChallenge</p>
+        </div>
+        <div class="watermark">Built with Claude AI</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Built with Claude AI | ABTalks 60-Day Challenge</footer>
+</div>
+</body>
+</html>
