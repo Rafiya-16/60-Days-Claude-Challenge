@@ -178,11 +178,11 @@ The pipeline automatically stops when one of these conditions is met:
 
 ## Dashboard
 
-![Dashboard](images/dashboard.png)
+![Dashboard](d46.jpg)
 
 ## Workflow Execution
 
-![Workflow](images/workflow.png)
+![Workflow](d-46.jpg)
 
 ---
 
