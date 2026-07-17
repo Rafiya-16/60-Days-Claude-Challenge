@@ -57,7 +57,7 @@ Create a complete HTML application capable of:
 
 ## Home Screen
 
-![Home](home.jpg)
+![Home](Home.jpg)
 
 ## Resume Upload
 
